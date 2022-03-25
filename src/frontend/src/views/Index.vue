@@ -34,33 +34,20 @@
             <h2 class="title title--small sheet__title">Выберите размер</h2>
 
             <div class="sheet__content diameter">
-              <label class="diameter__input diameter__input--small">
+              <label
+                v-for="(size, index) in sizes"
+                :key="size.id"
+                class="diameter__input"
+                :class="`diameter__input--${size.value}`"
+              >
                 <input
                   type="radio"
                   name="diameter"
-                  value="small"
+                  :value="size.value"
                   class="visually-hidden"
+                  :checked="index === 1"
                 />
-                <span>23 см</span>
-              </label>
-              <label class="diameter__input diameter__input--normal">
-                <input
-                  type="radio"
-                  name="diameter"
-                  value="normal"
-                  class="visually-hidden"
-                  checked
-                />
-                <span>32 см</span>
-              </label>
-              <label class="diameter__input diameter__input--big">
-                <input
-                  type="radio"
-                  name="diameter"
-                  value="big"
-                  class="visually-hidden"
-                />
-                <span>45 см</span>
+                <span>{{ size.name }}</span>
               </label>
             </div>
           </div>
@@ -503,13 +490,14 @@
 
 <script>
 import pizza from "@/static/pizza.json";
-import { normalizeDough } from "../common/helpers";
+import { normalizeDough, normalizeSize } from "../common/helpers";
 
 export default {
   name: "IndexPage",
   data() {
     return {
       doughs: pizza.dough.map(normalizeDough),
+      sizes: pizza.sizes.map(normalizeSize),
     };
   },
 };
