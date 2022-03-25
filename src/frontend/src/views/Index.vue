@@ -63,13 +63,18 @@
               <div class="ingredients__sauce">
                 <p>Основной соус:</p>
 
-                <label class="radio ingredients__input">
-                  <input type="radio" name="sauce" value="tomato" checked />
-                  <span>Томатный</span>
-                </label>
-                <label class="radio ingredients__input">
-                  <input type="radio" name="sauce" value="creamy" />
-                  <span>Сливочный</span>
+                <label
+                  v-for="(sauce, index) in sauces"
+                  :key="sauce.id"
+                  class="radio ingredients__input"
+                >
+                  <input
+                    type="radio"
+                    name="sauce"
+                    :value="sauce.value"
+                    :checked="index === 0"
+                  />
+                  <span>{{ sauce.name }}</span>
                 </label>
               </div>
 
@@ -490,7 +495,11 @@
 
 <script>
 import pizza from "@/static/pizza.json";
-import { normalizeDough, normalizeSize } from "../common/helpers";
+import {
+  normalizeDough,
+  normalizeSize,
+  normalizeSauce,
+} from "../common/helpers";
 
 export default {
   name: "IndexPage",
@@ -498,6 +507,7 @@ export default {
     return {
       doughs: pizza.dough.map(normalizeDough),
       sizes: pizza.sizes.map(normalizeSize),
+      sauces: pizza.sauces.map(normalizeSauce),
     };
   },
 };
