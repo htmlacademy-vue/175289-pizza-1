@@ -9,27 +9,21 @@
             <h2 class="title title--small sheet__title">Выберите тесто</h2>
 
             <div class="sheet__content dough">
-              <label class="dough__input dough__input--light">
+              <label
+                v-for="(dough, index) in doughs"
+                :key="dough.id"
+                class="dough__input"
+                :class="`dough__input--${dough.value}`"
+              >
                 <input
                   type="radio"
                   name="dought"
-                  value="light"
+                  :value="dough.value"
                   class="visually-hidden"
-                  checked
+                  :checked="index === 0"
                 />
-                <b>Тонкое</b>
-                <span>Из твердых сортов пшеницы</span>
-              </label>
-
-              <label class="dough__input dough__input--large">
-                <input
-                  type="radio"
-                  name="dought"
-                  value="large"
-                  class="visually-hidden"
-                />
-                <b>Толстое</b>
-                <span>Из твердых сортов пшеницы</span>
+                <b>{{ dough.name }}</b>
+                <span>{{ dough.description }}</span>
               </label>
             </div>
           </div>
@@ -508,8 +502,16 @@
 </template>
 
 <script>
+import pizza from "@/static/pizza.json";
+import { normalizeDough } from "../common/helpers";
+
 export default {
   name: "IndexPage",
+  data() {
+    return {
+      doughs: pizza.dough.map(normalizeDough),
+    };
+  },
 };
 </script>
 
