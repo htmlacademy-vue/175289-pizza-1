@@ -123,7 +123,7 @@
 
           <div class="content__result">
             <p>Итого: 0 ₽</p>
-            <button type="button" class="button" disabled>Готовьте!</button>
+            <AppButton isDisabled>Готовьте!</AppButton>
           </div>
         </div>
       </div>
@@ -139,11 +139,12 @@ import {
   normalizeSize,
   normalizeSauce,
 } from "@/common/helpers";
+import AppButton from "@/common/components/AppButton";
 import ItemCounter from "@/common/components/ItemCounter";
 
 export default {
   name: "IndexPage",
-  components: { ItemCounter },
+  components: { AppButton, ItemCounter },
   data() {
     return {
       doughs: pizza.dough.map(normalizeDough),
