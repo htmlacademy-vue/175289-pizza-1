@@ -11,7 +11,7 @@
             <div class="sheet__content dough">
               <label
                 v-for="(dough, index) in doughs"
-                :key="dough.id"
+                :key="dough.name"
                 class="dough__input"
                 :class="`dough__input--${dough.value}`"
               >
@@ -36,7 +36,7 @@
             <div class="sheet__content diameter">
               <label
                 v-for="(size, index) in sizes"
-                :key="size.id"
+                :key="size.name"
                 class="diameter__input"
                 :class="`diameter__input--${size.value}`"
               >
@@ -65,7 +65,7 @@
 
                 <label
                   v-for="(sauce, index) in sauces"
-                  :key="sauce.id"
+                  :key="sauce.name"
                   class="radio ingredients__input"
                 >
                   <input
@@ -84,7 +84,7 @@
                 <ul class="ingredients__list">
                   <li
                     v-for="ingredient in ingredients"
-                    :key="ingredient.is"
+                    :key="ingredient.name"
                     class="ingredients__item"
                   >
                     <span
