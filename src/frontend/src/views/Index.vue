@@ -62,20 +62,15 @@
             <div class="sheet__content ingredients">
               <div class="ingredients__sauce">
                 <p>Основной соус:</p>
-
-                <label
+                <AppRadioButton
                   v-for="(sauce, index) in sauces"
                   :key="sauce.name"
-                  class="radio ingredients__input"
-                >
-                  <input
-                    type="radio"
-                    name="sauce"
-                    :value="sauce.value"
-                    :checked="index === 0"
-                  />
-                  <span>{{ sauce.name }}</span>
-                </label>
+                  class="ingredients__input"
+                  name="sauce"
+                  :text="sauce.name"
+                  :value="sauce.value"
+                  :isChecked="index === 0"
+                />
               </div>
 
               <div class="ingredients__filling">
@@ -140,11 +135,12 @@ import {
   normalizeSauce,
 } from "@/common/helpers";
 import AppButton from "@/common/components/AppButton";
+import AppRadioButton from "@/common/components/AppRadioButton";
 import ItemCounter from "@/common/components/ItemCounter";
 
 export default {
   name: "IndexPage",
-  components: { AppButton, ItemCounter },
+  components: { AppButton, AppRadioButton, ItemCounter },
   data() {
     return {
       doughs: pizza.dough.map(normalizeDough),
