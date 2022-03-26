@@ -9,22 +9,12 @@
             <h2 class="title title--small sheet__title">Выберите тесто</h2>
 
             <div class="sheet__content dough">
-              <label
+              <BuilderDoughSelector
                 v-for="(dough, index) in doughs"
                 :key="dough.name"
-                class="dough__input"
-                :class="`dough__input--${dough.value}`"
-              >
-                <input
-                  type="radio"
-                  name="dought"
-                  :value="dough.value"
-                  class="visually-hidden"
-                  :checked="index === 0"
-                />
-                <b>{{ dough.name }}</b>
-                <span>{{ dough.description }}</span>
-              </label>
+                :dough="dough"
+                :isChecked="index === 0"
+              />
             </div>
           </div>
         </div>
@@ -34,21 +24,12 @@
             <h2 class="title title--small sheet__title">Выберите размер</h2>
 
             <div class="sheet__content diameter">
-              <label
+              <BuilderSizeSelector
                 v-for="(size, index) in sizes"
                 :key="size.name"
-                class="diameter__input"
-                :class="`diameter__input--${size.value}`"
-              >
-                <input
-                  type="radio"
-                  name="diameter"
-                  :value="size.value"
-                  class="visually-hidden"
-                  :checked="index === 1"
-                />
-                <span>{{ size.name }}</span>
-              </label>
+                :size="size"
+                :isChecked="index === 1"
+              />
             </div>
           </div>
         </div>
@@ -62,6 +43,7 @@
             <div class="sheet__content ingredients">
               <div class="ingredients__sauce">
                 <p>Основной соус:</p>
+
                 <AppRadioButton
                   v-for="(sauce, index) in sauces"
                   :key="sauce.name"
@@ -77,19 +59,11 @@
                 <p>Начинка:</p>
 
                 <ul class="ingredients__list">
-                  <li
+                  <BuilderIngredientsSelector
                     v-for="ingredient in ingredients"
                     :key="ingredient.name"
-                    class="ingredients__item"
-                  >
-                    <span
-                      class="filling"
-                      :class="`filling--${ingredient.value}`"
-                    >
-                      {{ ingredient.name }}
-                    </span>
-                    <ItemCounter />
-                  </li>
+                    :ingredient="ingredient"
+                  />
                 </ul>
               </div>
             </div>
@@ -107,17 +81,11 @@
           </label>
 
           <div class="content__constructor">
-            <div class="pizza pizza--foundation--big-tomato">
-              <div class="pizza__wrapper">
-                <div class="pizza__filling pizza__filling--ananas"></div>
-                <div class="pizza__filling pizza__filling--bacon"></div>
-                <div class="pizza__filling pizza__filling--cheddar"></div>
-              </div>
-            </div>
+            <BuilderPizzaView />
           </div>
 
           <div class="content__result">
-            <p>Итого: 0 ₽</p>
+            <BuilderPriceCounter />
             <AppButton isDisabled>Готовьте!</AppButton>
           </div>
         </div>
@@ -136,11 +104,23 @@ import {
 } from "@/common/helpers";
 import AppButton from "@/common/components/AppButton";
 import AppRadioButton from "@/common/components/AppRadioButton";
-import ItemCounter from "@/common/components/ItemCounter";
+import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
+import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
+import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
+import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
+import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
 export default {
   name: "IndexPage",
-  components: { AppButton, AppRadioButton, ItemCounter },
+  components: {
+    AppButton,
+    AppRadioButton,
+    BuilderDoughSelector,
+    BuilderIngredientsSelector,
+    BuilderSizeSelector,
+    BuilderPizzaView,
+    BuilderPriceCounter,
+  },
   data() {
     return {
       doughs: pizza.dough.map(normalizeDough),
