@@ -95,13 +95,6 @@
 </template>
 
 <script>
-import pizza from "@/static/pizza.json";
-import {
-  normalizeDough,
-  normalizeIngredient,
-  normalizeSize,
-  normalizeSauce,
-} from "@/common/helpers";
 import AppButton from "@/common/components/AppButton";
 import AppRadioButton from "@/common/components/AppRadioButton";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
@@ -121,13 +114,26 @@ export default {
     BuilderPizzaView,
     BuilderPriceCounter,
   },
-  data() {
-    return {
-      doughs: pizza.dough.map(normalizeDough),
-      ingredients: pizza.ingredients.map(normalizeIngredient),
-      sizes: pizza.sizes.map(normalizeSize),
-      sauces: pizza.sauces.map(normalizeSauce),
-    };
+  props: {
+    doughs: {
+      type: Array,
+      required: true,
+    },
+
+    ingredients: {
+      type: Array,
+      required: true,
+    },
+
+    sizes: {
+      type: Array,
+      required: true,
+    },
+
+    sauces: {
+      type: Array,
+      required: true,
+    },
   },
 };
 </script>
