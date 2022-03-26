@@ -93,28 +93,7 @@
                     >
                       {{ ingredient.name }}
                     </span>
-
-                    <div class="counter counter--orange ingredients__counter">
-                      <button
-                        type="button"
-                        class="counter__button counter__button--minus"
-                        disabled
-                      >
-                        <span class="visually-hidden">Меньше</span>
-                      </button>
-                      <input
-                        type="text"
-                        name="counter"
-                        class="counter__input"
-                        value="0"
-                      />
-                      <button
-                        type="button"
-                        class="counter__button counter__button--plus"
-                      >
-                        <span class="visually-hidden">Больше</span>
-                      </button>
-                    </div>
+                    <ItemCounter />
                   </li>
                 </ul>
               </div>
@@ -159,10 +138,12 @@ import {
   normalizeIngredient,
   normalizeSize,
   normalizeSauce,
-} from "../common/helpers";
+} from "@/common/helpers";
+import ItemCounter from "@/common/components/ItemCounter";
 
 export default {
   name: "IndexPage",
+  components: { ItemCounter },
   data() {
     return {
       doughs: pizza.dough.map(normalizeDough),
