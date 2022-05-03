@@ -28,7 +28,18 @@
               :key="ingredient.name"
               class="ingredients__item"
             >
-              <span class="filling" :class="`filling--${ingredient.value}`">
+              <AppDrop
+                v-if="getIngredientCount(ingredient) < 3"
+                @drop="$emit('drop', $event)"
+              >
+                <AppDrag
+                  :class="`filling filling--${ingredient.value}`"
+                  :transfer-data="ingredient"
+                >
+                  {{ ingredient.name }}
+                </AppDrag>
+              </AppDrop>
+              <span v-else :class="`filling filling--${ingredient.value}`">
                 {{ ingredient.name }}
               </span>
               <ItemCounter
@@ -50,12 +61,14 @@
 </template>
 
 <script>
+import AppDrop from "../../../common/components/AppDrop";
+import AppDrag from "../../../common/components/AppDrag";
 import AppRadioButton from "@/common/components/AppRadioButton";
 import ItemCounter from "@/common/components/ItemCounter";
 
 export default {
   name: "BuilderIngredientsSelector",
-  components: { AppRadioButton, ItemCounter },
+  components: { AppDrop, AppDrag, AppRadioButton, ItemCounter },
   props: {
     sauces: {
       type: Array,

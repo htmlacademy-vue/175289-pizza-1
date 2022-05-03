@@ -36,7 +36,9 @@
           </label>
 
           <div class="content__constructor">
-            <BuilderPizzaView :pizza="pizza" />
+            <AppDrop @drop="moveIngredient">
+              <BuilderPizzaView :pizza="pizza" />
+            </AppDrop>
           </div>
 
           <div class="content__result">
@@ -52,16 +54,18 @@
 </template>
 
 <script>
-import AppButton from "@/common/components/AppButton";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
+import AppDrop from "../common/components/AppDrop";
+import AppButton from "@/common/components/AppButton";
 
 export default {
   name: "IndexPage",
   components: {
+    AppDrop,
     AppButton,
     BuilderDoughSelector,
     BuilderSizeSelector,
@@ -127,6 +131,16 @@ export default {
       } else {
         ingredients.splice(index, 1);
       }
+
+      this.pizza.ingredients = ingredients;
+    },
+    moveIngredient(item) {
+      const ingredients = [...this.pizza.ingredients];
+      const index = ingredients.findIndex(({ id }) => id === item.id);
+
+      ~index
+        ? (ingredients[index].count = ingredients[index].count + 1)
+        : ingredients.push({ ...item, count: 1 });
 
       this.pizza.ingredients = ingredients;
     },
