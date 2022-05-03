@@ -1,5 +1,5 @@
 <template>
-  <button class="button" type="button" :disabled="isDisabled">
+  <button class="button" type="button" :disabled="disabled" v-on="$listeners">
     <slot />
   </button>
 </template>
@@ -8,7 +8,7 @@
 export default {
   name: "AppButton",
   props: {
-    isDisabled: {
+    disabled: {
       type: Boolean,
       default: false,
     },

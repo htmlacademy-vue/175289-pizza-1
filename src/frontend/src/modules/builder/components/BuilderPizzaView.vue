@@ -1,9 +1,18 @@
 <template>
-  <div class="pizza pizza--foundation--big-tomato">
+  <div
+    :class="`pizza pizza--foundation--${pizza.dough.value}-${pizza.sauce.value}`"
+  >
     <div class="pizza__wrapper">
-      <div class="pizza__filling pizza__filling--ananas"></div>
-      <div class="pizza__filling pizza__filling--bacon"></div>
-      <div class="pizza__filling pizza__filling--cheddar"></div>
+      <div
+        v-for="ingredient in pizza.ingredients"
+        :key="ingredient.value"
+        :class="[
+          'pizza__filling',
+          `pizza__filling--${ingredient.value}`,
+          { 'pizza__filling--second': ingredient.count === 2 },
+          { 'pizza__filling--third': ingredient.count === 3 },
+        ]"
+      />
     </div>
   </div>
 </template>
@@ -11,5 +20,11 @@
 <script>
 export default {
   name: "BuilderPizzaView",
+  props: {
+    pizza: {
+      type: Object,
+      required: true,
+    },
+  },
 };
 </script>

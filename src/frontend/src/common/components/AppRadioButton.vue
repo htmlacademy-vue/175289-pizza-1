@@ -1,6 +1,12 @@
 <template>
   <label class="radio">
-    <input type="radio" :name="name" :value="value" :checked="isChecked" />
+    <input
+      type="radio"
+      :name="name"
+      :value="value"
+      :checked="isChecked"
+      @change="$emit('change')"
+    />
     <span>{{ text }}</span>
   </label>
 </template>

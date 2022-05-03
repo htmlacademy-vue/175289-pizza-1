@@ -8,13 +8,14 @@
           <p>Основной соус:</p>
 
           <AppRadioButton
-            v-for="(sauce, index) in sauces"
+            v-for="sauce in sauces"
             :key="sauce.name"
             class="ingredients__input"
             name="sauce"
             :text="sauce.name"
             :value="sauce.value"
-            :isChecked="index === 0"
+            :isChecked="sauce === pizza.sauce"
+            @change="$emit('changeSauce', sauce)"
           />
         </div>
 
@@ -30,7 +31,16 @@
               <span class="filling" :class="`filling--${ingredient.value}`">
                 {{ ingredient.name }}
               </span>
-              <ItemCounter />
+              <ItemCounter
+                class="ingredients__counter"
+                :value="getIngredientCount(ingredient)"
+                @change="
+                  $emit('changeIngredient', {
+                    item: ingredient,
+                    count: $event,
+                  })
+                "
+              />
             </li>
           </ul>
         </div>
@@ -47,13 +57,26 @@ export default {
   name: "BuilderIngredientsSelector",
   components: { AppRadioButton, ItemCounter },
   props: {
+    sauces: {
+      type: Array,
+      required: true,
+    },
     ingredients: {
       type: Array,
       required: true,
     },
-    sauces: {
-      type: Array,
+    pizza: {
+      type: Object,
       required: true,
+    },
+  },
+  methods: {
+    getIngredientCount(ingredient) {
+      const index = this.pizza.ingredients.findIndex(
+        ({ value }) => value === ingredient.value
+      );
+
+      return ~index ? this.pizza.ingredients[index].count : 0;
     },
   },
 };

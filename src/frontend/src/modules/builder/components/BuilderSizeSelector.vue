@@ -5,17 +5,18 @@
 
       <div class="sheet__content diameter">
         <label
-          v-for="(size, index) in sizes"
+          v-for="size in sizes"
           :key="size.name"
           class="diameter__input"
           :class="`diameter__input--${size.value}`"
         >
           <input
+            class="visually-hidden"
             type="radio"
             name="diameter"
             :value="size.value"
-            class="visually-hidden"
-            :checked="index === 1"
+            :checked="size === pizza.size"
+            @change="$emit('changeSize', size)"
           />
           <span>{{ size.name }}</span>
         </label>
@@ -30,6 +31,10 @@ export default {
   props: {
     sizes: {
       type: Array,
+      required: true,
+    },
+    pizza: {
+      type: Object,
       required: true,
     },
   },

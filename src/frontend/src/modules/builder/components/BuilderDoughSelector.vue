@@ -7,15 +7,16 @@
         <label
           class="dough__input"
           :class="`dough__input--${dough.value}`"
-          v-for="(dough, index) in doughs"
+          v-for="dough in doughs"
           :key="dough.name"
         >
           <input
             class="visually-hidden"
             type="radio"
-            name="dought"
+            name="dough"
             :value="dough.value"
-            :checked="index === 0"
+            :checked="dough === pizza.dough"
+            @change="$emit('changeDough', dough)"
           />
           <b>{{ dough.name }}</b>
           <span>{{ dough.description }}</span>
@@ -31,6 +32,10 @@ export default {
   props: {
     doughs: {
       type: Array,
+      required: true,
+    },
+    pizza: {
+      type: Object,
       required: true,
     },
   },
