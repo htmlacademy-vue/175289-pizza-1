@@ -5,17 +5,17 @@
 
       <div class="sheet__content dough">
         <label
-          class="dough__input"
-          :class="`dough__input--${dough.value}`"
           v-for="dough in doughs"
           :key="dough.name"
+          class="dough__input"
+          :class="`dough__input--${dough.value}`"
         >
           <input
             class="visually-hidden"
             type="radio"
             name="dough"
             :value="dough.value"
-            :checked="dough === pizza.dough"
+            :checked="dough === selectedDough"
             @change="$emit('changeDough', dough)"
           />
           <b>{{ dough.name }}</b>
@@ -34,7 +34,7 @@ export default {
       type: Array,
       required: true,
     },
-    pizza: {
+    selectedDough: {
       type: Object,
       required: true,
     },

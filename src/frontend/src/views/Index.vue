@@ -6,20 +6,21 @@
 
         <BuilderDoughSelector
           :doughs="doughs"
-          :pizza="pizza"
+          :selectedDough="pizza.dough"
           @changeDough="changeDough"
         />
 
         <BuilderSizeSelector
           :sizes="sizes"
-          :pizza="pizza"
+          :selectedSize="pizza.size"
           @changeSize="changeSize"
         />
 
         <BuilderIngredientsSelector
           :sauces="sauces"
+          :selectedSauce="pizza.sauce"
           :ingredients="ingredients"
-          :pizza="pizza"
+          :selectedIngredients="pizza.ingredients"
           @changeSauce="changeSauce"
           @changeIngredient="changeIngredient"
         />

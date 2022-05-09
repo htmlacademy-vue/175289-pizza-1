@@ -3,7 +3,7 @@
     <button
       class="counter__button counter__button--minus"
       type="button"
-      :disabled="currentValue <= minValue"
+      :disabled="value <= minValue"
       @click="decrement"
     >
       <span class="visually-hidden">Меньше</span>
@@ -12,13 +12,13 @@
       class="counter__input"
       type="text"
       name="counter"
-      v-model="currentValue"
+      :value="value"
       @input="setValue"
     />
     <button
       class="counter__button counter__button--plus"
       type="button"
-      :disabled="currentValue >= maxValue"
+      :disabled="value >= maxValue"
       @click="increment"
     >
       <span class="visually-hidden">Больше</span>
@@ -27,8 +27,6 @@
 </template>
 
 <script>
-import { MAX_INGREDIENT_COUNT } from "../constants";
-
 export default {
   name: "ItemCounter",
   props: {
@@ -36,21 +34,22 @@ export default {
       type: Number,
       required: true,
     },
-  },
-  data() {
-    return {
-      currentValue: this.value,
-      maxValue: MAX_INGREDIENT_COUNT,
-      minValue: 0,
-    };
+    maxValue: {
+      type: Number,
+      required: true,
+    },
+    minValue: {
+      type: Number,
+      default: 0,
+    },
   },
   methods: {
     decrement() {
-      this.$emit("change", this.currentValue - 1);
+      this.$emit("change", this.value - 1);
     },
 
     increment() {
-      this.$emit("change", this.currentValue + 1);
+      this.$emit("change", this.value + 1);
     },
 
     setValue(event) {
@@ -64,14 +63,7 @@ export default {
         value = this.minValue;
       }
 
-      this.currentValue = value;
-
-      this.$emit("change", this.currentValue);
-    },
-  },
-  watch: {
-    value() {
-      this.currentValue = this.value;
+      this.$emit("change", value);
     },
   },
 };

@@ -3,16 +3,18 @@
     :class="`pizza pizza--foundation--${pizza.dough.value}-${pizza.sauce.value}`"
   >
     <div class="pizza__wrapper">
-      <div
-        v-for="ingredient in pizza.ingredients"
-        :key="ingredient.value"
-        :class="[
-          'pizza__filling',
-          `pizza__filling--${ingredient.value}`,
-          { 'pizza__filling--second': ingredient.count === 2 },
-          { 'pizza__filling--third': ingredient.count === 3 },
-        ]"
-      />
+      <template v-for="ingredient in pizza.ingredients">
+        <div
+          v-for="count in ingredient.count"
+          :key="`${ingredient.value}-layer-${count}`"
+          :class="[
+            'pizza__filling',
+            `pizza__filling--${ingredient.value}`,
+            { 'pizza__filling--second': count === 2 },
+            { 'pizza__filling--third': count === 3 },
+          ]"
+        />
+      </template>
     </div>
   </div>
 </template>

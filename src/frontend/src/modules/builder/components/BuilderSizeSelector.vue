@@ -15,7 +15,7 @@
             type="radio"
             name="diameter"
             :value="size.value"
-            :checked="size === pizza.size"
+            :checked="size === selectedSize"
             @change="$emit('changeSize', size)"
           />
           <span>{{ size.name }}</span>
@@ -33,7 +33,7 @@ export default {
       type: Array,
       required: true,
     },
-    pizza: {
+    selectedSize: {
       type: Object,
       required: true,
     },

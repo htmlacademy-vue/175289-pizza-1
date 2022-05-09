@@ -14,7 +14,7 @@
             name="sauce"
             :text="sauce.name"
             :value="sauce.value"
-            :isChecked="sauce === pizza.sauce"
+            :isChecked="sauce === selectedSauce"
             @change="$emit('changeSauce', sauce)"
           />
         </div>
@@ -28,23 +28,21 @@
               :key="ingredient.name"
               class="ingredients__item"
             >
-              <AppDrop
-                v-if="getIngredientCount(ingredient) < 3"
-                @drop="$emit('drop', $event)"
-              >
+              <AppDrop @drop="$emit('drop', $event)">
                 <AppDrag
                   :class="`filling filling--${ingredient.value}`"
+                  :draggable="
+                    getIngredientCount(ingredient) < maxIngredientCount
+                  "
                   :transfer-data="ingredient"
                 >
                   {{ ingredient.name }}
                 </AppDrag>
               </AppDrop>
-              <span v-else :class="`filling filling--${ingredient.value}`">
-                {{ ingredient.name }}
-              </span>
               <ItemCounter
                 class="ingredients__counter"
                 :value="getIngredientCount(ingredient)"
+                :maxValue="maxIngredientCount"
                 @change="
                   $emit('changeIngredient', {
                     item: ingredient,
@@ -65,6 +63,7 @@ import AppDrop from "../../../common/components/AppDrop";
 import AppDrag from "../../../common/components/AppDrag";
 import AppRadioButton from "@/common/components/AppRadioButton";
 import ItemCounter from "@/common/components/ItemCounter";
+import { MAX_INGREDIENT_COUNT } from "@/common/constants";
 
 export default {
   name: "BuilderIngredientsSelector",
@@ -74,22 +73,38 @@ export default {
       type: Array,
       required: true,
     },
+    selectedSauce: {
+      type: Object,
+      required: true,
+    },
     ingredients: {
       type: Array,
       required: true,
     },
-    pizza: {
-      type: Object,
+    selectedIngredients: {
+      type: Array,
       required: true,
+    },
+  },
+  data() {
+    return {
+      maxIngredientCount: MAX_INGREDIENT_COUNT,
+    };
+  },
+  computed: {
+    ingredientCounts() {
+      const counts = {};
+
+      this.selectedIngredients.map((item) => {
+        counts[item.id] = item.count;
+      });
+
+      return counts;
     },
   },
   methods: {
     getIngredientCount(ingredient) {
-      const index = this.pizza.ingredients.findIndex(
-        ({ value }) => value === ingredient.value
-      );
-
-      return ~index ? this.pizza.ingredients[index].count : 0;
+      return this.ingredientCounts[ingredient.id] || 0;
     },
   },
 };
