@@ -4,123 +4,26 @@
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
 
-        <div class="content__dough">
-          <div class="sheet">
-            <h2 class="title title--small sheet__title">Выберите тесто</h2>
+        <BuilderDoughSelector
+          :doughs="doughs"
+          :selectedDough="pizza.dough"
+          @changeDough="changeDough"
+        />
 
-            <div class="sheet__content dough">
-              <label
-                v-for="(dough, index) in doughs"
-                :key="dough.name"
-                class="dough__input"
-                :class="`dough__input--${dough.value}`"
-              >
-                <input
-                  type="radio"
-                  name="dought"
-                  :value="dough.value"
-                  class="visually-hidden"
-                  :checked="index === 0"
-                />
-                <b>{{ dough.name }}</b>
-                <span>{{ dough.description }}</span>
-              </label>
-            </div>
-          </div>
-        </div>
+        <BuilderSizeSelector
+          :sizes="sizes"
+          :selectedSize="pizza.size"
+          @changeSize="changeSize"
+        />
 
-        <div class="content__diameter">
-          <div class="sheet">
-            <h2 class="title title--small sheet__title">Выберите размер</h2>
-
-            <div class="sheet__content diameter">
-              <label
-                v-for="(size, index) in sizes"
-                :key="size.name"
-                class="diameter__input"
-                :class="`diameter__input--${size.value}`"
-              >
-                <input
-                  type="radio"
-                  name="diameter"
-                  :value="size.value"
-                  class="visually-hidden"
-                  :checked="index === 1"
-                />
-                <span>{{ size.name }}</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="content__ingredients">
-          <div class="sheet">
-            <h2 class="title title--small sheet__title">
-              Выберите ингредиенты
-            </h2>
-
-            <div class="sheet__content ingredients">
-              <div class="ingredients__sauce">
-                <p>Основной соус:</p>
-
-                <label
-                  v-for="(sauce, index) in sauces"
-                  :key="sauce.name"
-                  class="radio ingredients__input"
-                >
-                  <input
-                    type="radio"
-                    name="sauce"
-                    :value="sauce.value"
-                    :checked="index === 0"
-                  />
-                  <span>{{ sauce.name }}</span>
-                </label>
-              </div>
-
-              <div class="ingredients__filling">
-                <p>Начинка:</p>
-
-                <ul class="ingredients__list">
-                  <li
-                    v-for="ingredient in ingredients"
-                    :key="ingredient.name"
-                    class="ingredients__item"
-                  >
-                    <span
-                      class="filling"
-                      :class="`filling--${ingredient.value}`"
-                    >
-                      {{ ingredient.name }}
-                    </span>
-
-                    <div class="counter counter--orange ingredients__counter">
-                      <button
-                        type="button"
-                        class="counter__button counter__button--minus"
-                        disabled
-                      >
-                        <span class="visually-hidden">Меньше</span>
-                      </button>
-                      <input
-                        type="text"
-                        name="counter"
-                        class="counter__input"
-                        value="0"
-                      />
-                      <button
-                        type="button"
-                        class="counter__button counter__button--plus"
-                      >
-                        <span class="visually-hidden">Больше</span>
-                      </button>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
+        <BuilderIngredientsSelector
+          :sauces="sauces"
+          :selectedSauce="pizza.sauce"
+          :ingredients="ingredients"
+          :selectedIngredients="pizza.ingredients"
+          @changeSauce="changeSauce"
+          @changeIngredient="changeIngredient"
+        />
 
         <div class="content__pizza">
           <label class="input">
@@ -128,23 +31,22 @@
             <input
               type="text"
               name="pizza_name"
+              v-model.trim="pizza.name"
               placeholder="Введите название пиццы"
             />
           </label>
 
           <div class="content__constructor">
-            <div class="pizza pizza--foundation--big-tomato">
-              <div class="pizza__wrapper">
-                <div class="pizza__filling pizza__filling--ananas"></div>
-                <div class="pizza__filling pizza__filling--bacon"></div>
-                <div class="pizza__filling pizza__filling--cheddar"></div>
-              </div>
-            </div>
+            <AppDrop @drop="moveIngredient">
+              <BuilderPizzaView :pizza="pizza" />
+            </AppDrop>
           </div>
 
           <div class="content__result">
-            <p>Итого: 0 ₽</p>
-            <button type="button" class="button" disabled>Готовьте!</button>
+            <BuilderPriceCounter :pizza="pizza" />
+            <AppButton :disabled="buttonDisabled" @click="onButtonClick">
+              Готовьте!
+            </AppButton>
           </div>
         </div>
       </div>
@@ -153,23 +55,99 @@
 </template>
 
 <script>
-import pizza from "@/static/pizza.json";
-import {
-  normalizeDough,
-  normalizeIngredient,
-  normalizeSize,
-  normalizeSauce,
-} from "../common/helpers";
+import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
+import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
+import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
+import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
+import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
+import AppDrop from "../common/components/AppDrop";
+import AppButton from "@/common/components/AppButton";
 
 export default {
   name: "IndexPage",
-  data() {
+  components: {
+    AppDrop,
+    AppButton,
+    BuilderDoughSelector,
+    BuilderSizeSelector,
+    BuilderIngredientsSelector,
+    BuilderPizzaView,
+    BuilderPriceCounter,
+  },
+  props: {
+    doughs: {
+      type: Array,
+      required: true,
+    },
+
+    sizes: {
+      type: Array,
+      required: true,
+    },
+
+    sauces: {
+      type: Array,
+      required: true,
+    },
+
+    ingredients: {
+      type: Array,
+      required: true,
+    },
+  },
+  data: function () {
     return {
-      doughs: pizza.dough.map(normalizeDough),
-      ingredients: pizza.ingredients.map(normalizeIngredient),
-      sizes: pizza.sizes.map(normalizeSize),
-      sauces: pizza.sauces.map(normalizeSauce),
+      pizza: {
+        name: "",
+        dough: this.doughs[0],
+        size: this.sizes[1],
+        sauce: this.sauces[0],
+        ingredients: [],
+      },
     };
+  },
+  computed: {
+    buttonDisabled() {
+      return !this.pizza.name || !Object.keys(this.pizza.ingredients).length;
+    },
+  },
+  methods: {
+    changeDough(item) {
+      this.pizza.dough = item;
+    },
+    changeSize(item) {
+      this.pizza.size = item;
+    },
+    changeSauce(item) {
+      this.pizza.sauce = item;
+    },
+    changeIngredient({ item, count }) {
+      const ingredients = [...this.pizza.ingredients];
+      const index = ingredients.findIndex(({ id }) => id === item.id);
+
+      if (count > 0) {
+        ~index
+          ? (ingredients[index].count = count)
+          : ingredients.push({ ...item, count });
+      } else {
+        ingredients.splice(index, 1);
+      }
+
+      this.pizza.ingredients = ingredients;
+    },
+    moveIngredient(item) {
+      const ingredients = [...this.pizza.ingredients];
+      const index = ingredients.findIndex(({ id }) => id === item.id);
+
+      ~index
+        ? (ingredients[index].count = ingredients[index].count + 1)
+        : ingredients.push({ ...item, count: 1 });
+
+      this.pizza.ingredients = ingredients;
+    },
+    onButtonClick() {
+      console.log("Готовим");
+    },
   },
 };
 </script>
