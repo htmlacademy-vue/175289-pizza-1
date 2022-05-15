@@ -1,11 +1,13 @@
 <template>
   <div id="app">
-    <AppLayout
-      :doughs="doughs"
-      :ingredients="ingredients"
-      :sizes="sizes"
-      :sauces="sauces"
-    />
+    <AppLayout>
+      <router-view
+        :doughs="doughs"
+        :ingredients="ingredients"
+        :sizes="sizes"
+        :sauces="sauces"
+      />
+    </AppLayout>
   </div>
 </template>
 

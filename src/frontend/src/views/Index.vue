@@ -51,6 +51,7 @@
         </div>
       </div>
     </form>
+    <router-view />
   </main>
 </template>
 
@@ -151,5 +152,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

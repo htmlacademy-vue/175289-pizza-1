@@ -3,22 +3,30 @@
     <AppLayoutHeader />
     <main class="layout">
       <div class="layout__sidebar sidebar">
-        <a href="index.html" class="logo layout__logo">
+        <router-link to="/" class="logo layout__logo">
           <img
             src="@/assets/img/logo.svg"
             alt="V!U!E! Pizza logo"
             width="90"
             height="40"
           />
-        </a>
+        </router-link>
 
-        <a href="#" class="layout__link layout__link--active">
+        <router-link
+          to="/orders"
+          class="layout__link"
+          active-class="layout__link--active"
+        >
           История заказов
-        </a>
+        </router-link>
 
-        <a href="#" class="layout__link layout__link--active">
+        <router-link
+          to="/profile"
+          class="layout__link"
+          active-class="layout__link--active"
+        >
           Мои данные
-        </a>
+        </router-link>
       </div>
 
       <div class="layout__content">
