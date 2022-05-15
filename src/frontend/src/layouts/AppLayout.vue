@@ -1,41 +1,18 @@
 <template>
-  <div>
-    <AppLayoutHeader />
-    <IndexPage
-      :doughs="doughs"
-      :ingredients="ingredients"
-      :sizes="sizes"
-      :sauces="sauces"
-    />
-  </div>
+  <component :is="layout">
+    <slot />
+  </component>
 </template>
 
 <script>
-import AppLayoutHeader from "@/layouts/AppLayoutHeader";
-import IndexPage from "@/views/Index.vue";
+const defaultLayout = "AppLayoutDefault";
 
 export default {
   name: "AppLayout",
-  components: { AppLayoutHeader, IndexPage },
-  props: {
-    doughs: {
-      type: Array,
-      required: true,
-    },
-
-    ingredients: {
-      type: Array,
-      required: true,
-    },
-
-    sizes: {
-      type: Array,
-      required: true,
-    },
-
-    sauces: {
-      type: Array,
-      required: true,
+  computed: {
+    layout() {
+      const layout = this.$route.meta.layout || defaultLayout;
+      return () => import(`@/layouts/${layout}.vue`);
     },
   },
 };
