@@ -31,4 +31,30 @@ const setupState = () => {
 export default {
   namespaced: true,
   state: setupState(),
+  getters: {
+    getIngredientCount: (state, getters) => (ingredientId) => {
+      const counts = getters.selectedIngredients.reduce(
+        (accumulator, { id, count }) => ({
+          ...accumulator,
+          [id]: count,
+        }),
+        {}
+      );
+
+      return counts[ingredientId] || 0;
+    },
+    getPrice: (state) => {
+      const { size, dough, sauce, ingredients } = state.pizza;
+      const ingredientsPrice = ingredients.reduce(
+        (accumulator, { price, count }) => accumulator + price * count,
+        0
+      );
+
+      return size.multiplier * (dough.price + sauce.price + ingredientsPrice);
+    },
+    selectedDough: (state) => state.pizza.dough,
+    selectedIngredients: (state) => state.pizza.ingredients,
+    selectedSauce: (state) => state.pizza.sauce,
+    selectedSize: (state) => state.pizza.size,
+  },
 };
