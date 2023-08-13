@@ -15,7 +15,7 @@
             :text="sauce.name"
             :value="sauce.value"
             :isChecked="sauce === selectedSauce"
-            @change="$emit('changeSauce', sauce)"
+            @change="changeSauce(sauce)"
           />
         </div>
 
@@ -32,7 +32,7 @@
                 <AppDrag
                   :class="`filling filling--${ingredient.value}`"
                   :draggable="
-                    getIngredientCount(ingredient) < maxIngredientCount
+                    getIngredientCount(ingredient.id) < maxIngredientCount
                   "
                   :transfer-data="ingredient"
                 >
@@ -41,11 +41,11 @@
               </AppDrop>
               <ItemCounter
                 class="ingredients__counter"
-                :value="getIngredientCount(ingredient)"
+                :value="getIngredientCount(ingredient.id)"
                 :maxValue="maxIngredientCount"
                 @change="
-                  $emit('changeIngredient', {
-                    item: ingredient,
+                  changeIngredient({
+                    ingredient,
                     count: $event,
                   })
                 "
@@ -59,32 +59,21 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapMutations } from "vuex";
 import AppDrop from "../../../common/components/AppDrop";
 import AppDrag from "../../../common/components/AppDrag";
 import AppRadioButton from "@/common/components/AppRadioButton";
 import ItemCounter from "@/common/components/ItemCounter";
 import { MAX_INGREDIENT_COUNT } from "@/common/constants";
+import { SET_PIZZA_SAUCE, SET_PIZZA_INGREDIENT } from "@/store/mutations-types";
 
 export default {
   name: "BuilderIngredientsSelector",
-  components: { AppDrop, AppDrag, AppRadioButton, ItemCounter },
-  props: {
-    sauces: {
-      type: Array,
-      required: true,
-    },
-    selectedSauce: {
-      type: Object,
-      required: true,
-    },
-    ingredients: {
-      type: Array,
-      required: true,
-    },
-    selectedIngredients: {
-      type: Array,
-      required: true,
-    },
+  components: {
+    AppDrop,
+    AppDrag,
+    AppRadioButton,
+    ItemCounter,
   },
   data() {
     return {
@@ -92,20 +81,18 @@ export default {
     };
   },
   computed: {
-    ingredientCounts() {
-      const counts = {};
-
-      this.selectedIngredients.map((item) => {
-        counts[item.id] = item.count;
-      });
-
-      return counts;
-    },
+    ...mapState("Builder", ["ingredients", "sauces"]),
+    ...mapGetters("Builder", [
+      "getIngredientCount",
+      "selectedIngredients",
+      "selectedSauce",
+    ]),
   },
   methods: {
-    getIngredientCount(ingredient) {
-      return this.ingredientCounts[ingredient.id] || 0;
-    },
+    ...mapMutations("Builder", {
+      changeSauce: SET_PIZZA_SAUCE,
+      changeIngredient: SET_PIZZA_INGREDIENT,
+    }),
   },
 };
 </script>

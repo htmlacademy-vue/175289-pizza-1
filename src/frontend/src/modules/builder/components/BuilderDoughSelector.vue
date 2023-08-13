@@ -16,7 +16,7 @@
             name="dough"
             :value="dough.value"
             :checked="dough === selectedDough"
-            @change="$emit('changeDough', dough)"
+            @change="changeDough(dough)"
           />
           <b>{{ dough.name }}</b>
           <span>{{ dough.description }}</span>
@@ -27,17 +27,19 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapMutations } from "vuex";
+import { SET_PIZZA_DOUGH } from "@/store/mutations-types";
+
 export default {
   name: "BuilderDoughSelector",
-  props: {
-    doughs: {
-      type: Array,
-      required: true,
-    },
-    selectedDough: {
-      type: Object,
-      required: true,
-    },
+  computed: {
+    ...mapState("Builder", ["doughs"]),
+    ...mapGetters("Builder", ["selectedDough"]),
+  },
+  methods: {
+    ...mapMutations("Builder", {
+      changeDough: SET_PIZZA_DOUGH,
+    }),
   },
 };
 </script>

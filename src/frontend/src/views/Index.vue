@@ -4,26 +4,11 @@
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
 
-        <BuilderDoughSelector
-          :doughs="doughs"
-          :selectedDough="pizza.dough"
-          @changeDough="changeDough"
-        />
+        <BuilderDoughSelector />
 
-        <BuilderSizeSelector
-          :sizes="sizes"
-          :selectedSize="pizza.size"
-          @changeSize="changeSize"
-        />
+        <BuilderSizeSelector />
 
-        <BuilderIngredientsSelector
-          :sauces="sauces"
-          :selectedSauce="pizza.sauce"
-          :ingredients="ingredients"
-          :selectedIngredients="pizza.ingredients"
-          @changeSauce="changeSauce"
-          @changeIngredient="changeIngredient"
-        />
+        <BuilderIngredientsSelector />
 
         <div class="content__pizza">
           <label class="input">
@@ -31,19 +16,21 @@
             <input
               type="text"
               name="pizza_name"
-              v-model.trim="pizza.name"
+              :value="pizza.name"
               placeholder="Введите название пиццы"
+              @input="changeName($event.target.value)"
             />
           </label>
 
           <div class="content__constructor">
-            <AppDrop @drop="moveIngredient">
-              <BuilderPizzaView :pizza="pizza" />
+            <AppDrop @drop="moveIngredient($event)">
+              <BuilderPizzaView />
             </AppDrop>
           </div>
 
           <div class="content__result">
-            <BuilderPriceCounter :pizza="pizza" />
+            <p>Итого: {{ price }} ₽</p>
+
             <AppButton :disabled="buttonDisabled" @click="onButtonClick">
               Готовьте!
             </AppButton>
@@ -56,96 +43,44 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapMutations } from "vuex";
+import AppButton from "@/common/components/AppButton";
+import AppDrop from "@/common/components/AppDrop";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
-import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
-import AppDrop from "../common/components/AppDrop";
-import AppButton from "@/common/components/AppButton";
+import {
+  SET_PIZZA_NAME,
+  SET_PIZZA_INGREDIENT,
+  MOVE_PIZZA_INGREDIENT,
+} from "@/store/mutations-types";
 
 export default {
   name: "IndexPage",
   components: {
-    AppDrop,
     AppButton,
+    AppDrop,
     BuilderDoughSelector,
     BuilderSizeSelector,
     BuilderIngredientsSelector,
     BuilderPizzaView,
-    BuilderPriceCounter,
-  },
-  props: {
-    doughs: {
-      type: Array,
-      required: true,
-    },
-
-    sizes: {
-      type: Array,
-      required: true,
-    },
-
-    sauces: {
-      type: Array,
-      required: true,
-    },
-
-    ingredients: {
-      type: Array,
-      required: true,
-    },
-  },
-  data: function () {
-    return {
-      pizza: {
-        name: "",
-        dough: this.doughs[0],
-        size: this.sizes[1],
-        sauce: this.sauces[0],
-        ingredients: [],
-      },
-    };
   },
   computed: {
+    ...mapState("Builder", ["pizza"]),
+    ...mapGetters("Builder", {
+      price: "getPrice",
+    }),
     buttonDisabled() {
       return !this.pizza.name || !Object.keys(this.pizza.ingredients).length;
     },
   },
   methods: {
-    changeDough(item) {
-      this.pizza.dough = item;
-    },
-    changeSize(item) {
-      this.pizza.size = item;
-    },
-    changeSauce(item) {
-      this.pizza.sauce = item;
-    },
-    changeIngredient({ item, count }) {
-      const ingredients = [...this.pizza.ingredients];
-      const index = ingredients.findIndex(({ id }) => id === item.id);
-
-      if (count > 0) {
-        ~index
-          ? (ingredients[index].count = count)
-          : ingredients.push({ ...item, count });
-      } else {
-        ingredients.splice(index, 1);
-      }
-
-      this.pizza.ingredients = ingredients;
-    },
-    moveIngredient(item) {
-      const ingredients = [...this.pizza.ingredients];
-      const index = ingredients.findIndex(({ id }) => id === item.id);
-
-      ~index
-        ? (ingredients[index].count = ingredients[index].count + 1)
-        : ingredients.push({ ...item, count: 1 });
-
-      this.pizza.ingredients = ingredients;
-    },
+    ...mapMutations("Builder", {
+      changeName: SET_PIZZA_NAME,
+      changeIngredient: SET_PIZZA_INGREDIENT,
+      moveIngredient: MOVE_PIZZA_INGREDIENT,
+    }),
     onButtonClick() {
       console.log("Готовим");
     },

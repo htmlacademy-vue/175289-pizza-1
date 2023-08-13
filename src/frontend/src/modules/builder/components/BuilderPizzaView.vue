@@ -20,13 +20,12 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "BuilderPizzaView",
-  props: {
-    pizza: {
-      type: Object,
-      required: true,
-    },
+  computed: {
+    ...mapState("Builder", ["pizza"]),
   },
 };
 </script>
