@@ -44,7 +44,6 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
-import AppButton from "@/common/components/AppButton";
 import AppDrop from "@/common/components/AppDrop";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
@@ -59,7 +58,6 @@ import {
 export default {
   name: "IndexPage",
   components: {
-    AppButton,
     AppDrop,
     BuilderDoughSelector,
     BuilderSizeSelector,
