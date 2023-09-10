@@ -17,7 +17,16 @@
         </p>
 
         <div class="additional-list__wrapper">
-          <ItemCounter class="additional-list__counter" :value="0" />
+          <ItemCounter
+            class="additional-list__counter"
+            :value="miscQuantity(item.id)"
+            @change="
+              updateCart({
+                entity: 'misc',
+                value: { ...item, quantity: $event },
+              })
+            "
+          />
 
           <div class="additional-list__price">
             <b>× {{ item.price }} ₽</b>
@@ -29,7 +38,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 import ItemCounter from "@/common/components/ItemCounter.vue";
 
 export default {
@@ -37,6 +46,10 @@ export default {
   components: { ItemCounter },
   computed: {
     ...mapState("Misc", ["misc"]),
+    ...mapGetters("Cart", ["miscQuantity"]),
+  },
+  methods: {
+    ...mapActions("Cart", ["updateCart"]),
   },
 };
 </script>
