@@ -19,9 +19,7 @@
     </main>
     <section v-if="notEmpty" class="footer">
       <div class="footer__more">
-        <a href="#" class="button button--border button--arrow"
-          >Хочу еще одну</a
-        >
+        <AppButton link="/" arrow border>Хочу еще одну</AppButton>
       </div>
       <p class="footer__text">
         Перейти к конструктору<br />чтоб собрать ещё одну пиццу
@@ -31,7 +29,7 @@
       </div>
 
       <div class="footer__submit">
-        <button type="submit" class="button">Оформить заказ</button>
+        <AppButton type="submit">Оформить заказ</AppButton>
       </div>
     </section>
   </form>
