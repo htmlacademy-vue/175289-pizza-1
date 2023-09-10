@@ -4,10 +4,14 @@
       <label class="cart-form__select">
         <span class="cart-form__label">Получение заказа:</span>
 
-        <select name="test" class="select">
-          <option value="1">Получу сам</option>
-          <option value="2">Новый адрес</option>
-          <option value="3">Существующий адрес</option>
+        <select
+          class="select"
+          name="delivery"
+          :value="delivery"
+          @change="updateDelivery($event.target.value)"
+        >
+          <option value="pickup">Получу сам</option>
+          <option value="new address">Новый адрес</option>
         </select>
       </label>
 
@@ -59,6 +63,7 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import {
+  UPDATE_CART_DELIVERY,
   UPDATE_CART_PHONE,
   UPDATE_CART_ADDRESS,
 } from "@/store/mutations-types";
@@ -66,10 +71,11 @@ import {
 export default {
   name: "CartForm",
   computed: {
-    ...mapState("Cart", ["address", "phone"]),
+    ...mapState("Cart", ["delivery", "phone", "address"]),
   },
   methods: {
     ...mapMutations("Cart", {
+      updateDelivery: UPDATE_CART_DELIVERY,
       updatePhone: UPDATE_CART_PHONE,
       updateAddress: UPDATE_CART_ADDRESS,
     }),
