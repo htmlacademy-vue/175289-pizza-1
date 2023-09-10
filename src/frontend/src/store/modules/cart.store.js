@@ -2,6 +2,8 @@ import {
   ADD_ENTITY,
   UPDATE_ENTITY,
   DELETE_ENTITY,
+  UPDATE_CART_PHONE,
+  UPDATE_CART_ADDRESS,
 } from "@/store/mutations-types";
 import { capitalize } from "@/common/helpers";
 
@@ -11,6 +13,12 @@ const module = capitalize(entity);
 const setupState = () => ({
   pizzas: [],
   misc: [],
+  phone: "",
+  address: {
+    street: "",
+    house: "",
+    apartment: "",
+  },
 });
 
 export default {
@@ -61,6 +69,14 @@ export default {
           { root: true }
         );
       }
+    },
+  },
+  mutations: {
+    [UPDATE_CART_PHONE](state, phone) {
+      state.phone = phone;
+    },
+    [UPDATE_CART_ADDRESS](state, address) {
+      state.address = { ...state.address, ...address };
     },
   },
 };

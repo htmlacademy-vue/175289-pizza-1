@@ -11,33 +11,45 @@
         </select>
       </label>
 
-      <label class="input input--big-label">
-        <span>Контактный телефон:</span>
-        <input type="text" name="tel" placeholder="+7 999-999-99-99" />
-      </label>
+      <AppInput
+        label="Контактный телефон"
+        name="tel"
+        :value="phone"
+        placeholder="+7 999-999-99-99"
+        big-label
+        @input="updatePhone"
+      />
 
       <div class="cart-form__address">
         <span class="cart-form__label">Новый адрес:</span>
 
         <div class="cart-form__input">
-          <label class="input">
-            <span>Улица*</span>
-            <input type="text" name="street" />
-          </label>
+          <AppInput
+            label="Улица"
+            name="street"
+            :value="address.street"
+            required
+            @input="updateAddress({ street: $event })"
+          />
         </div>
 
         <div class="cart-form__input cart-form__input--small">
-          <label class="input">
-            <span>Дом*</span>
-            <input type="text" name="house" />
-          </label>
+          <AppInput
+            label="Дом"
+            name="house"
+            :value="address.house"
+            required
+            @input="updateAddress({ house: $event })"
+          />
         </div>
 
         <div class="cart-form__input cart-form__input--small">
-          <label class="input">
-            <span>Квартира</span>
-            <input type="text" name="apartment" />
-          </label>
+          <AppInput
+            label="Квартира"
+            name="apartment"
+            :value="address.apartment"
+            @input="updateAddress({ apartment: $event })"
+          />
         </div>
       </div>
     </div>
@@ -45,7 +57,22 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+import {
+  UPDATE_CART_PHONE,
+  UPDATE_CART_ADDRESS,
+} from "@/store/mutations-types";
+
 export default {
   name: "CartForm",
+  computed: {
+    ...mapState("Cart", ["address", "phone"]),
+  },
+  methods: {
+    ...mapMutations("Cart", {
+      updatePhone: UPDATE_CART_PHONE,
+      updateAddress: UPDATE_CART_ADDRESS,
+    }),
+  },
 };
 </script>
