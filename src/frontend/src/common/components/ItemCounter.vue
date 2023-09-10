@@ -36,7 +36,7 @@ export default {
     },
     maxValue: {
       type: Number,
-      required: true,
+      default: 100,
     },
     minValue: {
       type: Number,
