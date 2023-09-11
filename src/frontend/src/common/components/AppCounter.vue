@@ -17,6 +17,7 @@
     />
     <button
       class="counter__button counter__button--plus"
+      :class="{ 'counter__button--orange': orange }"
       type="button"
       :disabled="value >= maxValue"
       @click="increment"
@@ -41,6 +42,10 @@ export default {
     minValue: {
       type: Number,
       default: 0,
+    },
+    orange: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {

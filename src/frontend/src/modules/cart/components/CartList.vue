@@ -35,6 +35,7 @@
       <AppCounter
         class="cart-list__counter"
         :value="pizza.quantity"
+        orange
         @change="
           updateCart({
             entity: 'pizzas',

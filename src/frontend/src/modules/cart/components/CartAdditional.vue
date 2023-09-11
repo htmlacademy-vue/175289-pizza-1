@@ -20,6 +20,7 @@
           <AppCounter
             class="additional-list__counter"
             :value="miscQuantity(item.id)"
+            orange
             @change="
               updateCart({
                 entity: 'misc',
