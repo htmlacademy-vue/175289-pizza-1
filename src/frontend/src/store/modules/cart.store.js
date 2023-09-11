@@ -36,7 +36,7 @@ export default {
   actions: {
     updateCart({ state, commit }, { entity, value }) {
       const { id, quantity, ...rest } = value;
-      const index = state.misc.findIndex((item) => item.id === id);
+      const index = state[entity].findIndex((item) => item.id === id);
 
       if (~index) {
         if (quantity) {

@@ -32,7 +32,16 @@
         </div>
       </div>
 
-      <ItemCounter class="cart-list__counter" :value="pizza.quantity" />
+      <ItemCounter
+        class="cart-list__counter"
+        :value="pizza.quantity"
+        @change="
+          updateCart({
+            entity: 'pizzas',
+            value: { ...pizza, quantity: $event },
+          })
+        "
+      />
 
       <div class="cart-list__price">
         <b>{{ formatPrice(pizza.price) }} ₽</b>
@@ -46,7 +55,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import ItemCounter from "@/common/components/ItemCounter.vue";
 import { formatPrice } from "@/common/helpers";
 
@@ -57,6 +66,7 @@ export default {
     ...mapState("Cart", ["pizzas"]),
   },
   methods: {
+    ...mapActions("Cart", ["updateCart"]),
     formatPrice,
   },
 };
