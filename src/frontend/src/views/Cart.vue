@@ -25,7 +25,7 @@
         Перейти к конструктору<br />чтоб собрать ещё одну пиццу
       </p>
       <div class="footer__price">
-        <b>Итого: 2 228 ₽</b>
+        <b>Итого: {{ totalPrice }} ₽</b>
       </div>
 
       <div class="footer__submit">
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import CartList from "@/modules/cart/components/CartList.vue";
 import CartAdditional from "@/modules/cart/components/CartAdditional.vue";
 import CartForm from "@/modules/cart/components/CartForm.vue";
@@ -46,6 +46,7 @@ export default {
   components: { CartList, CartAdditional, CartForm },
   computed: {
     ...mapState("Cart", ["pizzas"]),
+    ...mapGetters("Cart", ["totalPrice"]),
 
     notEmpty() {
       return this.pizzas?.length > 0;

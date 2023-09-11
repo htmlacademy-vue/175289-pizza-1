@@ -6,7 +6,7 @@ import {
   UPDATE_CART_PHONE,
   UPDATE_CART_ADDRESS,
 } from "@/store/mutations-types";
-import { capitalize } from "@/common/helpers";
+import { capitalize, formatPrice } from "@/common/helpers";
 
 const entity = "cart";
 const module = capitalize(entity);
@@ -31,6 +31,16 @@ export default {
       const index = state.misc.findIndex((item) => item.id === id);
 
       return ~index ? state.misc[index].quantity : 0;
+    },
+    totalPrice: (state) => {
+      const price = [...state.pizzas, ...state.misc].reduce(
+        (previousValue, currentValue) => {
+          return previousValue + currentValue.price * currentValue.quantity;
+        },
+        0
+      );
+
+      return formatPrice(price);
     },
   },
   actions: {
