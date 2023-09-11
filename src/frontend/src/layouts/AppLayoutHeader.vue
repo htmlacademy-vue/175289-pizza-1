@@ -10,44 +10,39 @@
         />
       </router-link>
     </div>
+
     <div class="header__cart">
       <router-link to="/cart">{{ totalPrice }} ₽</router-link>
     </div>
-    <div class="header__user">
-      <router-link to="/login" class="header__login">
-        <span>Войти</span>
-      </router-link>
 
-      <router-link to="/profile" class="header__login">
-        <picture>
-          <source
-            type="image/webp"
-            srcset="
-              @/assets/img/users/user5.webp    1x,
-              @/assets/img/users/user5@2x.webp 2x
-            "
-          />
-          <img
-            src="@/assets/img/users/user5.jpg"
-            srcset="@/assets/img/users/user5@2x.jpg"
-            alt="Василий Ложкин"
-            width="32"
-            height="32"
-          />
-        </picture>
-        <span>Василий Ложкин</span>
-      </router-link>
-      <a href="#" class="header__logout"><span>Выйти</span></a>
+    <div class="header__user">
+      <template v-if="user">
+        <router-link to="/profile">
+          <img :src="user.avatar" :alt="user.name" width="32" height="32" />
+          <span>{{ user.name }}</span>
+        </router-link>
+
+        <a href="#" class="header__logout">
+          <span>Выйти</span>
+        </a>
+      </template>
+
+      <template v-else>
+        <router-link to="/login" class="header__login">
+          <span>Войти</span>
+        </router-link>
+      </template>
     </div>
   </header>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "AppLayoutHeader",
   computed: {
+    ...mapState("Auth", ["user"]),
     ...mapGetters("Cart", ["totalPrice"]),
   },
 };
