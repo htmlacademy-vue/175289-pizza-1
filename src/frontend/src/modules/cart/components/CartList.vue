@@ -48,6 +48,7 @@
         <b>{{ formatPrice(pizza.price) }} ₽</b>
       </div>
 
+      <!-- ToDo -->
       <div class="cart-list__button">
         <button type="button" class="cart-list__edit">Изменить</button>
       </div>
