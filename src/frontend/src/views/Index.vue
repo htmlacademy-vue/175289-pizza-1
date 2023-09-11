@@ -43,7 +43,8 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import { uniqueId } from "lodash";
 import AppDrop from "@/common/components/AppDrop";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
@@ -74,13 +75,23 @@ export default {
     },
   },
   methods: {
+    ...mapActions("Cart", ["updateCart"]),
     ...mapMutations("Builder", {
       changeName: SET_PIZZA_NAME,
       changeIngredient: SET_PIZZA_INGREDIENT,
       moveIngredient: MOVE_PIZZA_INGREDIENT,
     }),
     onButtonClick() {
-      console.log("Готовим");
+      const value = {
+        ...this.pizza,
+        id: uniqueId(),
+        quantity: 1,
+        price: this.price,
+      };
+      this.updateCart({
+        entity: "pizzas",
+        value,
+      });
     },
   },
 };
