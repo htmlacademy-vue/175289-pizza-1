@@ -1,5 +1,7 @@
 <template>
-  <form action="test.html" method="post" class="layout-form">
+  <form class="layout-form" @submit.prevent="onSubmit">
+    <router-view />
+
     <main class="content cart">
       <div class="container">
         <div class="cart__title">
@@ -50,6 +52,11 @@ export default {
 
     notEmpty() {
       return this.pizzas?.length > 0;
+    },
+  },
+  methods: {
+    onSubmit() {
+      this.$router.push("/Thanks");
     },
   },
 };
