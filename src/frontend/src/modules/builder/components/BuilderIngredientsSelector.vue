@@ -60,7 +60,6 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
-import AppCounter from "@/common/components/AppCounter.vue";
 import AppDrop from "../../../common/components/AppDrop";
 import AppDrag from "../../../common/components/AppDrag";
 import AppRadioButton from "@/common/components/AppRadioButton";
@@ -70,7 +69,6 @@ import { SET_PIZZA_SAUCE, SET_PIZZA_INGREDIENT } from "@/store/mutations-types";
 export default {
   name: "BuilderIngredientsSelector",
   components: {
-    AppCounter,
     AppDrop,
     AppDrag,
     AppRadioButton,

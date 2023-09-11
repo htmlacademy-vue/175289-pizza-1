@@ -56,12 +56,10 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import AppCounter from "@/common/components/AppCounter.vue";
 import { formatPrice } from "@/common/helpers";
 
 export default {
   name: "CartList",
-  components: { AppCounter },
   computed: {
     ...mapState("Cart", ["pizzas"]),
   },

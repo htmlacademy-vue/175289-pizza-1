@@ -39,11 +39,9 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
-import AppCounter from "@/common/components/AppCounter.vue";
 
 export default {
   name: "CartAdditional",
-  components: { AppCounter },
   computed: {
     ...mapState("Misc", ["misc"]),
     ...mapGetters("Cart", ["miscQuantity"]),
