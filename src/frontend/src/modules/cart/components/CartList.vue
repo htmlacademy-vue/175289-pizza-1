@@ -32,7 +32,7 @@
         </div>
       </div>
 
-      <ItemCounter
+      <AppCounter
         class="cart-list__counter"
         :value="pizza.quantity"
         @change="
@@ -56,12 +56,12 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import ItemCounter from "@/common/components/ItemCounter.vue";
+import AppCounter from "@/common/components/AppCounter.vue";
 import { formatPrice } from "@/common/helpers";
 
 export default {
   name: "CartList",
-  components: { ItemCounter },
+  components: { AppCounter },
   computed: {
     ...mapState("Cart", ["pizzas"]),
   },

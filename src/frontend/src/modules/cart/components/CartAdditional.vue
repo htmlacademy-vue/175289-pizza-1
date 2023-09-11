@@ -17,7 +17,7 @@
         </p>
 
         <div class="additional-list__wrapper">
-          <ItemCounter
+          <AppCounter
             class="additional-list__counter"
             :value="miscQuantity(item.id)"
             @change="
@@ -39,11 +39,11 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
-import ItemCounter from "@/common/components/ItemCounter.vue";
+import AppCounter from "@/common/components/AppCounter.vue";
 
 export default {
   name: "CartAdditional",
-  components: { ItemCounter },
+  components: { AppCounter },
   computed: {
     ...mapState("Misc", ["misc"]),
     ...mapGetters("Cart", ["miscQuantity"]),
