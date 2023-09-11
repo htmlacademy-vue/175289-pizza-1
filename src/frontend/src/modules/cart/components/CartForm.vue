@@ -24,7 +24,7 @@
         @input="updatePhone"
       />
 
-      <div class="cart-form__address">
+      <div v-if="delivery !== 'pickup'" class="cart-form__address">
         <span class="cart-form__label">Новый адрес:</span>
 
         <div class="cart-form__input">
