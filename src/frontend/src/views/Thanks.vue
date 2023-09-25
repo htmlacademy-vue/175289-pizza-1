@@ -1,6 +1,6 @@
 <template>
   <div class="popup">
-    <a href="#" class="close">
+    <a class="close" href="#" @click="close">
       <span class="visually-hidden">Закрыть попап</span>
     </a>
     <div class="popup__title">
@@ -8,13 +8,31 @@
     </div>
     <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
     <div class="popup__button">
-      <a href="#" class="button">Отлично, я жду!</a>
+      <a class="button" href="#" @click="close">Отлично, я жду!</a>
     </div>
   </div>
 </template>
 
 <script>
+import { AppRoute } from "@/common/constants";
+
 export default {
   name: "ThanksPage",
+  mounted() {
+    document.addEventListener("keydown", this.onDocumentKeydown);
+  },
+  destroyed() {
+    document.removeEventListener("keydown", this.onDocumentKeydown);
+  },
+  methods: {
+    onDocumentKeydown({ code }) {
+      if (code === "Escape") {
+        this.close();
+      }
+    },
+    close() {
+      this.$router.push(AppRoute.MAIN);
+    },
+  },
 };
 </script>

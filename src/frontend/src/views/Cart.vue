@@ -42,6 +42,7 @@ import { mapState, mapGetters } from "vuex";
 import CartList from "@/modules/cart/components/CartList.vue";
 import CartAdditional from "@/modules/cart/components/CartAdditional.vue";
 import CartForm from "@/modules/cart/components/CartForm.vue";
+import { AppRoute } from "@/common/constants";
 
 export default {
   name: "CartPage",
@@ -56,7 +57,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$router.push("/Thanks");
+      this.$router.push(AppRoute.THANKS);
     },
   },
 };
