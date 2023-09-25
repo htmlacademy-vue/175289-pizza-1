@@ -16,7 +16,7 @@
             name="diameter"
             :value="size.value"
             :checked="size === selectedSize"
-            @change="changeSize(size)"
+            @change="$emit('change-size', size)"
           />
           <span>{{ size.name }}</span>
         </label>
@@ -26,19 +26,13 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
-import { SET_PIZZA_SIZE } from "@/store/mutations-types";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "BuilderSizeSelector",
   computed: {
     ...mapState("Builder", ["sizes"]),
     ...mapGetters("Builder", ["selectedSize"]),
-  },
-  methods: {
-    ...mapMutations("Builder", {
-      changeSize: SET_PIZZA_SIZE,
-    }),
   },
 };
 </script>

@@ -4,11 +4,14 @@
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
 
-        <BuilderDoughSelector />
+        <BuilderDoughSelector @change-dough="changeDough" />
 
-        <BuilderSizeSelector />
+        <BuilderSizeSelector @change-size="changeSize" />
 
-        <BuilderIngredientsSelector />
+        <BuilderIngredientsSelector
+          @change-sauce="changeSauce"
+          @change-ingredient="changeIngredient"
+        />
 
         <div class="content__pizza">
           <label class="input">
@@ -23,7 +26,7 @@
           </label>
 
           <div class="content__constructor">
-            <AppDrop @drop="moveIngredient($event)">
+            <AppDrop @drop="moveIngredient">
               <BuilderPizzaView />
             </AppDrop>
           </div>
@@ -50,11 +53,7 @@ import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelec
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
-import {
-  SET_PIZZA_NAME,
-  SET_PIZZA_INGREDIENT,
-  MOVE_PIZZA_INGREDIENT,
-} from "@/store/mutations-types";
+import { UPDATE_PIZZA } from "@/store/mutations-types";
 
 export default {
   name: "IndexPage",
@@ -77,9 +76,7 @@ export default {
   methods: {
     ...mapActions("Cart", ["updateCart"]),
     ...mapMutations("Builder", {
-      changeName: SET_PIZZA_NAME,
-      changeIngredient: SET_PIZZA_INGREDIENT,
-      moveIngredient: MOVE_PIZZA_INGREDIENT,
+      updatePizza: UPDATE_PIZZA,
     }),
     onButtonClick() {
       const value = {
@@ -94,6 +91,42 @@ export default {
       });
 
       // ToDo: reset builder
+    },
+    changeDough(dough) {
+      this.updatePizza({ dough });
+    },
+    changeSize(size) {
+      this.updatePizza({ size });
+    },
+    changeSauce(sauce) {
+      this.updatePizza({ sauce });
+    },
+    changeIngredient({ ingredient, count }) {
+      const ingredients = [...this.pizza.ingredients];
+      const index = ingredients.findIndex(({ id }) => id === ingredient.id);
+
+      if (count > 0) {
+        ~index
+          ? (ingredients[index].count = count)
+          : ingredients.push({ ...ingredient, count });
+      } else {
+        ingredients.splice(index, 1);
+      }
+
+      this.updatePizza({ ingredients });
+    },
+    moveIngredient(ingredient) {
+      const ingredients = [...this.pizza.ingredients];
+      const index = ingredients.findIndex(({ id }) => id === ingredient.id);
+
+      ~index
+        ? (ingredients[index].count = ingredients[index].count + 1)
+        : ingredients.push({ ...ingredient, count: 1 });
+
+      this.updatePizza({ ingredients });
+    },
+    changeName(name) {
+      this.updatePizza({ name });
     },
   },
 };

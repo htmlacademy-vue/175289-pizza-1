@@ -15,7 +15,7 @@
             :text="sauce.name"
             :value="sauce.value"
             :isChecked="sauce === selectedSauce"
-            @change="changeSauce(sauce)"
+            @change="$emit('change-sauce', sauce)"
           />
         </div>
 
@@ -44,7 +44,7 @@
                 :value="getIngredientCount(ingredient.id)"
                 :maxValue="maxIngredientCount"
                 @change="
-                  changeIngredient({
+                  $emit('change-ingredient', {
                     ingredient,
                     count: $event,
                   })
@@ -59,12 +59,11 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
-import AppDrop from "../../../common/components/AppDrop";
-import AppDrag from "../../../common/components/AppDrag";
+import { mapState, mapGetters } from "vuex";
+import AppDrop from "@/common/components/AppDrop";
+import AppDrag from "@/common/components/AppDrag";
 import AppRadioButton from "@/common/components/AppRadioButton";
 import { MAX_INGREDIENT_COUNT } from "@/common/constants";
-import { SET_PIZZA_SAUCE, SET_PIZZA_INGREDIENT } from "@/store/mutations-types";
 
 export default {
   name: "BuilderIngredientsSelector",
@@ -85,12 +84,6 @@ export default {
       "selectedIngredients",
       "selectedSauce",
     ]),
-  },
-  methods: {
-    ...mapMutations("Builder", {
-      changeSauce: SET_PIZZA_SAUCE,
-      changeIngredient: SET_PIZZA_INGREDIENT,
-    }),
   },
 };
 </script>
