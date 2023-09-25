@@ -15,6 +15,13 @@ export default [
     path: "/cart",
     name: "Cart",
     component: () => import("../views/Cart.vue"),
+    children: [
+      {
+        path: "/thanks",
+        name: "Thanks",
+        component: () => import("../views/Thanks.vue"),
+      },
+    ],
   },
   {
     path: "/orders",

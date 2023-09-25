@@ -4,25 +4,13 @@
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
 
-        <BuilderDoughSelector
-          :doughs="doughs"
-          :selectedDough="pizza.dough"
-          @changeDough="changeDough"
-        />
+        <BuilderDoughSelector @change-dough="changeDough" />
 
-        <BuilderSizeSelector
-          :sizes="sizes"
-          :selectedSize="pizza.size"
-          @changeSize="changeSize"
-        />
+        <BuilderSizeSelector @change-size="changeSize" />
 
         <BuilderIngredientsSelector
-          :sauces="sauces"
-          :selectedSauce="pizza.sauce"
-          :ingredients="ingredients"
-          :selectedIngredients="pizza.ingredients"
-          @changeSauce="changeSauce"
-          @changeIngredient="changeIngredient"
+          @change-sauce="changeSauce"
+          @change-ingredient="changeIngredient"
         />
 
         <div class="content__pizza">
@@ -31,19 +19,21 @@
             <input
               type="text"
               name="pizza_name"
-              v-model.trim="pizza.name"
+              :value="pizza.name"
               placeholder="Введите название пиццы"
+              @input="changeName($event.target.value)"
             />
           </label>
 
           <div class="content__constructor">
             <AppDrop @drop="moveIngredient">
-              <BuilderPizzaView :pizza="pizza" />
+              <BuilderPizzaView />
             </AppDrop>
           </div>
 
           <div class="content__result">
-            <BuilderPriceCounter :pizza="pizza" />
+            <p>Итого: {{ price }} ₽</p>
+
             <AppButton :disabled="buttonDisabled" @click="onButtonClick">
               Готовьте!
             </AppButton>
@@ -56,98 +46,87 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import { uniqueId } from "lodash";
+import AppDrop from "@/common/components/AppDrop";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
-import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
-import AppDrop from "../common/components/AppDrop";
-import AppButton from "@/common/components/AppButton";
+import { UPDATE_PIZZA } from "@/store/mutations-types";
 
 export default {
   name: "IndexPage",
   components: {
     AppDrop,
-    AppButton,
     BuilderDoughSelector,
     BuilderSizeSelector,
     BuilderIngredientsSelector,
     BuilderPizzaView,
-    BuilderPriceCounter,
-  },
-  props: {
-    doughs: {
-      type: Array,
-      required: true,
-    },
-
-    sizes: {
-      type: Array,
-      required: true,
-    },
-
-    sauces: {
-      type: Array,
-      required: true,
-    },
-
-    ingredients: {
-      type: Array,
-      required: true,
-    },
-  },
-  data: function () {
-    return {
-      pizza: {
-        name: "",
-        dough: this.doughs[0],
-        size: this.sizes[1],
-        sauce: this.sauces[0],
-        ingredients: [],
-      },
-    };
   },
   computed: {
+    ...mapState("Builder", ["pizza"]),
+    ...mapGetters("Builder", {
+      price: "getPrice",
+    }),
     buttonDisabled() {
       return !this.pizza.name || !Object.keys(this.pizza.ingredients).length;
     },
   },
   methods: {
-    changeDough(item) {
-      this.pizza.dough = item;
+    ...mapActions("Cart", ["updateCart"]),
+    ...mapMutations("Builder", {
+      updatePizza: UPDATE_PIZZA,
+    }),
+    onButtonClick() {
+      const value = {
+        ...this.pizza,
+        id: this.pizza.id ?? uniqueId(),
+        quantity: this.pizza.quantity ?? 1,
+        price: this.price,
+      };
+      this.updateCart({
+        entity: "pizzas",
+        value,
+      });
+
+      // ToDo: reset builder
     },
-    changeSize(item) {
-      this.pizza.size = item;
+    changeDough(dough) {
+      this.updatePizza({ dough });
     },
-    changeSauce(item) {
-      this.pizza.sauce = item;
+    changeSize(size) {
+      this.updatePizza({ size });
     },
-    changeIngredient({ item, count }) {
+    changeSauce(sauce) {
+      this.updatePizza({ sauce });
+    },
+    changeIngredient({ ingredient, count }) {
       const ingredients = [...this.pizza.ingredients];
-      const index = ingredients.findIndex(({ id }) => id === item.id);
+      const index = ingredients.findIndex(({ id }) => id === ingredient.id);
 
       if (count > 0) {
         ~index
           ? (ingredients[index].count = count)
-          : ingredients.push({ ...item, count });
+          : ingredients.push({ ...ingredient, count });
       } else {
         ingredients.splice(index, 1);
       }
 
-      this.pizza.ingredients = ingredients;
+      this.updatePizza({ ingredients });
     },
-    moveIngredient(item) {
+    moveIngredient(ingredient) {
       const ingredients = [...this.pizza.ingredients];
-      const index = ingredients.findIndex(({ id }) => id === item.id);
+      const index = ingredients.findIndex(({ id }) => id === ingredient.id);
 
       ~index
         ? (ingredients[index].count = ingredients[index].count + 1)
-        : ingredients.push({ ...item, count: 1 });
+        : ingredients.push({ ...ingredient, count: 1 });
 
-      this.pizza.ingredients = ingredients;
+      this.updatePizza({ ingredients });
     },
-    onButtonClick() {
-      console.log("Готовим");
+    changeName(name) {
+      this.updatePizza({ name });
     },
   },
 };

@@ -3,6 +3,14 @@ import ingredientValues from "@/common/enums/ingredientValues";
 import sizeValues from "@/common/enums/sizeValues";
 import sauceValues from "@/common/enums/sauceValues";
 
+export const capitalize = (string) => {
+  return `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
+};
+
+export const formatPrice = (number) => {
+  return number.toLocaleString("ru-Ru");
+};
+
 export const normalizeDough = (dough) => {
   return {
     ...dough,

@@ -16,7 +16,7 @@
             name="dough"
             :value="dough.value"
             :checked="dough === selectedDough"
-            @change="$emit('changeDough', dough)"
+            @change="$emit('change-dough', dough)"
           />
           <b>{{ dough.name }}</b>
           <span>{{ dough.description }}</span>
@@ -27,17 +27,13 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex";
+
 export default {
   name: "BuilderDoughSelector",
-  props: {
-    doughs: {
-      type: Array,
-      required: true,
-    },
-    selectedDough: {
-      type: Object,
-      required: true,
-    },
+  computed: {
+    ...mapState("Builder", ["doughs"]),
+    ...mapGetters("Builder", ["selectedDough"]),
   },
 };
 </script>

@@ -16,7 +16,7 @@
             name="diameter"
             :value="size.value"
             :checked="size === selectedSize"
-            @change="$emit('changeSize', size)"
+            @change="$emit('change-size', size)"
           />
           <span>{{ size.name }}</span>
         </label>
@@ -26,17 +26,13 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex";
+
 export default {
   name: "BuilderSizeSelector",
-  props: {
-    sizes: {
-      type: Array,
-      required: true,
-    },
-    selectedSize: {
-      type: Object,
-      required: true,
-    },
+  computed: {
+    ...mapState("Builder", ["sizes"]),
+    ...mapGetters("Builder", ["selectedSize"]),
   },
 };
 </script>

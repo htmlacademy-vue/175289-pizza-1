@@ -17,6 +17,7 @@
     />
     <button
       class="counter__button counter__button--plus"
+      :class="{ 'counter__button--orange': orange }"
       type="button"
       :disabled="value >= maxValue"
       @click="increment"
@@ -28,7 +29,7 @@
 
 <script>
 export default {
-  name: "ItemCounter",
+  name: "AppCounter",
   props: {
     value: {
       type: Number,
@@ -36,11 +37,15 @@ export default {
     },
     maxValue: {
       type: Number,
-      required: true,
+      default: 100,
     },
     minValue: {
       type: Number,
       default: 0,
+    },
+    orange: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {
