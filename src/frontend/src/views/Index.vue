@@ -84,8 +84,8 @@ export default {
     onButtonClick() {
       const value = {
         ...this.pizza,
-        id: uniqueId(),
-        quantity: 1,
+        id: this.pizza.id ?? uniqueId(),
+        quantity: this.pizza.quantity ?? 1,
         price: this.price,
       };
       this.updateCart({
