@@ -12,6 +12,7 @@ import {
   SET_PIZZA_SAUCE,
   SET_PIZZA_INGREDIENT,
   MOVE_PIZZA_INGREDIENT,
+  UPDATE_PIZZA,
 } from "@/store/mutations-types";
 
 const setupState = () => {
@@ -66,6 +67,12 @@ export default {
     selectedSize: (state) => state.pizza.size,
   },
   mutations: {
+    [UPDATE_PIZZA](state, value) {
+      state.pizza = {
+        ...state.pizza,
+        ...value,
+      };
+    },
     [SET_PIZZA_NAME](state, name) {
       state.pizza.name = name;
     },

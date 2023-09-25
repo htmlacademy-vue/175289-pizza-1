@@ -46,13 +46,17 @@
 
     <!-- ToDo -->
     <div class="cart-list__button">
-      <button type="button" class="cart-list__edit">Изменить</button>
+      <button class="cart-list__edit" type="button" @click="change">
+        Изменить
+      </button>
     </div>
   </li>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
+import { UPDATE_PIZZA } from "@/store/mutations-types";
+import { AppRoute } from "@/common/constants";
 import { formatPrice } from "@/common/helpers";
 
 export default {
@@ -70,6 +74,13 @@ export default {
   },
   methods: {
     ...mapActions("Cart", ["updateCart"]),
+    ...mapMutations("Builder", {
+      updatePizza: UPDATE_PIZZA,
+    }),
+    change() {
+      this.updatePizza(this.pizza);
+      this.$router.push(AppRoute.MAIN);
+    },
   },
 };
 </script>
