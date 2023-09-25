@@ -7,12 +7,7 @@
         class="additional-list__item sheet"
       >
         <p class="additional-list__description">
-          <img
-            :src="item.image"
-            width="39"
-            height="60"
-            alt="Coca-Cola 0,5 литра"
-          />
+          <img :src="item.image" :alt="item.name" width="39" height="60" />
           <span>{{ item.name }}</span>
         </p>
 

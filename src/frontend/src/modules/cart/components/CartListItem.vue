@@ -2,11 +2,11 @@
   <li class="cart-list__item">
     <div class="product cart-list__product">
       <img
-        src="@/assets/img/product.svg"
         class="product__img"
+        src="@/assets/img/product.svg"
+        :alt="pizza.size.name"
         width="56"
         height="56"
-        alt="Капричоза"
       />
       <div class="product__text">
         <h2>{{ pizza.name }}</h2>
