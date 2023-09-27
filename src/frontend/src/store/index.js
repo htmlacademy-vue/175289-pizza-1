@@ -7,6 +7,8 @@ import Cart from "@/store/modules/cart.store";
 import Misc from "@/store/modules/misc.store";
 import Orders from "@/store/modules/orders.store";
 
+import vuexPlugins from "@/plugins/vuexPlugins";
+
 import {
   SET_ENTITY,
   ADD_ENTITY,
@@ -71,4 +73,5 @@ export default new Vuex.Store({
     Misc,
     Orders,
   },
+  plugins: [vuexPlugins],
 });
