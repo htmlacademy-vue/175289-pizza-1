@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <AppNotifications />
+
     <AppLayout>
       <router-view />
     </AppLayout>

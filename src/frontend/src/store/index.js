@@ -1,8 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { uniqueId } from "lodash";
 import modules from "@/store/modules";
 import vuexPlugins from "@/plugins/vuexPlugins";
+import { MESSAGE_LIVE_TIME } from "@/common/constants";
 import {
+  ADD_NOTIFICATION,
+  DELETE_NOTIFICATION,
   SET_ENTITY,
   ADD_ENTITY,
   UPDATE_ENTITY,
@@ -12,12 +16,34 @@ import {
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  state: {
+    notifications: [],
+  },
   actions: {
     init({ dispatch }) {
       dispatch("Misc/query");
     },
+    async createNotification({ commit }, { ...notification }) {
+      const uniqueNotification = {
+        ...notification,
+        id: uniqueId(),
+      };
+      commit(ADD_NOTIFICATION, uniqueNotification);
+      setTimeout(
+        () => commit(DELETE_NOTIFICATION, uniqueNotification.id),
+        MESSAGE_LIVE_TIME
+      );
+    },
   },
   mutations: {
+    [ADD_NOTIFICATION](state, notification) {
+      state.notifications = [...state.notifications, notification];
+    },
+    [DELETE_NOTIFICATION](state, id) {
+      state.notifications = state.notifications.filter(
+        (notification) => notification.id !== id
+      );
+    },
     [SET_ENTITY](state, { module, entity, value }) {
       if (module) {
         state[module][entity] = value;

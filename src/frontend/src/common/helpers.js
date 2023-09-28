@@ -9,16 +9,19 @@ import ingredientValues from "@/common/enums/ingredientValues";
 import sizeValues from "@/common/enums/sizeValues";
 import sauceValues from "@/common/enums/sauceValues";
 
-export const createResources = () => {
+export const createResources = (notifier) => {
   return {
-    [resources.AUTH]: new AuthApiService(),
-    [resources.ADDRESSES]: new CrudApiService(resources.ADDRESSES),
-    [resources.DOUGH]: new ReadOnlyApiService(resources.DOUGH),
-    [resources.INGREDIENTS]: new ReadOnlyApiService(resources.INGREDIENTS),
-    [resources.MISC]: new ReadOnlyApiService(resources.MISC),
-    [resources.ORDERS]: new CrudApiService(resources.ORDERS),
-    [resources.SAUCES]: new ReadOnlyApiService(resources.SAUCES),
-    [resources.SIZES]: new ReadOnlyApiService(resources.SIZES),
+    [resources.AUTH]: new AuthApiService(notifier),
+    [resources.ADDRESSES]: new CrudApiService(resources.ADDRESSES, notifier),
+    [resources.DOUGH]: new ReadOnlyApiService(resources.DOUGH, notifier),
+    [resources.INGREDIENTS]: new ReadOnlyApiService(
+      resources.INGREDIENTS,
+      notifier
+    ),
+    [resources.MISC]: new ReadOnlyApiService(resources.MISC, notifier),
+    [resources.ORDERS]: new CrudApiService(resources.ORDERS, notifier),
+    [resources.SAUCES]: new ReadOnlyApiService(resources.SAUCES, notifier),
+    [resources.SIZES]: new ReadOnlyApiService(resources.SIZES, notifier),
   };
 };
 

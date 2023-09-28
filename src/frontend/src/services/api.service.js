@@ -2,12 +2,16 @@ import axios from "@/plugins/axios";
 import JwtService from "@/services/jwt.service";
 
 class ApiService {
-  constructor() {}
+  constructor(notifier) {
+    if (!axios.$notifier) {
+      axios.$notifier = notifier;
+    }
+  }
 }
 
 export class AuthApiService extends ApiService {
-  constructor() {
-    super();
+  constructor(notifier) {
+    super(notifier);
   }
 
   login(data) {
@@ -34,8 +38,8 @@ export class AuthApiService extends ApiService {
 export class ReadOnlyApiService extends ApiService {
   #resource;
 
-  constructor(resource) {
-    super();
+  constructor(resource, notifier) {
+    super(notifier);
     this.#resource = resource;
   }
 
@@ -57,8 +61,8 @@ export class ReadOnlyApiService extends ApiService {
 export class CrudApiService extends ReadOnlyApiService {
   #resource;
 
-  constructor(resource) {
-    super(resource);
+  constructor(resource, notifier) {
+    super(resource, notifier);
     this.#resource = resource;
   }
 
