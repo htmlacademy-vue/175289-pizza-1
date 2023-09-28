@@ -8,13 +8,13 @@
           <p>Основной соус:</p>
 
           <AppRadioButton
-            v-for="sauce in sauces"
+            v-for="sauce in data.sauces"
             :key="sauce.name"
             class="ingredients__input"
             name="sauce"
             :text="sauce.name"
             :value="sauce.value"
-            :isChecked="sauce === selectedSauce"
+            :isChecked="sauce.id === selectedSauce.id"
             @change="$emit('change-sauce', sauce)"
           />
         </div>
@@ -24,7 +24,7 @@
 
           <ul class="ingredients__list">
             <li
-              v-for="ingredient in ingredients"
+              v-for="ingredient in data.ingredients"
               :key="ingredient.name"
               class="ingredients__item"
             >
@@ -78,7 +78,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("Builder", ["ingredients", "sauces"]),
+    ...mapState("Builder", ["data"]),
     ...mapGetters("Builder", [
       "getIngredientCount",
       "selectedIngredients",

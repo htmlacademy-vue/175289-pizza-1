@@ -1,33 +1,30 @@
-import pizza from "@/static/pizza.json";
 import {
+  capitalize,
   normalizeDough,
   normalizeIngredient,
   normalizeSize,
   normalizeSauce,
 } from "@/common/helpers";
-import { UPDATE_PIZZA } from "@/store/mutations-types";
+import { SET_ENTITY, UPDATE_PIZZA } from "@/store/mutations-types";
 
-const setupState = () => {
-  const doughs = pizza.dough.map(normalizeDough);
-  const ingredients = pizza.ingredients.map(normalizeIngredient);
-  const sizes = pizza.sizes.map(normalizeSize);
-  const sauces = pizza.sauces.map(normalizeSauce);
+const entity = "builder";
+const module = capitalize(entity);
 
-  return {
-    doughs,
-    ingredients,
-    sizes,
-    sauces,
-
-    pizza: {
-      name: "",
-      dough: doughs[0],
-      size: sizes[1],
-      sauce: sauces[0],
-      ingredients: [],
-    },
-  };
-};
+const setupState = () => ({
+  data: {
+    dough: [],
+    ingredients: [],
+    sizes: [],
+    sauces: [],
+  },
+  pizza: {
+    name: "",
+    dough: {},
+    size: {},
+    sauce: {},
+    ingredients: [],
+  },
+});
 
 export default {
   namespaced: true,
@@ -57,6 +54,42 @@ export default {
     selectedIngredients: (state) => state.pizza.ingredients,
     selectedSauce: (state) => state.pizza.sauce,
     selectedSize: (state) => state.pizza.size,
+  },
+  actions: {
+    async getData({ commit }) {
+      const [
+        { data: dough },
+        { data: ingredients },
+        { data: sizes },
+        { data: sauces },
+      ] = await Promise.all([
+        this.$api.dough.query(),
+        this.$api.ingredients.query(),
+        this.$api.sizes.query(),
+        this.$api.sauces.query(),
+      ]);
+
+      commit(
+        SET_ENTITY,
+        {
+          module,
+          entity: "data",
+          value: {
+            dough: dough.map(normalizeDough),
+            ingredients: ingredients.map(normalizeIngredient),
+            sizes: sizes.map(normalizeSize),
+            sauces: sauces.map(normalizeSauce),
+          },
+        },
+        { root: true }
+      );
+
+      commit(UPDATE_PIZZA, {
+        dough: normalizeDough(dough.at(0)),
+        size: normalizeIngredient(sizes.at(1)),
+        sauce: normalizeSauce(sauces.at(0)),
+      });
+    },
   },
   mutations: {
     [UPDATE_PIZZA](state, value) {

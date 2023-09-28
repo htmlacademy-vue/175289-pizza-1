@@ -21,6 +21,7 @@ export default new Vuex.Store({
   },
   actions: {
     init({ dispatch }) {
+      dispatch("Builder/getData");
       dispatch("Misc/query");
     },
     async createNotification({ commit }, { ...notification }) {
