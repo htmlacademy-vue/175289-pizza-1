@@ -22,7 +22,7 @@
           <span>{{ user.name }}</span>
         </router-link>
 
-        <a href="#" class="header__logout">
+        <a href="#" class="header__logout" @click.prevent="logout">
           <span>Выйти</span>
         </a>
       </template>
@@ -44,6 +44,13 @@ export default {
   computed: {
     ...mapState("Auth", ["user"]),
     ...mapGetters("Cart", ["totalPrice"]),
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("Auth/logout").then(() => {
+        this.$notifier.success("Вы успешно вышли");
+      });
+    },
   },
 };
 </script>
