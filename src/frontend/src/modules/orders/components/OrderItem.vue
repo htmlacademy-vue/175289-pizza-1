@@ -15,7 +15,9 @@
         </button>
       </div>
       <div class="order__button">
-        <button type="button" class="button">Повторить</button>
+        <button class="button" type="button" @click="$emit('repeat', order)">
+          Повторить
+        </button>
       </div>
     </div>
 

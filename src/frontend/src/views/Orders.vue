@@ -10,12 +10,16 @@
         :key="order.id"
         :order="order"
         @delete="deleteOrder"
+        @repeat="repeatOrder"
       />
     </template>
   </div>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+import { UPDATE_CART } from "@/store/mutations-types";
+import { AppRoute } from "@/common/constants";
 import OrderItem from "@/modules/orders/components/OrderItem.vue";
 
 export default {
@@ -34,10 +38,17 @@ export default {
     });
   },
   methods: {
+    ...mapMutations("Cart", {
+      updateCart: UPDATE_CART,
+    }),
     deleteOrder(id) {
       this.$api.orders.delete(id).then(() => {
         this.orders = this.orders.filter((order) => order.id !== id);
       });
+    },
+    repeatOrder(order) {
+      this.updateCart(order);
+      this.$router.push(AppRoute.CART);
     },
   }
 };

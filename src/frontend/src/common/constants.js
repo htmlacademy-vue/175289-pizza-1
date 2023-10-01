@@ -1,5 +1,6 @@
 export const AppRoute = {
   MAIN: "/",
+  CART: "/cart",
   ORDERS: "/orders",
   THANKS: "/thanks",
 };

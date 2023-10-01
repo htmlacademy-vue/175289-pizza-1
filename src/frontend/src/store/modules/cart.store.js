@@ -3,6 +3,7 @@ import {
   UPDATE_ENTITY,
   DELETE_ENTITY,
   RESET_CART,
+  UPDATE_CART,
   UPDATE_CART_DELIVERY,
   UPDATE_CART_PHONE,
   UPDATE_CART_ADDRESS,
@@ -87,6 +88,16 @@ export default {
       for (let key in state) {
         state[key] = initialState[key];
       }
+    },
+    [UPDATE_CART](state, { pizzas, misc, phone, address }) {
+      state.pizzas = pizzas;
+      state.misc = misc ?? [];
+      state.phone = phone;
+      state.address = address ?? {
+        street: "",
+        building: "",
+        flat: "",
+      };
     },
     [UPDATE_CART_DELIVERY](state, delivery) {
       state.delivery = delivery;
