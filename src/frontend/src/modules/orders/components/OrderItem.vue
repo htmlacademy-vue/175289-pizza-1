@@ -10,7 +10,9 @@
       </div>
 
       <div class="order__button">
-        <button type="button" class="button button--border">Удалить</button>
+        <button class="button button--border" type="button" @click="$emit('delete', order.id)">
+          Удалить
+        </button>
       </div>
       <div class="order__button">
         <button type="button" class="button">Повторить</button>

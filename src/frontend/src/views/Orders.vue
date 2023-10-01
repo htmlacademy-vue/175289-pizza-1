@@ -9,6 +9,7 @@
         v-for="order in orders"
         :key="order.id"
         :order="order"
+        @delete="deleteOrder"
       />
     </template>
   </div>
@@ -32,5 +33,12 @@ export default {
       this.orders = data;
     });
   },
+  methods: {
+    deleteOrder(id) {
+      this.$api.orders.delete(id).then(() => {
+        this.orders = this.orders.filter((order) => order.id !== id);
+      });
+    },
+  }
 };
 </script>
