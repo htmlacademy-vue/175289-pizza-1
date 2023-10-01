@@ -39,8 +39,15 @@ export default {
       });
     },
     $validateFields(fields, validations) {
+      const validationsKeys = Object.keys(fields);
       let isValid = true;
+
       Object.keys(validations).forEach((key) => {
+        // Валидируем только переданные поля
+        if (!validationsKeys.includes(key)) {
+          return;
+        }
+
         validations[key].error = validator(fields[key], validations[key].rules);
         if (validations[key].error) {
           isValid = false;

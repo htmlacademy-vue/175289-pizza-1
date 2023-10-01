@@ -11,11 +11,13 @@ import { capitalize, formatPrice } from "@/common/helpers";
 const entity = "cart";
 const module = capitalize(entity);
 
+const PICKUP = "pickup";
+
 const setupState = () => ({
   pizzas: [],
   misc: [],
   phone: "",
-  delivery: "pickup",
+  delivery: PICKUP,
   address: {
     street: "",
     building: "",
@@ -41,6 +43,9 @@ export default {
       );
 
       return formatPrice(price);
+    },
+    showAddressFields: (state) => {
+      return state.delivery !== PICKUP;
     },
   },
   actions: {

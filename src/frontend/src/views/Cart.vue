@@ -11,7 +11,7 @@
         <template v-if="notEmpty">
           <CartList />
           <CartAdditional />
-          <CartForm />
+          <CartForm ref="form" />
         </template>
 
         <div v-else class="sheet cart__empty">
@@ -49,14 +49,24 @@ export default {
   components: { CartList, CartAdditional, CartForm },
   computed: {
     ...mapState("Cart", ["pizzas"]),
-    ...mapGetters("Cart", ["totalPrice"]),
-
+    ...mapGetters("Cart", ["totalPrice", "showAddressFields"]),
     notEmpty() {
       return this.pizzas?.length > 0;
     },
   },
   methods: {
     onSubmit() {
+      const form = this.$refs.form;
+
+      // Валидируем форму корзины
+      const fields = this.showAddressFields
+        ? { phone: this.phone, street: this.address.street, building: this.address.building }
+        : { phone: this.phone };
+
+      if (!form.$validateFields(fields, form.validations)) {
+        return;
+      }
+
       this.$router.push(AppRoute.THANKS);
     },
   },

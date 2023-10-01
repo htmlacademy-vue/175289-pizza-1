@@ -21,10 +21,11 @@
         :value="phone"
         placeholder="+7 999-999-99-99"
         big-label
+        :error-text="validations.phone.error"
         @input="updatePhone"
       />
 
-      <div v-if="delivery !== 'pickup'" class="cart-form__address">
+      <div v-if="showAddressFields" class="cart-form__address">
         <span class="cart-form__label">Новый адрес:</span>
 
         <div class="cart-form__input">
@@ -32,6 +33,7 @@
             label="Улица"
             name="street"
             :value="address.street"
+            :error-text="validations.street.error"
             required
             @input="updateAddress({ street: $event })"
           />
@@ -42,6 +44,7 @@
             label="Дом"
             name="house"
             :value="address.building"
+            :error-text="validations.building.error"
             required
             @input="updateAddress({ building: $event })"
           />
@@ -61,17 +64,53 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
 import {
   UPDATE_CART_PHONE,
   UPDATE_CART_DELIVERY,
   UPDATE_CART_ADDRESS,
 } from "@/store/mutations-types";
+import validator from "@/common/mixins/validator";
 
 export default {
   name: "CartForm",
+  mixins: [validator],
+  data() {
+    return {
+      validations: {
+        phone: {
+          error: "",
+          rules: ["required"],
+        },
+        street: {
+          error: "",
+          rules: ["required"],
+        },
+        building: {
+          error: "",
+          rules: ["required"],
+        },
+      }
+    }
+  },
+  watch: {
+    phone() {
+      this.$clearValidationErrors();
+    },
+    street() {
+      this.$clearValidationErrors();
+    },
+    building() {
+      this.$clearValidationErrors();
+    },
+  },
   computed: {
-    ...mapState("Cart", ["delivery", "phone", "address"]),
+    ...mapState("Cart", [
+      "phone",
+      "delivery",
+      "address",
+    ]),
+    ...mapGetters("Cart", ["showAddressFields"]),
   },
   methods: {
     ...mapMutations("Cart", {
