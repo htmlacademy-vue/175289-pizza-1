@@ -14,12 +14,12 @@ const module = capitalize(entity);
 const setupState = () => ({
   pizzas: [],
   misc: [],
-  delivery: "pickup",
   phone: "",
+  delivery: "pickup",
   address: {
     street: "",
-    house: "",
-    apartment: "",
+    building: "",
+    flat: "",
   },
 });
 

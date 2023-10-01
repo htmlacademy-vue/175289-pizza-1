@@ -41,9 +41,9 @@
           <AppInput
             label="Дом"
             name="house"
-            :value="address.house"
+            :value="address.building"
             required
-            @input="updateAddress({ house: $event })"
+            @input="updateAddress({ building: $event })"
           />
         </div>
 
@@ -51,8 +51,8 @@
           <AppInput
             label="Квартира"
             name="apartment"
-            :value="address.apartment"
-            @input="updateAddress({ apartment: $event })"
+            :value="address.flat"
+            @input="updateAddress({ flat: $event })"
           />
         </div>
       </div>
@@ -63,8 +63,8 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import {
-  UPDATE_CART_DELIVERY,
   UPDATE_CART_PHONE,
+  UPDATE_CART_DELIVERY,
   UPDATE_CART_ADDRESS,
 } from "@/store/mutations-types";
 
@@ -75,8 +75,8 @@ export default {
   },
   methods: {
     ...mapMutations("Cart", {
-      updateDelivery: UPDATE_CART_DELIVERY,
       updatePhone: UPDATE_CART_PHONE,
+      updateDelivery: UPDATE_CART_DELIVERY,
       updateAddress: UPDATE_CART_ADDRESS,
     }),
   },
