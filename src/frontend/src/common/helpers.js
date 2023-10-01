@@ -2,6 +2,7 @@ import {
   AuthApiService,
   ReadOnlyApiService,
   CrudApiService,
+  OrdersApiService,
 } from "@/services/api.service";
 import resources from "@/common/enums/resources";
 import doughValues from "@/common/enums/doughValues";
@@ -19,7 +20,7 @@ export const createResources = (notifier) => {
       notifier
     ),
     [resources.MISC]: new ReadOnlyApiService(resources.MISC, notifier),
-    [resources.ORDERS]: new CrudApiService(resources.ORDERS, notifier),
+    [resources.ORDERS]: new OrdersApiService(notifier),
     [resources.SAUCES]: new ReadOnlyApiService(resources.SAUCES, notifier),
     [resources.SIZES]: new ReadOnlyApiService(resources.SIZES, notifier),
   };

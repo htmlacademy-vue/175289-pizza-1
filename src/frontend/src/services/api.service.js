@@ -1,5 +1,6 @@
 import axios from "@/plugins/axios";
 import JwtService from "@/services/jwt.service";
+import Resources from "@/common/enums/resources";
 
 class ApiService {
   constructor(notifier) {
@@ -85,5 +86,42 @@ export class CrudApiService extends ReadOnlyApiService {
    */
   delete(id) {
     return axios.delete(`${this.#resource}/${id}`);
+  }
+}
+
+export class OrdersApiService extends CrudApiService {
+  constructor(notifier) {
+    super(Resources.ORDERS, notifier);
+  }
+
+  _normalizeToServer({ userId, phone, address, pizzas, misc }) {
+    const normalizePizza = (pizza) => ({
+      name: pizza.name,
+      sauceId: pizza.sauce.id,
+      doughId: pizza.dough.id,
+      sizeId: pizza.size.id,
+      quantity: pizza.quantity,
+      ingredients: pizza.ingredients.map(({ id, quantity}) => ({
+        ingredientId: id,
+        quantity,
+      })),
+    });
+
+    const normalizeMisc = ({ id, quantity }) => ({
+      miscId: id,
+      quantity,
+    });
+
+    return {
+      userId,
+      phone,
+      address,
+      pizzas: pizzas.map(normalizePizza),
+      misc: misc.map(normalizeMisc),
+    };
+  }
+
+  post(data) {
+    return super.post(this._normalizeToServer(data));
   }
 }

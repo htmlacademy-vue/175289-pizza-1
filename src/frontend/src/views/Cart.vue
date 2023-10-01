@@ -48,7 +48,14 @@ export default {
   name: "CartPage",
   components: { CartList, CartAdditional, CartForm },
   computed: {
-    ...mapState("Cart", ["pizzas"]),
+    ...mapState("Auth", ["user", "isAuthenticated"]),
+    ...mapState("Cart", [
+      "pizzas",
+      "misc",
+      "phone",
+      "delivery",
+      "address",
+    ]),
     ...mapGetters("Cart", ["totalPrice", "showAddressFields"]),
     notEmpty() {
       return this.pizzas?.length > 0;
@@ -67,7 +74,15 @@ export default {
         return;
       }
 
-      this.$router.push(AppRoute.THANKS);
+      this.$api.orders.post({
+        userId: this.isAuthenticated ? this.user.id : null,
+        phone: this.phone,
+        address: this.showAddressFields? this.address : null,
+        pizzas: this.pizzas,
+        misc: this.misc,
+      }).then(() => {
+        this.$router.push(AppRoute.THANKS);
+      });
     },
   },
 };
