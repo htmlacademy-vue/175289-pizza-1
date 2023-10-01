@@ -2,11 +2,11 @@
   <section class="sheet order">
     <div class="order__wrapper">
       <div class="order__number">
-        <b>Заказ #11199929</b>
+        <b>Заказ #{{ order.id }}</b>
       </div>
 
       <div class="order__sum">
-        <span>Сумма заказа: 1 564 ₽</span>
+        <span>Сумма заказа: {{ orderPrice }} ₽</span>
       </div>
 
       <div class="order__button">
@@ -18,94 +18,86 @@
     </div>
 
     <ul class="order__list">
-      <li class="order__item">
+      <li
+        v-for="pizza in order.pizzas"
+        :key="pizza.id"
+        class="order__item"
+      >
         <div class="product">
           <img
-            src="img/product.svg"
             class="product__img"
+            src="@/assets/img/product.svg"
+            :alt="pizza.name"
             width="56"
             height="56"
-            alt="Капричоза"
           />
           <div class="product__text">
-            <h2>Капричоза</h2>
+            <h2>{{ pizza.name }}</h2>
             <ul>
-              <li>30 см, на тонком тесте</li>
-              <li>Соус: томатный</li>
               <li>
-                Начинка: грибы, лук, ветчина, пармезан, ананас, бекон, блю чиз
+                {{ pizza.size.name }}, на
+                {{ pizza.dough.name.toLowerCase().replace(/.$/, "м") }} тесте
+              </li>
+              <li>Соус: {{ pizza.sauce.name.toLowerCase() }}</li>
+              <li>
+                Начинка:
+                {{
+                  pizza.ingredients
+                    .reduce((prev, next) => [...prev, next.name.toLowerCase()], [])
+                    .join(", ")
+                }}
               </li>
             </ul>
           </div>
         </div>
 
-        <p class="order__price">782 ₽</p>
-      </li>
-      <li class="order__item">
-        <div class="product">
-          <img
-            src="img/product.svg"
-            class="product__img"
-            width="56"
-            height="56"
-            alt="Капричоза"
-          />
-          <div class="product__text">
-            <h2>Моя любимая</h2>
-            <ul>
-              <li>30 см, на тонком тесте</li>
-              <li>Соус: томатный</li>
-              <li>Начинка: грибы, лук, ветчина, пармезан, ананас</li>
-            </ul>
-          </div>
-        </div>
-
-        <p class="order__price">2х782 ₽</p>
+        <p class="order__price">{{ pizza.quantity > 1 ? `${pizza.quantity}х` : `` }}{{ pizza.price }} ₽</p>
       </li>
     </ul>
 
-    <ul class="order__additional">
-      <li>
+    <ul v-if="order.misc"  class="order__additional">
+      <li
+        v-for="misc in order.misc"
+        :key="misc.id"
+      >
         <img
-          src="img/cola.svg"
+          :src="misc.image"
+          :alt="misc.name"
           width="20"
           height="30"
-          alt="Coca-Cola 0,5 литра"
         />
         <p>
-          <span>Coca-Cola 0,5 литра</span>
-          <b>56 ₽</b>
-        </p>
-      </li>
-      <li>
-        <img src="img/sauce.svg" width="20" height="30" alt="Острый соус" />
-        <p>
-          <span>Острый соус</span>
-          <b>30 ₽</b>
-        </p>
-      </li>
-      <li>
-        <img
-          src="img/potato.svg"
-          width="20"
-          height="30"
-          alt="Картошка из печи"
-        />
-        <p>
-          <span>Картошка из печи</span>
-          <b>170 ₽</b>
+          <span>{{ misc.name }}</span>
+          <b>{{ misc.quantity > 1 ? `${misc.quantity}х` : `` }}{{ misc.price }} ₽</b>
         </p>
       </li>
     </ul>
 
-    <p class="order__address">
-      Адрес доставки: Тест (или если адрес новый - писать целиком)
+    <p v-if="order.address" class="order__address">
+      Адрес доставки:
+      {{ order.addressId
+        ? order.address.name
+        : `${order.address.string}, ${order.address.building}, ${order.address.flat}`
+      }}
     </p>
   </section>
 </template>
 
 <script>
+import { getOrderPrice } from "@/common/helpers";
+
 export default {
   name: "OrderItem",
+  props: {
+    order: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {
+    orderPrice() {
+      return getOrderPrice({...this.order});
+    },
+  },
 };
 </script>

@@ -1,5 +1,6 @@
 import {
   capitalize,
+  getPizzaPrice,
   normalizeDough,
   normalizeIngredient,
   normalizeSize,
@@ -49,13 +50,7 @@ export default {
       return result[ingredientId] || 0;
     },
     getPrice: (state) => {
-      const { size, dough, sauce, ingredients } = state.pizza;
-      const ingredientsPrice = ingredients.reduce(
-        (accumulator, { price, quantity }) => accumulator + price * quantity,
-        0
-      );
-
-      return size.multiplier * (dough.price + sauce.price + ingredientsPrice);
+      return getPizzaPrice(state.pizza);
     },
     selectedDough: (state) => state.pizza.dough,
     selectedIngredients: (state) => state.pizza.ingredients,

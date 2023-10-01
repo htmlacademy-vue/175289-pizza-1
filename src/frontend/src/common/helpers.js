@@ -34,6 +34,24 @@ export const formatPrice = (number) => {
   return number.toLocaleString("ru-Ru");
 };
 
+export const getPizzaPrice = (pizza) => {
+  const { size, dough, sauce, ingredients } = pizza;
+  const ingredientsPrice = ingredients.reduce(
+    (accumulator, { price, quantity }) => accumulator + price * quantity,
+    0
+  );
+
+  return size.multiplier * (dough.price + sauce.price + ingredientsPrice);
+};
+
+export const getOrderPrice = ({ pizzas, misc = [] }) => {
+  const price = [...pizzas, ...misc].reduce((acc, { price, quantity }) => {
+    return acc + price * quantity;
+  }, 0);
+
+  return formatPrice(price);
+};
+
 export const normalizeDough = (dough) => {
   return {
     ...dough,

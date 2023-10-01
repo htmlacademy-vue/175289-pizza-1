@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { AppRoute } from "@/common/constants";
 
 export default {
@@ -24,6 +25,9 @@ export default {
   destroyed() {
     document.removeEventListener("keydown", this.onDocumentKeydown);
   },
+  computed: {
+    ...mapState("Auth", ["isAuthenticated"]),
+  },
   methods: {
     onDocumentKeydown({ code }) {
       if (code === "Escape") {
@@ -31,7 +35,7 @@ export default {
       }
     },
     close() {
-      this.$router.push(AppRoute.MAIN);
+      this.$router.push(this.isAuthenticated ? AppRoute.ORDERS : AppRoute.MAIN);
     },
   },
 };

@@ -4,9 +4,13 @@
       <h1 class="title title--big">История заказов</h1>
     </div>
 
-    <OrderItem />
-
-    <OrderItem />
+    <template v-if="orders">
+      <OrderItem
+        v-for="order in orders"
+        :key="order.id"
+        :order="order"
+      />
+    </template>
   </div>
 </template>
 
@@ -17,6 +21,16 @@ export default {
   name: "OrdersPage",
   components: {
     OrderItem,
+  },
+  data() {
+    return {
+      orders: null,
+    };
+  },
+  created() {
+    this.$api.orders.query().then((data) => {
+      this.orders = data;
+    });
   },
 };
 </script>

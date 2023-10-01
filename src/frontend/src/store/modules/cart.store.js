@@ -7,7 +7,7 @@ import {
   UPDATE_CART_PHONE,
   UPDATE_CART_ADDRESS,
 } from "@/store/mutations-types";
-import { capitalize, formatPrice } from "@/common/helpers";
+import { capitalize, getOrderPrice } from "@/common/helpers";
 
 const entity = "cart";
 const module = capitalize(entity);
@@ -36,14 +36,7 @@ export default {
       return ~index ? state.misc[index].quantity : 0;
     },
     totalPrice: (state) => {
-      const price = [...state.pizzas, ...state.misc].reduce(
-        (previousValue, currentValue) => {
-          return previousValue + currentValue.price * currentValue.quantity;
-        },
-        0
-      );
-
-      return formatPrice(price);
+      return getOrderPrice(state);
     },
     showAddressFields: (state) => {
       return state.delivery !== PICKUP;
