@@ -2,6 +2,7 @@ import {
   ADD_ENTITY,
   UPDATE_ENTITY,
   DELETE_ENTITY,
+  RESET_CART,
   UPDATE_CART_DELIVERY,
   UPDATE_CART_PHONE,
   UPDATE_CART_ADDRESS,
@@ -13,7 +14,7 @@ const module = capitalize(entity);
 
 const PICKUP = "pickup";
 
-const setupState = () => ({
+const initialState = {
   pizzas: [],
   misc: [],
   phone: "",
@@ -23,11 +24,11 @@ const setupState = () => ({
     building: "",
     flat: "",
   },
-});
+};
 
 export default {
   namespaced: true,
-  state: setupState(),
+  state: {...initialState},
   getters: {
     miscQuantity: (state) => (id) => {
       const index = state.misc.findIndex((item) => item.id === id);
@@ -89,6 +90,11 @@ export default {
     },
   },
   mutations: {
+    [RESET_CART](state) {
+      for (let key in state) {
+        state[key] = initialState[key];
+      }
+    },
     [UPDATE_CART_DELIVERY](state, delivery) {
       state.delivery = delivery;
     },

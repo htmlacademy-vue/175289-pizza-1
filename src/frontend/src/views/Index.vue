@@ -89,8 +89,6 @@ export default {
         entity: "pizzas",
         value,
       });
-
-      // ToDo: reset builder
     },
     changeDough(dough) {
       this.updatePizza({ dough });

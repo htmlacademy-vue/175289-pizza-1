@@ -5,30 +5,37 @@ import {
   normalizeSize,
   normalizeSauce,
 } from "@/common/helpers";
-import { SET_ENTITY, UPDATE_PIZZA } from "@/store/mutations-types";
+import {
+  SET_ENTITY,
+  RESET_BUILDER,
+  UPDATE_PIZZA,
+} from "@/store/mutations-types";
 
 const entity = "builder";
 const module = capitalize(entity);
 
-const setupState = () => ({
-  data: {
-    dough: [],
-    ingredients: [],
-    sizes: [],
-    sauces: [],
-  },
-  pizza: {
-    name: "",
-    dough: {},
-    size: {},
-    sauce: {},
-    ingredients: [],
-  },
-});
+const initialPizzaName = "";
+const initialSelectedDoughIndex = 0;
+const initialSelectedSizeIndex = 1;
+const initialSelectedSauceIndex = 0;
 
 export default {
   namespaced: true,
-  state: setupState(),
+  state: {
+    data: {
+      dough: [],
+      ingredients: [],
+      sizes: [],
+      sauces: [],
+    },
+    pizza: {
+      name: initialPizzaName,
+      dough: {},
+      size: {},
+      sauce: {},
+      ingredients: [],
+    },
+  },
   getters: {
     getIngredientQuantity: (state, getters) => (ingredientId) => {
       const result = getters.selectedIngredients.reduce(
@@ -85,13 +92,22 @@ export default {
       );
 
       commit(UPDATE_PIZZA, {
-        dough: normalizeDough(dough.at(0)),
-        size: normalizeIngredient(sizes.at(1)),
-        sauce: normalizeSauce(sauces.at(0)),
+        dough: normalizeDough(dough.at(initialSelectedDoughIndex)),
+        size: normalizeIngredient(sizes.at(initialSelectedSizeIndex)),
+        sauce: normalizeSauce(sauces.at(initialSelectedSauceIndex)),
       });
     },
   },
   mutations: {
+    [RESET_BUILDER](state) {
+      state.pizza = {
+        name: initialPizzaName,
+        dough: state.data.dough.at(initialSelectedDoughIndex),
+        size: state.data.sizes.at(initialSelectedSizeIndex),
+        sauce: state.data.sauces.at(initialSelectedSauceIndex),
+        ingredients: [],
+      };
+    },
     [UPDATE_PIZZA](state, value) {
       state.pizza = {
         ...state.pizza,

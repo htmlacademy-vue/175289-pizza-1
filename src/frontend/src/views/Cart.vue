@@ -38,11 +38,15 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
 import CartList from "@/modules/cart/components/CartList.vue";
 import CartAdditional from "@/modules/cart/components/CartAdditional.vue";
 import CartForm from "@/modules/cart/components/CartForm.vue";
 import { AppRoute } from "@/common/constants";
+import {
+  RESET_BUILDER,
+  RESET_CART,
+} from "@/store/mutations-types";
 
 export default {
   name: "CartPage",
@@ -62,6 +66,12 @@ export default {
     },
   },
   methods: {
+    ...mapMutations("Builder", {
+      resetBuilder: RESET_BUILDER,
+    }),
+    ...mapMutations("Cart", {
+      resetCart: RESET_CART,
+    }),
     onSubmit() {
       const form = this.$refs.form;
 
@@ -81,6 +91,8 @@ export default {
         pizzas: this.pizzas,
         misc: this.misc,
       }).then(() => {
+        this.resetBuilder();
+        this.resetCart();
         this.$router.push(AppRoute.THANKS);
       });
     },
