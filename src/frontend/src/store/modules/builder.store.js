@@ -30,21 +30,21 @@ export default {
   namespaced: true,
   state: setupState(),
   getters: {
-    getIngredientCount: (state, getters) => (ingredientId) => {
-      const counts = getters.selectedIngredients.reduce(
-        (accumulator, { id, count }) => ({
+    getIngredientQuantity: (state, getters) => (ingredientId) => {
+      const result = getters.selectedIngredients.reduce(
+        (accumulator, { id, quantity }) => ({
           ...accumulator,
-          [id]: count,
+          [id]: quantity,
         }),
         {}
       );
 
-      return counts[ingredientId] || 0;
+      return result[ingredientId] || 0;
     },
     getPrice: (state) => {
       const { size, dough, sauce, ingredients } = state.pizza;
       const ingredientsPrice = ingredients.reduce(
-        (accumulator, { price, count }) => accumulator + price * count,
+        (accumulator, { price, quantity }) => accumulator + price * quantity,
         0
       );
 

@@ -5,13 +5,13 @@
     <div class="pizza__wrapper">
       <template v-for="ingredient in pizza.ingredients">
         <div
-          v-for="count in ingredient.count"
-          :key="`${ingredient.value}-layer-${count}`"
+          v-for="quantity in ingredient.quantity"
+          :key="`${ingredient.value}-layer-${quantity}`"
           :class="[
             'pizza__filling',
             `pizza__filling--${ingredient.value}`,
-            { 'pizza__filling--second': count === 2 },
-            { 'pizza__filling--third': count === 3 },
+            { 'pizza__filling--second': quantity === 2 },
+            { 'pizza__filling--third': quantity === 3 },
           ]"
         />
       </template>
