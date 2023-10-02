@@ -6,8 +6,8 @@
   >
     <div class="address-form__header">
       <b>
-        Адрес №1.
-        <template v-if="!isEdit">Тест</template>
+        Адрес №{{ addressNumber }}.
+        <template v-if="!isEdit">{{ address.name }}</template>
       </b>
       <div v-if="!isEdit" class="address-form__edit">
         <button type="button" class="icon">
@@ -81,8 +81,8 @@
       </div>
     </template>
     <template v-else>
-      <p>Невский пр., д. 22, кв. 46</p>
-      <small>Позвоните, пожалуйста, от проходной</small>
+      <p>{{ address.street }}, {{ address.building }}, {{ address.flat }}</p>
+      <small>{{ address.comment }}</small>
     </template>
   </component>
 </template>
@@ -91,6 +91,14 @@
 export default {
   name: "AddressForm",
   props: {
+    address: {
+      type: Object,
+      required: true,
+    },
+    addressNumber: {
+      type: Number,
+      required: true,
+    },
     isEdit: Boolean,
   },
 };

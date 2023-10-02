@@ -21,6 +21,7 @@ export default new Vuex.Store({
   },
   actions: {
     init({ dispatch }) {
+      dispatch("Addresses/query");
       dispatch("Builder/getData");
       dispatch("Misc/query");
     },

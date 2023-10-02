@@ -16,12 +16,12 @@
       </p>
     </div>
 
-    <div class="layout__address">
-      <AddressForm />
-    </div>
-
-    <div class="layout__address">
-      <AddressForm :is-edit="true" />
+    <div
+      v-for="(address, index) in addresses"
+      :key="addresses.id"
+      class="layout__address"
+    >
+      <AddressForm :address="address" :address-number="index + 1" />
     </div>
 
     <div class="layout__button">
@@ -34,11 +34,14 @@
 
 <script>
 import { mapState } from "vuex";
+import AddressForm from "@/modules/address/components/AddressForm.vue";
 
 export default {
   name: "ProfilePage",
+  components: { AddressForm },
   computed: {
     ...mapState("Auth", ["user"]),
+    ...mapState("Addresses", ["addresses"]),
   },
 };
 </script>
