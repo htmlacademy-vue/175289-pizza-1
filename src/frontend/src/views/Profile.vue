@@ -21,11 +21,24 @@
       :key="addresses.id"
       class="layout__address"
     >
-      <AddressForm :address="address" :address-number="index + 1" />
+      <AddressForm :address-to-edit="address" :number="index + 1" />
     </div>
 
-    <div class="layout__button">
-      <button type="button" class="button button--border">
+    <!-- Форма создания нового адреса -->
+    <div v-if="showNewAddressForm" class="layout__address">
+      <AddressForm
+        :number="addresses.length + 1"
+        @cancel="showNewAddressForm = false"
+        @save="showNewAddressForm = false"
+      />
+    </div>
+
+    <div v-if="!showNewAddressForm" class="layout__button">
+      <button
+        class="button button--border"
+        type="button"
+        @click="showNewAddressForm = true"
+      >
         Добавить новый адрес
       </button>
     </div>
@@ -39,6 +52,11 @@ import AddressForm from "@/modules/address/components/AddressForm.vue";
 export default {
   name: "ProfilePage",
   components: { AddressForm },
+  data() {
+    return {
+      showNewAddressForm: false,
+    };
+  },
   computed: {
     ...mapState("Auth", ["user"]),
     ...mapState("Addresses", ["addresses"]),

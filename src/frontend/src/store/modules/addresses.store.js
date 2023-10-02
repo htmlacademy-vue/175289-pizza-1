@@ -1,4 +1,4 @@
-import { SET_ENTITY } from "@/store/mutations-types";
+import { ADD_ENTITY, SET_ENTITY } from "@/store/mutations-types";
 import { capitalize } from "@/common/helpers";
 
 const entity = "addresses";
@@ -37,6 +37,19 @@ export default {
         {
           module,
           entity,
+          value: data,
+        },
+        { root: true }
+      );
+    },
+    async post({ commit }, address) {
+      const { data } = await this.$api.addresses.post(address);
+
+      commit(
+        ADD_ENTITY,
+        {
+          entity,
+          module,
           value: data,
         },
         { root: true }
