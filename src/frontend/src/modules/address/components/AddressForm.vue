@@ -20,6 +20,7 @@
               label="Название адреса"
               name="addr-name"
               v-model="address.name"
+              :error-text="validations.name.error"
               placeholder="Введите название адреса"
               required
             />
@@ -29,6 +30,7 @@
               label="Улица"
               name="addr-street"
               v-model="address.street"
+              :error-text="validations.street.error"
               placeholder="Введите название улицы"
               required
             />
@@ -38,6 +40,7 @@
               label="Дом"
               name="addr-house"
               v-model="address.building"
+              :error-text="validations.building.error"
               placeholder="Введите номер дома"
               required
             />
@@ -82,8 +85,11 @@
       </form>
     </template>
     <template v-else>
-      <p>{{ address.street }}, {{ address.building }}, {{ address.flat }}</p>
-      <small>{{ address.comment }}</small>
+      <p>
+        {{ address.street }}, д. {{ address.building
+        }}{{ address.flat ? `, кв. ${address.flat}` : `` }}
+      </p>
+      <small v-if="address.commen">{{ address.comment }}</small>
     </template>
   </div>
 </template>
@@ -91,6 +97,7 @@
 <script>
 import { cloneDeep } from "lodash";
 import { mapState, mapActions } from "vuex";
+import validator from "@/common/mixins/validator";
 
 const createNewAddress = () => ({
   name: "",
@@ -102,6 +109,7 @@ const createNewAddress = () => ({
 
 export default {
   name: "AddressForm",
+  mixins: [validator],
   props: {
     addressToEdit: {
       type: Object,
@@ -112,18 +120,38 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      address: createNewAddress(),
+      isEdit: true,
+      validations: {
+        name: {
+          error: "",
+          rules: ["required"],
+        },
+        street: {
+          error: "",
+          rules: ["required"],
+        },
+        building: {
+          error: "",
+          rules: ["required"],
+        },
+      },
+    };
+  },
   // Без наблюдателя при удалении задачи, у последующей за удаленной задаче this.address становится, как у удаленной. При этом addressToEdit в компоненте корректный
   // Кажется что проблема с key, но возможно vue просто так работает 🤔
   watch: {
     addressToEdit(value) {
       this.address = cloneDeep(value);
     },
-  },
-  data() {
-    return {
-      address: createNewAddress(),
-      isEdit: true,
-    };
+    address: {
+      deep: true,
+      handler() {
+        this.$clearValidationErrors();
+      },
+    },
   },
   created() {
     if (this.addressToEdit) {
@@ -137,6 +165,12 @@ export default {
   methods: {
     ...mapActions("Addresses", ["delete", "post", "put"]),
     async saveAddress() {
+      const { name, street, building } = this.address;
+
+      if (!this.$validateFields({ name, street, building }, this.validations)) {
+        return;
+      }
+
       if (this.addressToEdit) {
         await this.put({
           ...this.address,
