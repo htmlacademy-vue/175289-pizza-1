@@ -8,34 +8,26 @@
     </div>
     <form @submit.prevent="login">
       <div class="sign-form__input">
-        <div class="input">
-          <span>E-mail</span>
-          <input
-            ref="inputEmail"
-            v-model="email"
-            type="email"
-            name="email"
-            placeholder="example@mail.ru"
-          />
-        </div>
-        <div v-if="validations.email.error" class="sign-form__error">
-          {{ validations.email.error }}
-        </div>
+        <AppInput
+          ref="inputEmail"
+          label="E-mail"
+          type="email"
+          name="email"
+          v-model="email"
+          :error-text="validations.email.error"
+          placeholder="example@mail.ru"
+        />
       </div>
 
       <div class="sign-form__input">
-        <label class="input">
-          <span>Пароль</span>
-          <input
-            v-model="password"
-            type="password"
-            name="pass"
-            placeholder="***********"
-          />
-        </label>
-        <div v-if="validations.password.error" class="sign-form__error">
-          {{ validations.password.error }}
-        </div>
+        <AppInput
+          label="Пароль"
+          type="password"
+          name="pass"
+          v-model="password"
+          :error-text="validations.password.error"
+          placeholder="***********"
+        />
       </div>
       <button type="submit" class="button">Авторизоваться</button>
     </form>
@@ -74,7 +66,7 @@ export default {
     },
   },
   mounted() {
-    this.$refs.inputEmail.focus();
+    this.$refs.inputEmail.$refs.input.focus();
   },
   methods: {
     login() {

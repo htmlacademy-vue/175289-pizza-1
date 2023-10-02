@@ -5,7 +5,8 @@
   >
     <span>{{ label }}{{ bigLabel ? ":" : "" }}{{ required ? "*" : "" }}</span>
     <input
-      type="text"
+      ref="input"
+      :type="type"
       :name="name"
       :value="value"
       :placeholder="placeholder"
@@ -21,6 +22,10 @@ export default {
     label: {
       type: String,
       required: true,
+    },
+    type: {
+      type: String,
+      default: "text",
     },
     name: {
       type: String,
