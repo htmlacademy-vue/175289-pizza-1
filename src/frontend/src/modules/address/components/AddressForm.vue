@@ -16,62 +16,47 @@
       <form @submit.prevent="saveAddress">
         <div class="address-form__wrapper">
           <div class="address-form__input">
-            <label class="input">
-              <span>Название адреса*</span>
-              <input
-                v-model="address.name"
-                type="text"
-                name="addr-name"
-                placeholder="Введите название адреса"
-                required
-              />
-            </label>
+            <AppInput
+              label="Название адреса"
+              name="addr-name"
+              v-model="address.name"
+              placeholder="Введите название адреса"
+              required
+            />
           </div>
           <div class="address-form__input address-form__input--size--normal">
-            <label class="input">
-              <span>Улица*</span>
-              <input
-                v-model="address.street"
-                type="text"
-                name="addr-street"
-                placeholder="Введите название улицы"
-                required
-              />
-            </label>
+            <AppInput
+              label="Улица"
+              name="addr-street"
+              v-model="address.street"
+              placeholder="Введите название улицы"
+              required
+            />
           </div>
           <div class="address-form__input address-form__input--size--small">
-            <label class="input">
-              <span>Дом*</span>
-              <input
-                v-model="address.building"
-                type="text"
-                name="addr-house"
-                placeholder="Введите номер дома"
-                required
-              />
-            </label>
+            <AppInput
+              label="Дом"
+              name="addr-house"
+              v-model="address.building"
+              placeholder="Введите номер дома"
+              required
+            />
           </div>
           <div class="address-form__input address-form__input--size--small">
-            <label class="input">
-              <span>Квартира</span>
-              <input
-                v-model="address.flat"
-                type="text"
-                name="addr-apartment"
-                placeholder="Введите № квартиры"
-              />
-            </label>
+            <AppInput
+              label="Квартира"
+              name="addr-apartment"
+              v-model="address.flat"
+              placeholder="Введите № квартиры"
+            />
           </div>
           <div class="address-form__input">
-            <label class="input">
-              <span>Комментарий</span>
-              <input
-                v-model="address.comment"
-                type="text"
-                name="addr-comment"
-                placeholder="Введите комментарий"
-              />
-            </label>
+            <AppInput
+              label="Комментарий"
+              name="addr-comment"
+              v-model="address.comment"
+              placeholder="Введите комментарий"
+            />
           </div>
         </div>
 
