@@ -1,4 +1,9 @@
-import { ADD_ENTITY, SET_ENTITY, UPDATE_ENTITY } from "@/store/mutations-types";
+import {
+  ADD_ENTITY,
+  DELETE_ENTITY,
+  SET_ENTITY,
+  UPDATE_ENTITY,
+} from "@/store/mutations-types";
 import { capitalize } from "@/common/helpers";
 
 const entity = "addresses";
@@ -45,6 +50,19 @@ export default {
           entity,
           module,
           value: address,
+        },
+        { root: true }
+      );
+    },
+    async delete({ commit }, id) {
+      await this.$api.addresses.delete(id);
+
+      commit(
+        DELETE_ENTITY,
+        {
+          entity,
+          module,
+          id,
         },
         { root: true }
       );

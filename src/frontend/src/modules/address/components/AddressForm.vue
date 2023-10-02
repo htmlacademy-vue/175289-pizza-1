@@ -77,11 +77,20 @@
 
         <div class="address-form__buttons">
           <button
+            v-if="addressToEdit"
             class="button button--transparent"
             type="button"
-            @click="addressToEdit ? null : $emit('cancel')"
+            @click="deleteAddress"
           >
-            {{ addressToEdit ? "Удалить" : "Закрыть" }}
+            Удалить
+          </button>
+          <button
+            v-else
+            class="button button--transparent"
+            type="button"
+            @click="$emit('cancel')"
+          >
+            Закрыть
           </button>
           <button class="button" type="submit">Сохранить</button>
         </div>
@@ -118,6 +127,13 @@ export default {
       required: true,
     },
   },
+  // Без наблюдателя при удалении задачи, у последующей за удаленной задаче this.address становится, как у удаленной. При этом addressToEdit в компоненте корректный
+  // Кажется что проблема с key, но возможно vue просто так работает 🤔
+  watch: {
+    addressToEdit(value) {
+      this.address = cloneDeep(value);
+    },
+  },
   data() {
     return {
       address: createNewAddress(),
@@ -134,24 +150,25 @@ export default {
     ...mapState("Auth", ["user"]),
   },
   methods: {
-    ...mapActions("Addresses", {
-      postAddress: "post",
-      putAddress: "put",
-    }),
+    ...mapActions("Addresses", ["delete", "post", "put"]),
     async saveAddress() {
       if (this.addressToEdit) {
-        await this.putAddress({
+        await this.put({
           ...this.address,
           userId: this.user.id,
         });
       } else {
-        await this.postAddress({
+        await this.post({
           ...this.address,
           userId: this.user.id,
         });
         this.$emit("save");
       }
 
+      this.isEdit = false;
+    },
+    async deleteAddress() {
+      await this.delete(this.address.id);
       this.isEdit = false;
     },
   },
