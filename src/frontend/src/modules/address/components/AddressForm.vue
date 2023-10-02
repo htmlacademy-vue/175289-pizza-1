@@ -6,7 +6,7 @@
         <template v-if="!isEdit">{{ address.name }}</template>
       </b>
       <div v-if="!isEdit" class="address-form__edit">
-        <button type="button" class="icon">
+        <button class="icon" type="button" @click="isEdit = true">
           <span class="visually-hidden">Изменить адрес</span>
         </button>
       </div>
@@ -136,19 +136,23 @@ export default {
   methods: {
     ...mapActions("Addresses", {
       postAddress: "post",
+      putAddress: "put",
     }),
     async saveAddress() {
       if (this.addressToEdit) {
-        // ToDo
+        await this.putAddress({
+          ...this.address,
+          userId: this.user.id,
+        });
       } else {
         await this.postAddress({
           ...this.address,
           userId: this.user.id,
         });
+        this.$emit("save");
       }
 
       this.isEdit = false;
-      this.$emit("save");
     },
   },
 };
