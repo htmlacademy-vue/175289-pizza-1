@@ -20,8 +20,13 @@ export default new Vuex.Store({
     notifications: [],
   },
   actions: {
-    init({ dispatch }) {
-      dispatch("Addresses/query");
+    async init({ dispatch }) {
+      if (this.$jwt.getToken()) {
+        this.$api.auth.setAuthHeader();
+        dispatch("Auth/getMe");
+        dispatch("Addresses/query");
+      }
+
       dispatch("Builder/getData");
       dispatch("Misc/query");
     },

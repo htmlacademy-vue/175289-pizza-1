@@ -11,26 +11,7 @@ export default {
   },
   actions: {
     async query({ commit }) {
-      const data = [
-        {
-          id: 1,
-          name: "Тест",
-          street: "Невский пр.",
-          building: "д. 22",
-          flat: "кв. 46",
-          comment: "Позвоните, пожалуйста, от проходной",
-          userId: "string",
-        },
-        {
-          id: 2,
-          name: "Тест",
-          street: "Невский пр.",
-          building: "д. 22",
-          flat: "кв. 46",
-          comment: "Позвоните, пожалуйста, от проходной",
-          userId: "string",
-        },
-      ];
+      const { data } = await this.$api.addresses.query();
 
       commit(
         SET_ENTITY,
