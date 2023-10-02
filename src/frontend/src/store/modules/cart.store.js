@@ -13,6 +13,7 @@ import { capitalize, getOrderPrice } from "@/common/helpers";
 const entity = "cart";
 const module = capitalize(entity);
 
+const NEW_ADDRESS = "new address";
 const PICKUP = "pickup";
 
 const initialState = {
@@ -29,7 +30,7 @@ const initialState = {
 
 export default {
   namespaced: true,
-  state: {...initialState},
+  state: { ...initialState },
   getters: {
     miscQuantity: (state) => (id) => {
       const index = state.misc.findIndex((item) => item.id === id);
@@ -39,8 +40,11 @@ export default {
     totalPrice: (state) => {
       return getOrderPrice(state);
     },
-    showAddressFields: (state) => {
-      return state.delivery !== PICKUP;
+    isNewAddress: (state) => {
+      return state.delivery === NEW_ADDRESS;
+    },
+    isPickup: (state) => {
+      return state.delivery === PICKUP;
     },
   },
   actions: {

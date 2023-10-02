@@ -39,28 +39,19 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
+import { AppRoute } from "@/common/constants";
+import { RESET_BUILDER, RESET_CART } from "@/store/mutations-types";
 import CartList from "@/modules/cart/components/CartList.vue";
 import CartAdditional from "@/modules/cart/components/CartAdditional.vue";
 import CartForm from "@/modules/cart/components/CartForm.vue";
-import { AppRoute } from "@/common/constants";
-import {
-  RESET_BUILDER,
-  RESET_CART,
-} from "@/store/mutations-types";
 
 export default {
   name: "CartPage",
   components: { CartList, CartAdditional, CartForm },
   computed: {
     ...mapState("Auth", ["user", "isAuthenticated"]),
-    ...mapState("Cart", [
-      "pizzas",
-      "misc",
-      "phone",
-      "delivery",
-      "address",
-    ]),
-    ...mapGetters("Cart", ["totalPrice", "showAddressFields"]),
+    ...mapState("Cart", ["pizzas", "misc", "phone", "delivery", "address"]),
+    ...mapGetters("Cart", ["totalPrice", "isNewAddress", "isPickup"]),
     notEmpty() {
       return this.pizzas?.length > 0;
     },
@@ -76,25 +67,37 @@ export default {
       const form = this.$refs.form;
 
       // Валидируем форму корзины
-      const fields = this.showAddressFields
-        ? { phone: this.phone, street: this.address.street, building: this.address.building }
+      const fields = this.isNewAddress
+        ? {
+            phone: this.phone,
+            street: this.address.street,
+            building: this.address.building,
+          }
         : { phone: this.phone };
 
       if (!form.$validateFields(fields, form.validations)) {
         return;
       }
 
-      this.$api.orders.post({
-        userId: this.isAuthenticated ? this.user.id : null,
-        phone: this.phone,
-        address: this.showAddressFields? this.address : null,
-        pizzas: this.pizzas,
-        misc: this.misc,
-      }).then(() => {
-        this.resetBuilder();
-        this.resetCart();
-        this.$router.push(AppRoute.THANKS);
-      });
+      const address = this.isPickup
+        ? null
+        : this.isNewAddress
+        ? { ...this.address }
+        : { id: this.delivery };
+
+      this.$api.orders
+        .post({
+          userId: this.isAuthenticated ? this.user.id : null,
+          phone: this.phone,
+          address,
+          pizzas: this.pizzas,
+          misc: this.misc,
+        })
+        .then(() => {
+          this.resetBuilder();
+          this.resetCart();
+          this.$router.push(AppRoute.THANKS);
+        });
     },
   },
 };

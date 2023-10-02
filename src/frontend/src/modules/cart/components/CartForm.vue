@@ -12,6 +12,15 @@
         >
           <option value="pickup">Получу сам</option>
           <option value="new address">Новый адрес</option>
+          <template v-if="isAuthenticated">
+            <option
+              v-for="address in addresses"
+              :key="address.id"
+              :value="address.id"
+            >
+              {{ address.name }}
+            </option>
+          </template>
         </select>
       </label>
 
@@ -25,7 +34,7 @@
         @input="updatePhone"
       />
 
-      <div v-if="showAddressFields" class="cart-form__address">
+      <div v-if="isNewAddress" class="cart-form__address">
         <span class="cart-form__label">Новый адрес:</span>
 
         <div class="cart-form__input">
@@ -105,8 +114,10 @@ export default {
     },
   },
   computed: {
+    ...mapState("Auth", ["isAuthenticated"]),
+    ...mapState("Addresses", ["addresses"]),
     ...mapState("Cart", ["phone", "delivery", "address"]),
-    ...mapGetters("Cart", ["showAddressFields"]),
+    ...mapGetters("Cart", ["isNewAddress"]),
   },
   methods: {
     ...mapMutations("Cart", {
