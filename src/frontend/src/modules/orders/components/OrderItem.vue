@@ -10,7 +10,11 @@
       </div>
 
       <div class="order__button">
-        <button class="button button--border" type="button" @click="$emit('delete', order.id)">
+        <button
+          class="button button--border"
+          type="button"
+          @click="$emit('delete', order.id)"
+        >
           Удалить
         </button>
       </div>
@@ -22,11 +26,7 @@
     </div>
 
     <ul class="order__list">
-      <li
-        v-for="pizza in order.pizzas"
-        :key="pizza.id"
-        class="order__item"
-      >
+      <li v-for="pizza in order.pizzas" :key="pizza.id" class="order__item">
         <div class="product">
           <img
             class="product__img"
@@ -47,7 +47,10 @@
                 Начинка:
                 {{
                   pizza.ingredients
-                    .reduce((prev, next) => [...prev, next.name.toLowerCase()], [])
+                    .reduce(
+                      (prev, next) => [...prev, next.name.toLowerCase()],
+                      []
+                    )
                     .join(", ")
                 }}
               </li>
@@ -55,33 +58,31 @@
           </div>
         </div>
 
-        <p class="order__price">{{ pizza.quantity > 1 ? `${pizza.quantity}х` : `` }}{{ pizza.price }} ₽</p>
+        <p class="order__price">
+          {{ pizza.quantity > 1 ? `${pizza.quantity}х` : ``
+          }}{{ pizza.price }} ₽
+        </p>
       </li>
     </ul>
 
-    <ul v-if="order.misc"  class="order__additional">
-      <li
-        v-for="misc in order.misc"
-        :key="misc.id"
-      >
-        <img
-          :src="misc.image"
-          :alt="misc.name"
-          width="20"
-          height="30"
-        />
+    <ul v-if="order.misc" class="order__additional">
+      <li v-for="misc in order.misc" :key="misc.id">
+        <img :src="misc.image" :alt="misc.name" width="20" height="30" />
         <p>
           <span>{{ misc.name }}</span>
-          <b>{{ misc.quantity > 1 ? `${misc.quantity}х` : `` }}{{ misc.price }} ₽</b>
+          <b>
+            {{ misc.quantity > 1 ? `${misc.quantity}х` : `` }}{{ misc.price }} ₽
+          </b>
         </p>
       </li>
     </ul>
 
     <p v-if="order.address" class="order__address">
       Адрес доставки:
-      {{ order.addressId
-        ? order.address.name
-        : `${order.address.string}, ${order.address.building}, ${order.address.flat}`
+      {{
+        order.addressId
+          ? order.address.name
+          : `${order.address.string}, ${order.address.building}, ${order.address.flat}`
       }}
     </p>
   </section>
@@ -100,7 +101,7 @@ export default {
   },
   computed: {
     orderPrice() {
-      return getOrderPrice({...this.order});
+      return getOrderPrice(this.order);
     },
   },
 };

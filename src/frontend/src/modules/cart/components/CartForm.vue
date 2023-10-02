@@ -90,8 +90,8 @@ export default {
           error: "",
           rules: ["required"],
         },
-      }
-    }
+      },
+    };
   },
   watch: {
     phone() {
@@ -105,11 +105,7 @@ export default {
     },
   },
   computed: {
-    ...mapState("Cart", [
-      "phone",
-      "delivery",
-      "address",
-    ]),
+    ...mapState("Cart", ["phone", "delivery", "address"]),
     ...mapGetters("Cart", ["showAddressFields"]),
   },
   methods: {

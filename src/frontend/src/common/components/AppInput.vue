@@ -1,5 +1,8 @@
 <template>
-  <label class="input" :class="{ 'input--big-label': bigLabel, 'input--error': !!errorText }">
+  <label
+    class="input"
+    :class="{ 'input--big-label': bigLabel, 'input--error': !!errorText }"
+  >
     <span>{{ label }}{{ bigLabel ? ":" : "" }}{{ required ? "*" : "" }}</span>
     <input
       type="text"

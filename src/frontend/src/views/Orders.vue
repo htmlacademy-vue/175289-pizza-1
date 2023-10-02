@@ -50,6 +50,6 @@ export default {
       this.updateCart(order);
       this.$router.push(AppRoute.CART);
     },
-  }
+  },
 };
 </script>
