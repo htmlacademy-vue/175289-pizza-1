@@ -4,13 +4,11 @@ import { capitalize } from "@/common/helpers";
 const entity = "misc";
 const module = capitalize(entity);
 
-const setupState = () => ({
-  misc: [],
-});
-
 export default {
   namespaced: true,
-  state: setupState(),
+  state: {
+    misc: [],
+  },
   actions: {
     async query({ commit }) {
       const { data } = await this.$api.misc.query();
