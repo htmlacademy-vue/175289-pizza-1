@@ -38,6 +38,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import { AppRoute } from "@/common/constants";
 
 export default {
   name: "AppLayoutHeader",
@@ -49,6 +50,7 @@ export default {
     logout() {
       this.$store.dispatch("Auth/logout").then(() => {
         this.$notifier.success("Вы успешно вышли");
+        this.$router.push(AppRoute.LOGIN);
       });
     },
   },
