@@ -15,7 +15,6 @@
 
 <script>
 import { mapState } from "vuex";
-import { AppRoute } from "@/common/constants";
 
 export default {
   name: "CartPopup",
@@ -35,10 +34,7 @@ export default {
       }
     },
     close() {
-      // ToDo:
-      // При редиректе в раздел заказов после оформления заказа он заканчивается ошибкой.
-      // Вероятно, есть какая то проблема в на странице, но пока не поняла, какая
-      this.$router.push(this.isAuthenticated ? AppRoute.ORDERS : AppRoute.MAIN);
+      this.$emit("close");
     },
   },
 };

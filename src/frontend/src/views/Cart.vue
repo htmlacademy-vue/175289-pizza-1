@@ -1,6 +1,6 @@
 <template>
   <form class="layout-form" @submit.prevent="onSubmit">
-    <router-view />
+    <CartPopup v-if="showPopup" @close="onPopupClose" />
 
     <main class="content cart">
       <div class="container">
@@ -44,10 +44,16 @@ import { RESET_BUILDER, RESET_CART } from "@/store/mutations-types";
 import CartList from "@/modules/cart/components/CartList.vue";
 import CartAdditional from "@/modules/cart/components/CartAdditional.vue";
 import CartForm from "@/modules/cart/components/CartForm.vue";
+import CartPopup from "@/modules/cart/components/CartPopup.vue";
 
 export default {
   name: "CartPage",
-  components: { CartList, CartAdditional, CartForm },
+  components: { CartList, CartAdditional, CartForm, CartPopup },
+  data() {
+    return {
+      showPopup: false,
+    };
+  },
   computed: {
     ...mapState("Auth", ["user", "isAuthenticated"]),
     ...mapState("Cart", ["pizzas", "misc", "phone", "delivery", "address"]),
@@ -96,8 +102,12 @@ export default {
         .then(() => {
           this.resetBuilder();
           this.resetCart();
-          this.$router.push(AppRoute.THANKS);
+          this.showPopup = true;
         });
+    },
+    onPopupClose() {
+      this.showPopup = false;
+      this.$router.push(this.isAuthenticated ? AppRoute.ORDERS : AppRoute.MAIN);
     },
   },
 };
