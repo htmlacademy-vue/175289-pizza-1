@@ -21,13 +21,6 @@ export default [
     path: AppRoute.CART,
     name: "Cart",
     component: () => import("../views/Cart.vue"),
-    children: [
-      {
-        path: AppRoute.THANKS,
-        name: "Thanks",
-        component: () => import("../views/Thanks.vue"),
-      },
-    ],
   },
   {
     path: AppRoute.ORDERS,

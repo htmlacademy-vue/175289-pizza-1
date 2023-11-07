@@ -4,7 +4,6 @@ export const AppRoute = {
   LOGIN: "/login",
   ORDERS: "/orders",
   PROFILE: "/profile",
-  THANKS: "/thanks",
 };
 
 export const DATA_TRANSFER_PAYLOAD = "payload";
