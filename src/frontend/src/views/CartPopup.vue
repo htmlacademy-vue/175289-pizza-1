@@ -18,7 +18,7 @@ import { mapState } from "vuex";
 import { AppRoute } from "@/common/constants";
 
 export default {
-  name: "ThanksPage",
+  name: "CartPopup",
   mounted() {
     document.addEventListener("keydown", this.onDocumentKeydown);
   },
