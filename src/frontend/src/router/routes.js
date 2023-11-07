@@ -1,13 +1,14 @@
 import { auth, guest } from "@/middlewares";
+import { AppRoute } from "@/common/constants";
 
 export default [
   {
-    path: "/",
+    path: AppRoute.MAIN,
     name: "Index",
     component: () => import("../views/Index.vue"),
     children: [
       {
-        path: "/login",
+        path: AppRoute.LOGIN,
         name: "Login",
         component: () => import("../views/Login.vue"),
         meta: {
@@ -17,19 +18,19 @@ export default [
     ],
   },
   {
-    path: "/cart",
+    path: AppRoute.CART,
     name: "Cart",
     component: () => import("../views/Cart.vue"),
     children: [
       {
-        path: "/thanks",
+        path: AppRoute.THANKS,
         name: "Thanks",
         component: () => import("../views/Thanks.vue"),
       },
     ],
   },
   {
-    path: "/orders",
+    path: AppRoute.ORDERS,
     name: "Orders",
     component: () => import("../views/Orders.vue"),
     meta: {
@@ -38,7 +39,7 @@ export default [
     },
   },
   {
-    path: "/profile",
+    path: AppRoute.PROFILE,
     name: "Profile",
     component: () => import("../views/Profile.vue"),
     meta: {

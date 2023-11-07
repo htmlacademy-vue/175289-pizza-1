@@ -3,6 +3,7 @@ export const AppRoute = {
   CART: "/cart",
   LOGIN: "/login",
   ORDERS: "/orders",
+  PROFILE: "/profile",
   THANKS: "/thanks",
 };
 
