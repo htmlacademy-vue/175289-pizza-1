@@ -16,12 +16,12 @@
       </p>
     </div>
 
-    <div v-for="(address, index) in addresses" class="layout__address">
-      <AddressForm
-        :key="addresses.id"
-        :address-to-edit="address"
-        :number="index + 1"
-      />
+    <div
+      v-for="(address, index) in addresses"
+      :key="address.id"
+      class="layout__address"
+    >
+      <AddressForm :address-to-edit="address" :number="index + 1" />
     </div>
 
     <!-- Форма создания нового адреса -->
