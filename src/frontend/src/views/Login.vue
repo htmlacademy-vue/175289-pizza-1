@@ -11,7 +11,6 @@
         <AppInput
           ref="inputEmail"
           label="E-mail"
-          type="email"
           name="email"
           v-model="email"
           :error-text="validations.email.error"
