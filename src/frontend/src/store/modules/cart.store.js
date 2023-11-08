@@ -2,30 +2,35 @@ import {
   ADD_ENTITY,
   UPDATE_ENTITY,
   DELETE_ENTITY,
+  RESET_CART,
+  UPDATE_CART,
   UPDATE_CART_DELIVERY,
   UPDATE_CART_PHONE,
   UPDATE_CART_ADDRESS,
 } from "@/store/mutations-types";
-import { capitalize, formatPrice } from "@/common/helpers";
+import { capitalize, getOrderPrice } from "@/common/helpers";
 
 const entity = "cart";
 const module = capitalize(entity);
 
-const setupState = () => ({
+const NEW_ADDRESS = "new address";
+const PICKUP = "pickup";
+
+const initialState = {
   pizzas: [],
   misc: [],
-  delivery: "pickup",
   phone: "",
+  delivery: PICKUP,
   address: {
     street: "",
-    house: "",
-    apartment: "",
+    building: "",
+    flat: "",
   },
-});
+};
 
 export default {
   namespaced: true,
-  state: setupState(),
+  state: { ...initialState },
   getters: {
     miscQuantity: (state) => (id) => {
       const index = state.misc.findIndex((item) => item.id === id);
@@ -33,14 +38,13 @@ export default {
       return ~index ? state.misc[index].quantity : 0;
     },
     totalPrice: (state) => {
-      const price = [...state.pizzas, ...state.misc].reduce(
-        (previousValue, currentValue) => {
-          return previousValue + currentValue.price * currentValue.quantity;
-        },
-        0
-      );
-
-      return formatPrice(price);
+      return getOrderPrice(state);
+    },
+    isNewAddress: (state) => {
+      return state.delivery === NEW_ADDRESS;
+    },
+    isPickup: (state) => {
+      return state.delivery === PICKUP;
     },
   },
   actions: {
@@ -84,6 +88,21 @@ export default {
     },
   },
   mutations: {
+    [RESET_CART](state) {
+      for (let key in state) {
+        state[key] = initialState[key];
+      }
+    },
+    [UPDATE_CART](state, { pizzas, misc, phone, address }) {
+      state.pizzas = pizzas;
+      state.misc = misc ?? [];
+      state.phone = phone;
+      state.address = address ?? {
+        street: "",
+        building: "",
+        flat: "",
+      };
+    },
     [UPDATE_CART_DELIVERY](state, delivery) {
       state.delivery = delivery;
     },

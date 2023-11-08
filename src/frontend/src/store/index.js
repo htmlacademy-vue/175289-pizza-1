@@ -1,13 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
-import Auth from "@/store/modules/auth.store";
-import Builder from "@/store/modules/builder.store";
-import Cart from "@/store/modules/cart.store";
-import Misc from "@/store/modules/misc.store";
-import Orders from "@/store/modules/orders.store";
-
+import { uniqueId } from "lodash";
+import modules from "@/store/modules";
+import vuexPlugins from "@/plugins/vuexPlugins";
+import { MESSAGE_LIVE_TIME } from "@/common/constants";
 import {
+  ADD_NOTIFICATION,
+  DELETE_NOTIFICATION,
   SET_ENTITY,
   ADD_ENTITY,
   UPDATE_ENTITY,
@@ -17,12 +16,41 @@ import {
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  state: {
+    notifications: [],
+  },
   actions: {
-    init({ dispatch }) {
+    async init({ dispatch }) {
+      if (this.$jwt.getToken()) {
+        this.$api.auth.setAuthHeader();
+        dispatch("Auth/getMe");
+        dispatch("Addresses/query");
+      }
+
+      dispatch("Builder/getData");
       dispatch("Misc/query");
+    },
+    async createNotification({ commit }, { ...notification }) {
+      const uniqueNotification = {
+        ...notification,
+        id: uniqueId(),
+      };
+      commit(ADD_NOTIFICATION, uniqueNotification);
+      setTimeout(
+        () => commit(DELETE_NOTIFICATION, uniqueNotification.id),
+        MESSAGE_LIVE_TIME
+      );
     },
   },
   mutations: {
+    [ADD_NOTIFICATION](state, notification) {
+      state.notifications = [...state.notifications, notification];
+    },
+    [DELETE_NOTIFICATION](state, id) {
+      state.notifications = state.notifications.filter(
+        (notification) => notification.id !== id
+      );
+    },
     [SET_ENTITY](state, { module, entity, value }) {
       if (module) {
         state[module][entity] = value;
@@ -64,11 +92,6 @@ export default new Vuex.Store({
       }
     },
   },
-  modules: {
-    Auth,
-    Builder,
-    Cart,
-    Misc,
-    Orders,
-  },
+  modules,
+  plugins: [vuexPlugins],
 });

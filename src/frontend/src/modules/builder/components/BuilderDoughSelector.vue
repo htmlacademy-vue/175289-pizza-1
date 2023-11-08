@@ -5,7 +5,7 @@
 
       <div class="sheet__content dough">
         <label
-          v-for="dough in doughs"
+          v-for="dough in data.dough"
           :key="dough.name"
           class="dough__input"
           :class="`dough__input--${dough.value}`"
@@ -15,7 +15,7 @@
             type="radio"
             name="dough"
             :value="dough.value"
-            :checked="dough === selectedDough"
+            :checked="dough.id === selectedDough.id"
             @change="$emit('change-dough', dough)"
           />
           <b>{{ dough.name }}</b>
@@ -32,7 +32,7 @@ import { mapState, mapGetters } from "vuex";
 export default {
   name: "BuilderDoughSelector",
   computed: {
-    ...mapState("Builder", ["doughs"]),
+    ...mapState("Builder", ["data"]),
     ...mapGetters("Builder", ["selectedDough"]),
   },
 };

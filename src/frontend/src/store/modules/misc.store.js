@@ -1,20 +1,17 @@
 import { SET_ENTITY } from "@/store/mutations-types";
 import { capitalize } from "@/common/helpers";
-import misc from "@/static/misc.json";
 
 const entity = "misc";
 const module = capitalize(entity);
 
-const setupState = () => ({
-  misc: [],
-});
-
 export default {
   namespaced: true,
-  state: setupState(),
+  state: {
+    misc: [],
+  },
   actions: {
-    query({ commit }) {
-      const data = misc;
+    async query({ commit }) {
+      const { data } = await this.$api.misc.query();
 
       commit(
         SET_ENTITY,

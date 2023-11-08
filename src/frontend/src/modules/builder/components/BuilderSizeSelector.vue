@@ -5,7 +5,7 @@
 
       <div class="sheet__content diameter">
         <label
-          v-for="size in sizes"
+          v-for="size in data.sizes"
           :key="size.name"
           class="diameter__input"
           :class="`diameter__input--${size.value}`"
@@ -15,7 +15,7 @@
             type="radio"
             name="diameter"
             :value="size.value"
-            :checked="size === selectedSize"
+            :checked="size.id === selectedSize.id"
             @change="$emit('change-size', size)"
           />
           <span>{{ size.name }}</span>
@@ -31,7 +31,7 @@ import { mapState, mapGetters } from "vuex";
 export default {
   name: "BuilderSizeSelector",
   computed: {
-    ...mapState("Builder", ["sizes"]),
+    ...mapState("Builder", ["data"]),
     ...mapGetters("Builder", ["selectedSize"]),
   },
 };

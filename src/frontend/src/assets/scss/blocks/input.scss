@@ -52,4 +52,12 @@
       white-space: nowrap;
     }
   }
+
+  &--error {
+    color: $red-800;
+
+    input {
+      border-color: $red-800;
+    }
+  }
 }

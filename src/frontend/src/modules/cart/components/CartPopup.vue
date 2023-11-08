@@ -14,15 +14,18 @@
 </template>
 
 <script>
-import { AppRoute } from "@/common/constants";
+import { mapState } from "vuex";
 
 export default {
-  name: "ThanksPage",
+  name: "CartPopup",
   mounted() {
     document.addEventListener("keydown", this.onDocumentKeydown);
   },
   destroyed() {
     document.removeEventListener("keydown", this.onDocumentKeydown);
+  },
+  computed: {
+    ...mapState("Auth", ["isAuthenticated"]),
   },
   methods: {
     onDocumentKeydown({ code }) {
@@ -31,7 +34,7 @@ export default {
       }
     },
     close() {
-      this.$router.push(AppRoute.MAIN);
+      this.$emit("close");
     },
   },
 };

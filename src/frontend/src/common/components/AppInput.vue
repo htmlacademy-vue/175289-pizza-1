@@ -1,8 +1,12 @@
 <template>
-  <label class="input" :class="{ 'input--big-label': bigLabel }">
+  <label
+    class="input"
+    :class="{ 'input--big-label': bigLabel, 'input--error': !!errorText }"
+  >
     <span>{{ label }}{{ bigLabel ? ":" : "" }}{{ required ? "*" : "" }}</span>
     <input
-      type="text"
+      ref="input"
+      :type="type"
       :name="name"
       :value="value"
       :placeholder="placeholder"
@@ -19,6 +23,10 @@ export default {
       type: String,
       required: true,
     },
+    type: {
+      type: String,
+      default: "text",
+    },
     name: {
       type: String,
       required: true,
@@ -34,6 +42,10 @@ export default {
     bigLabel: {
       type: Boolean,
       default: false,
+    },
+    errorText: {
+      type: String,
+      default: "",
     },
     required: {
       type: Boolean,

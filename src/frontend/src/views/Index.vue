@@ -89,8 +89,6 @@ export default {
         entity: "pizzas",
         value,
       });
-
-      // ToDo: reset builder
     },
     changeDough(dough) {
       this.updatePizza({ dough });
@@ -101,14 +99,14 @@ export default {
     changeSauce(sauce) {
       this.updatePizza({ sauce });
     },
-    changeIngredient({ ingredient, count }) {
+    changeIngredient({ ingredient, quantity }) {
       const ingredients = [...this.pizza.ingredients];
       const index = ingredients.findIndex(({ id }) => id === ingredient.id);
 
-      if (count > 0) {
+      if (quantity > 0) {
         ~index
-          ? (ingredients[index].count = count)
-          : ingredients.push({ ...ingredient, count });
+          ? (ingredients[index].quantity = quantity)
+          : ingredients.push({ ...ingredient, quantity });
       } else {
         ingredients.splice(index, 1);
       }
@@ -120,8 +118,8 @@ export default {
       const index = ingredients.findIndex(({ id }) => id === ingredient.id);
 
       ~index
-        ? (ingredients[index].count = ingredients[index].count + 1)
-        : ingredients.push({ ...ingredient, count: 1 });
+        ? (ingredients[index].quantity = ingredients[index].quantity + 1)
+        : ingredients.push({ ...ingredient, quantity: 1 });
 
       this.updatePizza({ ingredients });
     },

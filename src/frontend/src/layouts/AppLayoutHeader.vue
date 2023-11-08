@@ -22,7 +22,7 @@
           <span>{{ user.name }}</span>
         </router-link>
 
-        <a href="#" class="header__logout">
+        <a href="#" class="header__logout" @click.prevent="logout">
           <span>Выйти</span>
         </a>
       </template>
@@ -38,12 +38,21 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import { AppRoute } from "@/common/constants";
 
 export default {
   name: "AppLayoutHeader",
   computed: {
     ...mapState("Auth", ["user"]),
     ...mapGetters("Cart", ["totalPrice"]),
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("Auth/logout").then(() => {
+        this.$notifier.success("Вы успешно вышли");
+        this.$router.push(AppRoute.LOGIN);
+      });
+    },
   },
 };
 </script>
