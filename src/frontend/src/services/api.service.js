@@ -96,17 +96,32 @@ export class OrdersApiService extends CrudApiService {
     super(Resources.ORDERS, notifier);
   }
 
-  _normalizeToClient({ addressId, id, orderPizzas, orderMisc, orderAddress, phone }) {
+  _normalizeToClient({
+    addressId,
+    id,
+    orderPizzas,
+    orderMisc,
+    orderAddress,
+    phone,
+  }) {
     const normalizePizza = (pizza) => {
       const adaptPizza = {
         ...pizza,
-        dough: store.state.Builder.data.dough.find(({ id }) => id === pizza.doughId),
+        dough: store.state.Builder.data.dough.find(
+          ({ id }) => id === pizza.doughId
+        ),
         ingredients: pizza.ingredients.map(({ ingredientId, quantity }) => ({
-          ...store.state.Builder.data.ingredients.find(({id}) => id === ingredientId),
+          ...store.state.Builder.data.ingredients.find(
+            ({ id }) => id === ingredientId
+          ),
           quantity,
         })),
-        sauce: store.state.Builder.data.sauces.find(({ id }) => id === pizza.sauceId),
-        size: store.state.Builder.data.sizes.find(({ id }) => id === pizza.sizeId),
+        sauce: store.state.Builder.data.sauces.find(
+          ({ id }) => id === pizza.sauceId
+        ),
+        size: store.state.Builder.data.sizes.find(
+          ({ id }) => id === pizza.sizeId
+        ),
       };
 
       adaptPizza.price = getPizzaPrice(adaptPizza);
@@ -150,7 +165,7 @@ export class OrdersApiService extends CrudApiService {
       doughId: pizza.dough.id,
       sizeId: pizza.size.id,
       quantity: pizza.quantity,
-      ingredients: pizza.ingredients.map(({ id, quantity}) => ({
+      ingredients: pizza.ingredients.map(({ id, quantity }) => ({
         ingredientId: id,
         quantity,
       })),
