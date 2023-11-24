@@ -1,6 +1,8 @@
 <template>
   <form class="layout-form" @submit.prevent="onSubmit">
-    <CartPopup v-if="showPopup" @close="onPopupClose" />
+    <PopupTransition>
+      <CartPopup v-if="showPopup" @close="onPopupClose" />
+    </PopupTransition>
 
     <main class="content cart">
       <div class="container">
@@ -39,16 +41,23 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
-import { AppRoute } from "@/common/constants";
+import { AppRoute, LEAVE_ANIMATION_DURATION } from "@/common/constants";
 import { RESET_BUILDER, RESET_CART } from "@/store/mutations-types";
 import CartList from "@/modules/cart/components/CartList.vue";
 import CartAdditional from "@/modules/cart/components/CartAdditional.vue";
 import CartForm from "@/modules/cart/components/CartForm.vue";
 import CartPopup from "@/modules/cart/components/CartPopup.vue";
+import PopupTransition from "@/common/components/PopupTransition.vue";
 
 export default {
   name: "CartPage",
-  components: { CartList, CartAdditional, CartForm, CartPopup },
+  components: {
+    CartList,
+    CartAdditional,
+    CartForm,
+    CartPopup,
+    PopupTransition,
+  },
   data() {
     return {
       showPopup: false,
@@ -107,7 +116,11 @@ export default {
     },
     onPopupClose() {
       this.showPopup = false;
-      this.$router.push(this.isAuthenticated ? AppRoute.ORDERS : AppRoute.MAIN);
+      setTimeout(() => {
+        this.$router.push(
+          this.isAuthenticated ? AppRoute.ORDERS : AppRoute.MAIN
+        );
+      }, LEAVE_ANIMATION_DURATION);
     },
   },
 };
