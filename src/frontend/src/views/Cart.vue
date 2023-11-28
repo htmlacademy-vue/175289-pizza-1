@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 import { AppRoute, LEAVE_ANIMATION_DURATION } from "@/common/constants";
 import { RESET_BUILDER, RESET_CART } from "@/store/mutations-types";
 import CartList from "@/modules/cart/components/CartList.vue";
@@ -72,6 +72,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions("Orders", ["post"]),
     ...mapMutations("Builder", {
       resetBuilder: RESET_BUILDER,
     }),
@@ -105,7 +106,7 @@ export default {
       return form.$validateFields(fields, form.validations);
     },
     createNewOrder() {
-      this.$api.orders.post(this.getOrderData()).then(() => {
+      this.post(this.getOrderData()).then(() => {
         this.resetBuilder();
         this.resetCart();
         this.showPopup = true;

@@ -4,15 +4,13 @@
       <h1 class="title title--big">История заказов</h1>
     </div>
 
-    <template v-if="orders">
-      <OrderItem
-        v-for="order in orders"
-        :key="order.id"
-        :order="order"
-        @delete="deleteOrder"
-        @repeat="repeatOrder"
-      />
-    </template>
+    <OrderItem
+      v-for="order in orders"
+      :key="order.id"
+      :order="order"
+      @delete="deleteOrder"
+      @repeat="repeatOrder"
+    />
   </div>
 </template>
 
@@ -21,30 +19,26 @@ import { mapMutations } from "vuex";
 import { COPY_ORDER_TO_CART } from "@/store/mutations-types";
 import { AppRoute } from "@/common/constants";
 import OrderItem from "@/modules/orders/components/OrderItem.vue";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "OrdersPage",
   components: {
     OrderItem,
   },
-  data() {
-    return {
-      orders: null,
-    };
+  computed: {
+    ...mapState("Orders", ["orders"]),
   },
   created() {
-    this.$api.orders.query().then((data) => {
-      this.orders = data;
-    });
+    this.query();
   },
   methods: {
+    ...mapActions("Orders", ["query", "delete"]),
     ...mapMutations("Cart", {
       copyOrderToCart: COPY_ORDER_TO_CART,
     }),
     deleteOrder(id) {
-      this.$api.orders.delete(id).then(() => {
-        this.orders = this.orders.filter((order) => order.id !== id);
-      });
+      this.delete(id);
     },
     repeatOrder(order) {
       this.copyOrderToCart(order);
