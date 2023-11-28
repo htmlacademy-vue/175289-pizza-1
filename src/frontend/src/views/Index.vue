@@ -48,7 +48,6 @@
 <script>
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 import { uniqueId } from "lodash";
-import AppDrop from "@/common/components/AppDrop";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
@@ -58,7 +57,6 @@ import { UPDATE_PIZZA } from "@/store/mutations-types";
 export default {
   name: "IndexPage",
   components: {
-    AppDrop,
     BuilderDoughSelector,
     BuilderSizeSelector,
     BuilderIngredientsSelector,

@@ -60,18 +60,10 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import AppDrop from "@/common/components/AppDrop";
-import AppDrag from "@/common/components/AppDrag";
-import AppRadioButton from "@/common/components/AppRadioButton";
 import { MAX_INGREDIENT_QUANTITY } from "@/common/constants";
 
 export default {
   name: "BuilderIngredientsSelector",
-  components: {
-    AppDrop,
-    AppDrag,
-    AppRadioButton,
-  },
   data() {
     return {
       maxIngredientQuantity: MAX_INGREDIENT_QUANTITY,
