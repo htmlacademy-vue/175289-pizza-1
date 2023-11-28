@@ -18,7 +18,7 @@
 
 <script>
 import { mapMutations } from "vuex";
-import { UPDATE_CART } from "@/store/mutations-types";
+import { COPY_ORDER_TO_CART } from "@/store/mutations-types";
 import { AppRoute } from "@/common/constants";
 import OrderItem from "@/modules/orders/components/OrderItem.vue";
 
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     ...mapMutations("Cart", {
-      updateCart: UPDATE_CART,
+      copyOrderToCart: COPY_ORDER_TO_CART,
     }),
     deleteOrder(id) {
       this.$api.orders.delete(id).then(() => {
@@ -47,7 +47,7 @@ export default {
       });
     },
     repeatOrder(order) {
-      this.updateCart(order);
+      this.copyOrderToCart(order);
       this.$router.push(AppRoute.CART);
     },
   },

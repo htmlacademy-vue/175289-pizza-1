@@ -2,8 +2,8 @@ import {
   ADD_ENTITY,
   UPDATE_ENTITY,
   DELETE_ENTITY,
+  COPY_ORDER_TO_CART,
   RESET_CART,
-  UPDATE_CART,
   UPDATE_CART_DELIVERY,
   UPDATE_CART_PHONE,
   UPDATE_CART_ADDRESS,
@@ -88,20 +88,25 @@ export default {
     },
   },
   mutations: {
-    [RESET_CART](state) {
-      for (let key in state) {
-        state[key] = initialState[key];
-      }
-    },
-    [UPDATE_CART](state, { pizzas, misc, phone, address }) {
+    [COPY_ORDER_TO_CART](state, { pizzas, misc, phone, addressId }) {
       state.pizzas = pizzas;
       state.misc = misc ?? [];
       state.phone = phone;
-      state.address = address ?? {
+      if (addressId) {
+        state.delivery = addressId;
+      } else {
+        state.delivery = PICKUP;
+      }
+      state.address = {
         street: "",
         building: "",
         flat: "",
       };
+    },
+    [RESET_CART](state) {
+      for (let key in state) {
+        state[key] = initialState[key];
+      }
     },
     [UPDATE_CART_DELIVERY](state, delivery) {
       state.delivery = delivery;
