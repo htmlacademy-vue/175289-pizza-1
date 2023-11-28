@@ -1,4 +1,9 @@
 import {
+  SET_ENTITY,
+  RESET_BUILDER,
+  UPDATE_PIZZA,
+} from "@/store/mutations-types";
+import {
   capitalize,
   getPizzaPrice,
   normalizeDough,
@@ -6,11 +11,6 @@ import {
   normalizeSize,
   normalizeSauce,
 } from "@/common/helpers";
-import {
-  SET_ENTITY,
-  RESET_BUILDER,
-  UPDATE_PIZZA,
-} from "@/store/mutations-types";
 
 const entity = "builder";
 const module = capitalize(entity);
