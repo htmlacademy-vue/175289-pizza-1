@@ -1,0 +1,108 @@
+[
+  {
+    "id": "2",
+    "quantity": 1,
+    "name": "С грибами и ветчиной",
+    "dough": {
+      "id": 1,
+      "name": "Тонкое",
+      "image": "/public/img/dough-light.svg",
+      "description": "Из твердых сортов пшеницы",
+      "price": 300,
+      "value": "small"
+    },
+    "size": {
+      "id": 2,
+      "name": "32 см",
+      "image": "/public/img/diameter.svg",
+      "multiplier": 2,
+      "value": "normal"
+    },
+    "sauce": {
+      "id": 1,
+      "name": "Томатный",
+      "price": 50,
+      "value": "tomato"
+    },
+    "ingredients": [
+      {
+        "id": 1,
+        "name": "Грибы",
+        "image": "/public/img/filling/mushrooms.svg",
+        "price": 33,
+        "value": "mushrooms",
+        "quantity": 1
+      },
+      {
+        "id": 10,
+        "name": "Ветчина",
+        "image": "/public/img/filling/ham.svg",
+        "price": 42,
+        "value": "olives",
+        "quantity": 1
+      },
+      {
+        "id": 3,
+        "name": "Томаты",
+        "image": "/public/img/filling/tomatoes.svg",
+        "price": 35,
+        "value": "salami",
+        "quantity": 1
+      }
+    ],
+    "price": 1154
+  },
+  {
+    "id": "3",
+    "quantity": 1,
+    "name": "Четыре сыра",
+    "dough": {
+      "id": 2,
+      "name": "Толстое",
+      "image": "/public/img/dough-large.svg",
+      "description": "Из твердых сортов пшеницы",
+      "price": 300,
+      "value": "big"
+    },
+    "size": {
+      "id": 3,
+      "name": "45 см",
+      "image": "/public/img/diameter.svg",
+      "multiplier": 3,
+      "value": "big"
+    },
+    "sauce": {
+      "id": 1,
+      "name": "Томатный",
+      "price": 50,
+      "value": "tomato"
+    },
+    "ingredients": [
+      {
+        "id": 2,
+        "name": "Чеддер",
+        "image": "/public/img/filling/cheddar.svg",
+        "price": 42,
+        "value": "cheddar",
+        "quantity": 3
+      },
+      {
+        "id": 5,
+        "name": "Моцарелла",
+        "image": "/public/img/filling/mozzarella.svg",
+        "price": 35,
+        "value": "ananas",
+        "quantity": 2
+      },
+      {
+        "id": 6,
+        "name": "Пармезан",
+        "image": "/public/img/filling/parmesan.svg",
+        "price": 35,
+        "value": "bacon",
+        "quantity": 1
+      }
+    ],
+    "price": 1743
+  }
+]
