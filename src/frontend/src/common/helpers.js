@@ -8,6 +8,8 @@ import {
   ReadOnlyApiService,
   CrudApiService,
 } from "@/services/api.service";
+import { SET_ENTITY } from "@/store/mutations-types";
+import user from "@/store/mocks/data/user";
 
 export const capitalize = (string) => {
   return `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
@@ -77,4 +79,25 @@ export const normalizeSauce = (sauce) => {
     ...sauce,
     value: sauceValues[sauce.id],
   };
+};
+
+export const setUser = (store) => {
+  store.commit(
+    SET_ENTITY,
+    {
+      module: "Auth",
+      entity: "user",
+      value: user,
+    },
+    { root: true }
+  );
+  store.commit(
+    SET_ENTITY,
+    {
+      module: "Auth",
+      entity: "isAuthenticated",
+      value: true,
+    },
+    { root: true }
+  );
 };
