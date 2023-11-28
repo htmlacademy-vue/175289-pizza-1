@@ -1,12 +1,10 @@
 import {
+  SET_ENTITY,
   ADD_ENTITY,
   UPDATE_ENTITY,
   DELETE_ENTITY,
   COPY_ORDER_TO_CART,
   RESET_CART,
-  UPDATE_CART_DELIVERY,
-  UPDATE_CART_PHONE,
-  UPDATE_CART_ADDRESS,
 } from "@/store/mutations-types";
 import { capitalize, getOrderPrice } from "@/common/helpers";
 
@@ -86,6 +84,39 @@ export default {
         );
       }
     },
+    updatePhone({ commit }, phone) {
+      commit(
+        SET_ENTITY,
+        {
+          module,
+          entity: "phone",
+          value: phone,
+        },
+        { root: true }
+      );
+    },
+    updateDelivery({ commit }, delivery) {
+      commit(
+        SET_ENTITY,
+        {
+          module,
+          entity: "delivery",
+          value: delivery,
+        },
+        { root: true }
+      );
+    },
+    updateAddress({ state, commit }, address) {
+      commit(
+        SET_ENTITY,
+        {
+          module,
+          entity: "address",
+          value: { ...state.address, ...address },
+        },
+        { root: true }
+      );
+    },
   },
   mutations: {
     [COPY_ORDER_TO_CART](state, { pizzas, misc, phone, addressId }) {
@@ -107,15 +138,6 @@ export default {
       for (let key in state) {
         state[key] = initialState[key];
       }
-    },
-    [UPDATE_CART_DELIVERY](state, delivery) {
-      state.delivery = delivery;
-    },
-    [UPDATE_CART_PHONE](state, phone) {
-      state.phone = phone;
-    },
-    [UPDATE_CART_ADDRESS](state, address) {
-      state.address = { ...state.address, ...address };
     },
   },
 };

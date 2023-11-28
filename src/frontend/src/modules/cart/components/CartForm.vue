@@ -73,12 +73,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
-import {
-  UPDATE_CART_PHONE,
-  UPDATE_CART_DELIVERY,
-  UPDATE_CART_ADDRESS,
-} from "@/store/mutations-types";
+import { mapState, mapGetters, mapActions } from "vuex";
 import validator from "@/common/mixins/validator";
 
 export default {
@@ -120,11 +115,7 @@ export default {
     ...mapGetters("Cart", ["isNewAddress"]),
   },
   methods: {
-    ...mapMutations("Cart", {
-      updatePhone: UPDATE_CART_PHONE,
-      updateDelivery: UPDATE_CART_DELIVERY,
-      updateAddress: UPDATE_CART_ADDRESS,
-    }),
+    ...mapActions("Cart", ["updatePhone", "updateDelivery", "updateAddress"]),
   },
 };
 </script>
