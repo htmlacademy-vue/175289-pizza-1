@@ -31,10 +31,6 @@
 export default {
   name: "AppCounter",
   props: {
-    value: {
-      type: Number,
-      required: true,
-    },
     maxValue: {
       type: Number,
       default: 100,
@@ -46,6 +42,10 @@ export default {
     orange: {
       type: Boolean,
       default: false,
+    },
+    value: {
+      type: Number,
+      required: true,
     },
   },
   methods: {
