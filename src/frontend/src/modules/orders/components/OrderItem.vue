@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { getOrderPrice } from "@/common/helpers";
+import { formatPrice, getOrderPrice } from "@/common/helpers";
 
 export default {
   name: "OrderItem",
@@ -101,7 +101,8 @@ export default {
   },
   computed: {
     orderPrice() {
-      return getOrderPrice(this.order);
+      const price = getOrderPrice(this.order);
+      return formatPrice(price);
     },
   },
 };

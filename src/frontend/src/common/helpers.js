@@ -1,13 +1,17 @@
+import doughValues from "@/common/enums/doughValues";
+import ingredientValues from "@/common/enums/ingredientValues";
+import sizeValues from "@/common/enums/sizeValues";
+import sauceValues from "@/common/enums/sauceValues";
+import resources from "@/common/enums/resources";
 import {
   AuthApiService,
   ReadOnlyApiService,
   CrudApiService,
 } from "@/services/api.service";
-import resources from "@/common/enums/resources";
-import doughValues from "@/common/enums/doughValues";
-import ingredientValues from "@/common/enums/ingredientValues";
-import sizeValues from "@/common/enums/sizeValues";
-import sauceValues from "@/common/enums/sauceValues";
+
+export const capitalize = (string) => {
+  return `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
+};
 
 export const createResources = (notifier) => {
   return {
@@ -25,12 +29,16 @@ export const createResources = (notifier) => {
   };
 };
 
-export const capitalize = (string) => {
-  return `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
+export const formatPrice = (number) => {
+  return Math.round(number).toLocaleString("ru-Ru");
 };
 
-export const formatPrice = (number) => {
-  return number.toLocaleString("ru-Ru");
+export const getOrderPrice = ({ pizzas, misc = [] }) => {
+  const price = [...pizzas, ...misc].reduce((acc, { price, quantity }) => {
+    return acc + price * quantity;
+  }, 0);
+
+  return price;
 };
 
 export const getPizzaPrice = (pizza) => {
@@ -41,14 +49,6 @@ export const getPizzaPrice = (pizza) => {
   );
 
   return size.multiplier * (dough.price + sauce.price + ingredientsPrice);
-};
-
-export const getOrderPrice = ({ pizzas, misc = [] }) => {
-  const price = [...pizzas, ...misc].reduce((acc, { price, quantity }) => {
-    return acc + price * quantity;
-  }, 0);
-
-  return formatPrice(price);
 };
 
 export const normalizeDough = (dough) => {

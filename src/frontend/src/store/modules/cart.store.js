@@ -6,7 +6,7 @@ import {
   COPY_ORDER_TO_CART,
   RESET_CART,
 } from "@/store/mutations-types";
-import { capitalize, getOrderPrice } from "@/common/helpers";
+import { capitalize, formatPrice, getOrderPrice } from "@/common/helpers";
 
 const entity = "cart";
 const module = capitalize(entity);
@@ -36,7 +36,8 @@ export default {
       return ~index ? state.misc[index].quantity : 0;
     },
     totalPrice: (state) => {
-      return getOrderPrice(state);
+      const price = getOrderPrice(state);
+      return formatPrice(price);
     },
     isNewAddress: (state) => {
       return state.delivery === NEW_ADDRESS;
