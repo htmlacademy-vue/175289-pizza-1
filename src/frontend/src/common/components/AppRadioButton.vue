@@ -19,17 +19,14 @@ export default {
       type: String,
       required: true,
     },
-
     text: {
       type: String,
       required: true,
     },
-
     value: {
       type: String,
       required: true,
     },
-
     isChecked: {
       type: Boolean,
       default: false,
