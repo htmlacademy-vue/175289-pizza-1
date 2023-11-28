@@ -1,6 +1,5 @@
 import axios from "@/plugins/axios";
 import JwtService from "@/services/jwt.service";
-import Resources from "@/common/enums/resources";
 
 class ApiService {
   constructor(notifier) {
@@ -86,19 +85,5 @@ export class CrudApiService extends ReadOnlyApiService {
    */
   delete(id) {
     return axios.delete(`${this.#resource}/${id}`);
-  }
-}
-
-export class OrdersApiService extends CrudApiService {
-  constructor(notifier) {
-    super(Resources.ORDERS, notifier);
-  }
-
-  query() {
-    return super.query();
-  }
-
-  post(data) {
-    return super.post(data);
   }
 }
