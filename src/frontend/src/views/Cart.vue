@@ -78,10 +78,22 @@ export default {
     ...mapMutations("Cart", {
       resetCart: RESET_CART,
     }),
+    onPopupClose() {
+      this.showPopup = false;
+      setTimeout(() => {
+        this.$router.push(
+          this.isAuthenticated ? AppRoute.ORDERS : AppRoute.MAIN
+        );
+      }, LEAVE_ANIMATION_DURATION);
+    },
     onSubmit() {
+      if (this.isFormValid()) {
+        this.createNewOrder();
+      }
+    },
+    isFormValid() {
       const form = this.$refs.form;
 
-      // Валидируем форму корзины
       const fields = this.isNewAddress
         ? {
             phone: this.phone,
@@ -90,37 +102,27 @@ export default {
           }
         : { phone: this.phone };
 
-      if (!form.$validateFields(fields, form.validations)) {
-        return;
-      }
-
-      const address = this.isPickup
-        ? null
-        : this.isNewAddress
-        ? { ...this.address }
-        : { id: this.delivery };
-
-      this.$api.orders
-        .post({
-          userId: this.isAuthenticated ? this.user.id : null,
-          phone: this.phone,
-          address,
-          pizzas: this.pizzas,
-          misc: this.misc,
-        })
-        .then(() => {
-          this.resetBuilder();
-          this.resetCart();
-          this.showPopup = true;
-        });
+      return form.$validateFields(fields, form.validations);
     },
-    onPopupClose() {
-      this.showPopup = false;
-      setTimeout(() => {
-        this.$router.push(
-          this.isAuthenticated ? AppRoute.ORDERS : AppRoute.MAIN
-        );
-      }, LEAVE_ANIMATION_DURATION);
+    createNewOrder() {
+      this.$api.orders.post(this.getOrderData()).then(() => {
+        this.resetBuilder();
+        this.resetCart();
+        this.showPopup = true;
+      });
+    },
+    getOrderData() {
+      return {
+        userId: this.isAuthenticated ? this.user.id : null,
+        phone: this.phone,
+        address: this.isPickup
+          ? null
+          : this.isNewAddress
+          ? { ...this.address }
+          : { id: this.delivery },
+        pizzas: this.pizzas,
+        misc: this.misc,
+      };
     },
   },
 };
