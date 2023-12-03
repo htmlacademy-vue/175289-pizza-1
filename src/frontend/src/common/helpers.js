@@ -9,6 +9,7 @@ import {
   CrudApiService,
 } from "@/services/api.service";
 import { SET_ENTITY } from "@/store/mutations-types";
+import addresses from "@/store/mocks/data/addresses";
 import builder from "@/store/mocks/data/builder";
 import pizzas from "@/store/mocks/data/pizzas";
 import user from "@/store/mocks/data/user";
@@ -81,6 +82,18 @@ export const normalizeSauce = (sauce) => {
     ...sauce,
     value: sauceValues[sauce.id],
   };
+};
+
+export const setAddresses = (store) => {
+  store.commit(
+    SET_ENTITY,
+    {
+      module: "Addresses",
+      entity: "addresses",
+      value: addresses,
+    },
+    { root: true }
+  );
 };
 
 export const setBuilderData = (store) => {

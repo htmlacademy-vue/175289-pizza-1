@@ -9,6 +9,7 @@
           name="delivery"
           :value="delivery"
           @change="updateDelivery($event.target.value)"
+          data-test="delivery"
         >
           <option value="pickup">Получу сам</option>
           <option value="new address">Новый адрес</option>
@@ -31,6 +32,7 @@
         placeholder="+7 999-999-99-99"
         big-label
         :error-text="validations.phone.error"
+        data-test="phone-component"
         @input="updatePhone"
       />
 
@@ -45,6 +47,7 @@
             :error-text="validations.street.error"
             required
             :disabled="!isNewAddress"
+            data-test="street-component"
             @input="updateAddress({ street: $event })"
           />
         </div>
@@ -57,6 +60,7 @@
             :error-text="validations.building.error"
             required
             :disabled="!isNewAddress"
+            data-test="building-component"
             @input="updateAddress({ building: $event })"
           />
         </div>
@@ -67,6 +71,7 @@
             name="apartment"
             :value="address.flat"
             :disabled="!isNewAddress"
+            data-test="flat-component"
             @input="updateAddress({ flat: $event })"
           />
         </div>
