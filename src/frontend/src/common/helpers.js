@@ -9,6 +9,7 @@ import {
   CrudApiService,
 } from "@/services/api.service";
 import { SET_ENTITY } from "@/store/mutations-types";
+import builder from "@/store/mocks/data/builder";
 import user from "@/store/mocks/data/user";
 
 export const capitalize = (string) => {
@@ -79,6 +80,23 @@ export const normalizeSauce = (sauce) => {
     ...sauce,
     value: sauceValues[sauce.id],
   };
+};
+
+export const setBuilderData = (store) => {
+  store.commit(
+    SET_ENTITY,
+    {
+      module: "Builder",
+      entity: "data",
+      value: {
+        dough: builder.dough,
+        ingredients: builder.ingredients,
+        sauces: builder.sauces,
+        sizes: builder.sizes,
+      },
+    },
+    { root: true }
+  );
 };
 
 export const setUser = (store) => {

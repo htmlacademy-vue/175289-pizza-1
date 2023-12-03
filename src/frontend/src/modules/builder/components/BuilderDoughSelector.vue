@@ -9,6 +9,7 @@
           :key="dough.name"
           class="dough__input"
           :class="`dough__input--${dough.value}`"
+          data-test="dough"
         >
           <input
             class="visually-hidden"
@@ -16,6 +17,7 @@
             name="dough"
             :value="dough.value"
             :checked="dough.id === selectedDough.id"
+            data-test="dough-input"
             @change="$emit('change-dough', dough)"
           />
           <b>{{ dough.name }}</b>
