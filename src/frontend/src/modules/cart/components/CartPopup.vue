@@ -1,7 +1,13 @@
 <template>
-  <div class="popup">
+  <div
+    ref="dialog"
+    class="popup"
+    tabindex="0"
+    @click.self="closeDialog"
+    @keydown.esc="closeDialog"
+  >
     <div class="popup__content">
-      <a class="close" href="#" @click="close">
+      <a class="close" href="#" @click="closeDialog">
         <span class="visually-hidden">Закрыть попап</span>
       </a>
       <div class="popup__title">
@@ -9,33 +15,20 @@
       </div>
       <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
       <div class="popup__button">
-        <a class="button" href="#" @click="close">Отлично, я жду!</a>
+        <a class="button" href="#" @click="closeDialog">Отлично, я жду!</a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
-
 export default {
   name: "CartPopup",
   mounted() {
-    document.addEventListener("keydown", this.onDocumentKeydown);
-  },
-  destroyed() {
-    document.removeEventListener("keydown", this.onDocumentKeydown);
-  },
-  computed: {
-    ...mapState("Auth", ["isAuthenticated"]),
+    this.$refs.dialog.focus();
   },
   methods: {
-    onDocumentKeydown({ code }) {
-      if (code === "Escape") {
-        this.close();
-      }
-    },
-    close() {
+    closeDialog() {
       this.$emit("close");
     },
   },
