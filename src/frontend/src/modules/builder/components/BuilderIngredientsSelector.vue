@@ -15,6 +15,7 @@
             :text="sauce.name"
             :value="sauce.value"
             :isChecked="sauce.id === selectedSauce.id"
+            data-test="sauce"
             @change="$emit('change-sauce', sauce)"
           />
         </div>
@@ -27,6 +28,7 @@
               v-for="ingredient in data.ingredients"
               :key="ingredient.name"
               class="ingredients__item"
+              data-test="filling"
             >
               <AppDrop @drop="$emit('drop', $event)">
                 <AppDrag
@@ -41,8 +43,9 @@
               </AppDrop>
               <AppCounter
                 class="ingredients__counter"
-                :value="getIngredientQuantity(ingredient.id)"
                 :maxValue="maxIngredientQuantity"
+                :value="getIngredientQuantity(ingredient.id)"
+                data-test="filling-counter"
                 @change="
                   $emit('change-ingredient', {
                     ingredient,
