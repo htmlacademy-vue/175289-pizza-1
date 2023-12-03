@@ -1,6 +1,11 @@
 [
   {
     "addressId": null,
+    "address": {
+      "string": "Улица",
+      "building": "Дом",
+      "flat": "Квартира"
+    },
     "id": 13,
     "pizzas": [
       {
