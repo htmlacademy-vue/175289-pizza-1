@@ -1,7 +1,7 @@
 <template>
   <form class="layout-form" @submit.prevent="onSubmit">
     <PopupTransition>
-      <CartPopup v-if="showPopup" @close="onPopupClose" />
+      <CartPopup v-if="isPopupDisplayed" @close="onPopupClose" />
     </PopupTransition>
 
     <main class="content cart">
@@ -60,7 +60,7 @@ export default {
   },
   data() {
     return {
-      showPopup: false,
+      isPopupDisplayed: false,
     };
   },
   computed: {
@@ -80,7 +80,7 @@ export default {
       resetCart: RESET_CART,
     }),
     onPopupClose() {
-      this.showPopup = false;
+      this.hidePopup();
       setTimeout(() => {
         this.$router.push(
           this.isAuthenticated ? AppRoute.ORDERS : AppRoute.MAIN
@@ -107,9 +107,9 @@ export default {
     },
     createNewOrder() {
       this.post(this.getOrderData()).then(() => {
-        this.resetBuilder();
-        this.resetCart();
-        this.showPopup = true;
+        this.getAddresses();
+        this.showPopup();
+        this.reset();
       });
     },
     getOrderData() {
@@ -124,6 +124,21 @@ export default {
         pizzas: this.pizzas,
         misc: this.misc,
       };
+    },
+    getAddresses() {
+      if (this.isAuthenticated && this.isNewAddress) {
+        this.$store.dispatch("Addresses/query");
+      }
+    },
+    showPopup() {
+      this.isPopupDisplayed = true;
+    },
+    hidePopup() {
+      this.isPopupDisplayed = false;
+    },
+    reset() {
+      this.resetBuilder();
+      this.resetCart();
     },
   },
 };
