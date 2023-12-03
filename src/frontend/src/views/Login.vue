@@ -6,7 +6,7 @@
     <div class="sign-form__title">
       <h1 class="title title--small">Авторизуйтесь на сайте</h1>
     </div>
-    <form @submit.prevent="login">
+    <form data-test="login-form" @submit.prevent="onSubmit">
       <div class="sign-form__input">
         <AppInput
           ref="inputEmail"
@@ -14,6 +14,7 @@
           name="email"
           v-model="email"
           :error-text="validations.email.error"
+          data-test="email-component"
           placeholder="example@mail.ru"
         />
       </div>
@@ -25,6 +26,7 @@
           name="pass"
           v-model="password"
           :error-text="validations.password.error"
+          data-test="password-component"
           placeholder="***********"
         />
       </div>
@@ -68,17 +70,22 @@ export default {
     this.$refs.inputEmail.$refs.input.focus();
   },
   methods: {
-    login() {
-      const { email, password } = this;
-
-      if (!this.$validateFields({ email, password }, this.validations)) {
-        return;
+    onSubmit() {
+      if (this.isFormValid()) {
+        this.login();
       }
-
+    },
+    isFormValid() {
+      return this.$validateFields(
+        { email: this.email, password: this.password },
+        this.validations
+      );
+    },
+    login() {
       this.$store
         .dispatch("Auth/login", {
-          email,
-          password,
+          email: this.email,
+          password: this.password,
         })
         .then(() => {
           this.$router.push(AppRoute.MAIN);
