@@ -20,24 +20,27 @@
       v-for="(address, index) in addresses"
       :key="address.id"
       class="layout__address"
+      data-test="address"
     >
       <AddressForm :address-to-edit="address" :number="index + 1" />
     </div>
 
     <!-- Форма создания нового адреса -->
-    <div v-if="showNewAddressForm" class="layout__address">
+    <div v-show="showNewAddressForm" class="layout__address">
       <AddressForm
         :number="addresses.length + 1"
+        data-test="add-address-form"
         @cancel="showNewAddressForm = false"
         @save="showNewAddressForm = false"
       />
     </div>
 
-    <div v-if="!showNewAddressForm" class="layout__button">
+    <div v-show="!showNewAddressForm" class="layout__button">
       <button
         class="button button--border"
         type="button"
         @click="showNewAddressForm = true"
+        data-test="add-address-button"
       >
         Добавить новый адрес
       </button>
