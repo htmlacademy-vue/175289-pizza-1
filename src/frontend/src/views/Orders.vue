@@ -8,6 +8,7 @@
       v-for="order in orders"
       :key="order.id"
       :order="order"
+      data-test="order"
       @delete="deleteOrder"
       @repeat="repeatOrder"
     />
