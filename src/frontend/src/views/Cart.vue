@@ -1,7 +1,11 @@
 <template>
-  <form class="layout-form" @submit.prevent="onSubmit">
+  <form class="layout-form" data-test="layout-form" @submit.prevent="onSubmit">
     <PopupTransition>
-      <CartPopup v-if="isPopupDisplayed" @close="onPopupClose" />
+      <CartPopup
+        v-if="isPopupDisplayed"
+        data-test="popup"
+        @close="onPopupClose"
+      />
     </PopupTransition>
 
     <main class="content cart">
@@ -13,10 +17,10 @@
         <template v-if="notEmpty">
           <CartList />
           <CartAdditional />
-          <CartForm ref="form" />
+          <CartForm ref="form" data-test="cart-form" />
         </template>
 
-        <div v-else class="sheet cart__empty">
+        <div v-else class="sheet cart__empty" data-test="empty-cart-text">
           <p>В корзине нет ни одного товара</p>
         </div>
       </div>
