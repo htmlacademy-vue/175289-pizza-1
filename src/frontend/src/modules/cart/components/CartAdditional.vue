@@ -5,6 +5,7 @@
         v-for="item in misc"
         :key="item.id"
         class="additional-list__item sheet"
+        data-test="additional-item"
       >
         <p class="additional-list__description">
           <img :src="item.image" :alt="item.name" width="39" height="60" />
@@ -16,6 +17,7 @@
             class="additional-list__counter"
             :value="miscQuantity(item.id)"
             orange
+            data-test="additional-item-counter"
             @change="
               updateCart({
                 entity: 'misc',
