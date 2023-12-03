@@ -8,12 +8,13 @@
           <div
             v-for="quantity in ingredient.quantity"
             :key="`${ingredient.value}-layer-${quantity}`"
+            class="pizza__filling"
             :class="[
-              'pizza__filling',
               `pizza__filling--${ingredient.value}`,
               { 'pizza__filling--second': quantity === 2 },
               { 'pizza__filling--third': quantity === 3 },
             ]"
+            data-test="pizza-filling"
           />
         </template>
       </transition-group>

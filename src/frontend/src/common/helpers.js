@@ -10,6 +10,7 @@ import {
 } from "@/services/api.service";
 import { SET_ENTITY } from "@/store/mutations-types";
 import builder from "@/store/mocks/data/builder";
+import pizzas from "@/store/mocks/data/pizzas";
 import user from "@/store/mocks/data/user";
 
 export const capitalize = (string) => {
@@ -94,6 +95,18 @@ export const setBuilderData = (store) => {
         sauces: builder.sauces,
         sizes: builder.sizes,
       },
+    },
+    { root: true }
+  );
+};
+
+export const setBuilderPizza = (store) => {
+  store.commit(
+    SET_ENTITY,
+    {
+      module: "Builder",
+      entity: "pizza",
+      value: pizzas[0],
     },
     { root: true }
   );
