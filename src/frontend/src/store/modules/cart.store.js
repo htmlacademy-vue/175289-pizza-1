@@ -39,6 +39,9 @@ export default {
       const price = getOrderPrice(state);
       return formatPrice(price);
     },
+    isUserAddress: (state) => {
+      return state.delivery !== NEW_ADDRESS && state.delivery !== PICKUP;
+    },
     isNewAddress: (state) => {
       return state.delivery === NEW_ADDRESS;
     },
@@ -96,7 +99,7 @@ export default {
         { root: true }
       );
     },
-    updateDelivery({ commit }, delivery) {
+    updateDelivery({ commit, getters, rootGetters, dispatch }, delivery) {
       commit(
         SET_ENTITY,
         {
@@ -106,6 +109,17 @@ export default {
         },
         { root: true }
       );
+
+      if (getters.isUserAddress) {
+        const addressId = parseInt(delivery);
+        const address = rootGetters["Addresses/getAddress"](addressId);
+
+        dispatch("updateAddress", {
+          street: address.street,
+          building: address.building,
+          flat: address.flat,
+        });
+      }
     },
     updateAddress({ state, commit }, address) {
       commit(
