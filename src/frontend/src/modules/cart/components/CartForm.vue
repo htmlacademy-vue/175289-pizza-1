@@ -34,7 +34,7 @@
         @input="updatePhone"
       />
 
-      <div v-if="isNewAddress" class="cart-form__address">
+      <div v-if="!isPickup" class="cart-form__address" data-test="address">
         <span class="cart-form__label">Новый адрес:</span>
 
         <div class="cart-form__input">
@@ -44,6 +44,7 @@
             :value="address.street"
             :error-text="validations.street.error"
             required
+            :disabled="!isNewAddress"
             @input="updateAddress({ street: $event })"
           />
         </div>
@@ -55,6 +56,7 @@
             :value="address.building"
             :error-text="validations.building.error"
             required
+            :disabled="!isNewAddress"
             @input="updateAddress({ building: $event })"
           />
         </div>
@@ -64,6 +66,7 @@
             label="Квартира"
             name="apartment"
             :value="address.flat"
+            :disabled="!isNewAddress"
             @input="updateAddress({ flat: $event })"
           />
         </div>
@@ -112,7 +115,7 @@ export default {
     ...mapState("Auth", ["isAuthenticated"]),
     ...mapState("Addresses", ["addresses"]),
     ...mapState("Cart", ["phone", "delivery", "address"]),
-    ...mapGetters("Cart", ["isNewAddress"]),
+    ...mapGetters("Cart", ["isNewAddress", "isPickup"]),
   },
   methods: {
     ...mapActions("Cart", ["updatePhone", "updateDelivery", "updateAddress"]),
