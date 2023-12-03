@@ -1,24 +1,28 @@
 <template>
-  <div
-    :class="`pizza pizza--foundation--${pizza.dough.value}-${pizza.sauce.value}`"
-  >
-    <div class="pizza__wrapper">
-      <transition-group name="pizza-layer">
-        <template v-for="ingredient in pizza.ingredients">
-          <div
-            v-for="quantity in ingredient.quantity"
-            :key="`${ingredient.value}-layer-${quantity}`"
-            class="pizza__filling"
-            :class="[
-              `pizza__filling--${ingredient.value}`,
-              { 'pizza__filling--second': quantity === 2 },
-              { 'pizza__filling--third': quantity === 3 },
-            ]"
-            data-test="pizza-filling"
-          />
-        </template>
-      </transition-group>
-    </div>
+  <div class="content__constructor">
+    <AppDrop @drop="$emit('drop', $event)">
+      <div
+        :class="`pizza pizza--foundation--${pizza.dough.value}-${pizza.sauce.value}`"
+      >
+        <div class="pizza__wrapper">
+          <transition-group name="pizza-layer">
+            <template v-for="ingredient in pizza.ingredients">
+              <div
+                v-for="quantity in ingredient.quantity"
+                :key="`${ingredient.value}-layer-${quantity}`"
+                class="pizza__filling"
+                :class="[
+                  `pizza__filling--${ingredient.value}`,
+                  { 'pizza__filling--second': quantity === 2 },
+                  { 'pizza__filling--third': quantity === 3 },
+                ]"
+                data-test="pizza-filling"
+              />
+            </template>
+          </transition-group>
+        </div>
+      </div>
+    </AppDrop>
   </div>
 </template>
 
