@@ -16,6 +16,7 @@ describe("AppInput", () => {
     bigLabel: true,
     errorText: "testErrorText",
     required: true,
+    disabled: false,
   };
 
   let wrapper;
@@ -23,6 +24,10 @@ describe("AppInput", () => {
   const createComponent = (options) => {
     wrapper = shallowMount(AppInput, options);
   };
+
+  beforeEach(() => {
+    propsData.disabled = false;
+  });
 
   afterEach(() => {
     wrapper.destroy();
@@ -52,6 +57,15 @@ describe("AppInput", () => {
     input.element.value = "value";
     input.trigger("input");
     expect(wrapper.emitted().input[0][0]).toEqual("value");
+  });
+
+  it("It does not emit an input event when it is disabled", () => {
+    propsData.disabled = true;
+    createComponent({ propsData });
+    const input = wrapper.find("input");
+    input.element.value = "value";
+    input.trigger("input");
+    expect(wrapper.emitted().input).toBeFalsy();
   });
 
   it("Its type is prop type", () => {
