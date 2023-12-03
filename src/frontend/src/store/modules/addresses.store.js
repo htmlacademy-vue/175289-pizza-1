@@ -11,9 +11,17 @@ const module = capitalize(entity);
 
 export default {
   namespaced: true,
+
   state: {
     addresses: [],
   },
+
+  getters: {
+    getAddress: (state) => (id) => {
+      return state.addresses.find((address) => address.id === id);
+    },
+  },
+
   actions: {
     async query({ commit }) {
       const { data } = await this.$api.addresses.query();
@@ -28,6 +36,7 @@ export default {
         { root: true }
       );
     },
+
     async post({ commit }, address) {
       const { data } = await this.$api.addresses.post(address);
 
@@ -41,6 +50,7 @@ export default {
         { root: true }
       );
     },
+
     async put({ commit }, address) {
       await this.$api.addresses.put(address);
 
@@ -54,6 +64,7 @@ export default {
         { root: true }
       );
     },
+
     async delete({ commit }, id) {
       await this.$api.addresses.delete(id);
 
