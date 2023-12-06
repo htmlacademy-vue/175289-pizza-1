@@ -15,13 +15,11 @@ describe("AppLayoutHeader", () => {
     $router: {
       push: jest.fn(),
     },
-    $store: {
-      dispatch: jest.fn(),
-    },
   };
 
   const stubs = ["router-link"];
 
+  let actions;
   let store;
   let wrapper;
 
@@ -30,10 +28,14 @@ describe("AppLayoutHeader", () => {
   };
 
   beforeEach(() => {
+    actions = {
+      Auth: {
+        logout: jest.fn(),
+      },
+    };
     mocks.$notifier.success = jest.fn();
     mocks.$router.push = jest.fn();
-    mocks.$store.dispatch = jest.fn(() => Promise.resolve());
-    store = generateMockStore();
+    store = generateMockStore(actions);
   });
 
   afterEach(() => {
@@ -63,8 +65,7 @@ describe("AppLayoutHeader", () => {
     createComponent({ localVue, store, mocks, stubs });
     const logoutButton = wrapper.find("[data-test='logout-button']");
     await logoutButton.trigger("click");
-    // ToDo: не работает, не понимаю что не так
-    expect(mocks.$store.dispatch).toHaveBeenCalled();
+    expect(actions.Auth.logout).toHaveBeenCalled();
     expect(mocks.$notifier.success).toHaveBeenCalled();
     expect(mocks.$router.push).toHaveBeenCalled();
   });
