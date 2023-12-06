@@ -4,6 +4,7 @@ import { generateMockStore } from "@/store/mocks";
 import { setBuilderPizza } from "@/common/helpers";
 import pizzas from "@/store/mocks/data/pizzas";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
+import AppDrop from "@/common/components/AppDrop";
 
 const pizza = pizzas[0];
 const pizzaFillingsCount = pizza.ingredients.reduce(
@@ -13,6 +14,7 @@ const pizzaFillingsCount = pizza.ingredients.reduce(
 
 describe("BuilderPizzaView", () => {
   const localVue = createLocalVue();
+  localVue.component("AppDrop", AppDrop);
   localVue.use(Vuex);
 
   const stubs = ["transition-group"];
