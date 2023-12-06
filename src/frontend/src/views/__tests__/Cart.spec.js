@@ -2,6 +2,10 @@ import { createLocalVue, mount } from "@vue/test-utils";
 import Vuex from "vuex";
 import { generateMockStore } from "@/store/mocks";
 import { setUser } from "@/common/helpers";
+import {
+  ENTER_ANIMATION_DURATION,
+  LEAVE_ANIMATION_DURATION,
+} from "@/common/constants";
 import { SET_ENTITY } from "@/store/mutations-types";
 import pizzas from "@/store/mocks/data/pizzas";
 import Cart from "@/views/Cart";
@@ -37,6 +41,10 @@ const fillForm = (store) => {
     },
     { root: true }
   );
+};
+
+const wait = async (timeout) => {
+  await Promise.resolve((fn) => setTimeout(fn, timeout));
 };
 
 describe("Cart", () => {
@@ -105,7 +113,7 @@ describe("Cart", () => {
     await layoutForm.trigger("submit");
 
     expect(actions.Orders.post).toHaveBeenCalled();
-    // ToDo: в данный момент времени попап еще не существует, вероятно из-за анимации. Как дождаться появления попапа?
+    await wait(ENTER_ANIMATION_DURATION);
     expect(wrapper.find("[data-test='popup']").exists()).toBeTruthy();
     expect(spyResetBuilder).toHaveBeenCalled();
     expect(spyResetCart).toHaveBeenCalled();
@@ -117,9 +125,10 @@ describe("Cart", () => {
     createComponent({ localVue, store, stubs, mocks });
     const layoutForm = wrapper.find("[data-test='layout-form']");
     await layoutForm.trigger("submit");
-    // ToDo: Дождаться появления попапа
+    await wait(ENTER_ANIMATION_DURATION);
     const popup = wrapper.find("[data-test='popup']");
     popup.vm.$emit("close");
+    await wait(LEAVE_ANIMATION_DURATION);
     expect(mocks.$router.push).toHaveBeenCalledWith("/");
   });
 
@@ -130,9 +139,10 @@ describe("Cart", () => {
     createComponent({ localVue, store, stubs, mocks });
     const layoutForm = wrapper.find("[data-test='layout-form']");
     await layoutForm.trigger("submit");
-    // ToDo: Дождаться появления попапа
+    await wait(ENTER_ANIMATION_DURATION);
     const popup = wrapper.find("[data-test='popup']");
     popup.vm.$emit("close");
+    await wait(LEAVE_ANIMATION_DURATION);
     expect(mocks.$router.push).toHaveBeenCalledWith("/orders");
   });
 
