@@ -127,8 +127,10 @@ describe("Cart", () => {
     await layoutForm.trigger("submit");
     await wait(ENTER_ANIMATION_DURATION);
     const popup = wrapper.find("[data-test='popup']");
+    jest.useFakeTimers();
     popup.vm.$emit("close");
     await wait(LEAVE_ANIMATION_DURATION);
+    jest.runAllTimers();
     expect(mocks.$router.push).toHaveBeenCalledWith("/");
   });
 
@@ -141,8 +143,10 @@ describe("Cart", () => {
     await layoutForm.trigger("submit");
     await wait(ENTER_ANIMATION_DURATION);
     const popup = wrapper.find("[data-test='popup']");
+    jest.useFakeTimers();
     popup.vm.$emit("close");
     await wait(LEAVE_ANIMATION_DURATION);
+    jest.runAllTimers();
     expect(mocks.$router.push).toHaveBeenCalledWith("/orders");
   });
 
