@@ -3,6 +3,11 @@ import { AppRoute } from "@/common/constants";
 
 export default [
   {
+    path: "*",
+    name: "NotFound",
+    component: () => import("../views/NotFound.vue"),
+  },
+  {
     path: AppRoute.MAIN,
     name: "Index",
     component: () => import("../views/index/Index.vue"),
