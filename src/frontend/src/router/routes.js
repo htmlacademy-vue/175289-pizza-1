@@ -5,12 +5,12 @@ export default [
   {
     path: AppRoute.MAIN,
     name: "Index",
-    component: () => import("../views/Index.vue"),
+    component: () => import("../views/index/Index.vue"),
     children: [
       {
         path: AppRoute.LOGIN,
         name: "Login",
-        component: () => import("../views/Login.vue"),
+        component: () => import("../views/index/^Login.vue"),
         meta: {
           middlewares: [guest],
         },
