@@ -54,6 +54,7 @@ import AddressForm from "@/modules/address/components/AddressForm.vue";
 
 export default {
   name: "ProfilePage",
+  layout: "AppLayoutSidebar",
   components: { AddressForm },
   data() {
     return {

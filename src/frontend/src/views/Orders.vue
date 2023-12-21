@@ -24,6 +24,7 @@ import { mapState, mapActions } from "vuex";
 
 export default {
   name: "OrdersPage",
+  layout: "AppLayoutSidebar",
   components: {
     OrderItem,
   },
