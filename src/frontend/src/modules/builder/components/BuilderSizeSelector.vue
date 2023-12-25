@@ -9,6 +9,7 @@
           :key="size.name"
           class="diameter__input"
           :class="`diameter__input--${size.value}`"
+          data-test="size"
         >
           <input
             class="visually-hidden"
@@ -16,6 +17,7 @@
             name="diameter"
             :value="size.value"
             :checked="size.id === selectedSize.id"
+            data-test="size-input"
             @change="$emit('change-size', size)"
           />
           <span>{{ size.name }}</span>

@@ -6,14 +6,19 @@
         <template v-if="!isEdit">{{ address.name }}</template>
       </b>
       <div v-if="!isEdit" class="address-form__edit">
-        <button class="icon" type="button" @click="isEdit = true">
+        <button
+          class="icon"
+          type="button"
+          data-test="edit-button"
+          @click="isEdit = true"
+        >
           <span class="visually-hidden">Изменить адрес</span>
         </button>
       </div>
     </div>
 
     <template v-if="isEdit">
-      <form @submit.prevent="saveAddress">
+      <form data-test="address-form" @submit.prevent="saveAddress">
         <div class="address-form__wrapper">
           <div class="address-form__input">
             <AppInput
@@ -23,6 +28,7 @@
               :error-text="validations.name.error"
               placeholder="Введите название адреса"
               required
+              data-test="name-component"
             />
           </div>
           <div class="address-form__input address-form__input--size--normal">
@@ -33,6 +39,7 @@
               :error-text="validations.street.error"
               placeholder="Введите название улицы"
               required
+              data-test="street-component"
             />
           </div>
           <div class="address-form__input address-form__input--size--small">
@@ -43,6 +50,7 @@
               :error-text="validations.building.error"
               placeholder="Введите номер дома"
               required
+              data-test="building-component"
             />
           </div>
           <div class="address-form__input address-form__input--size--small">
@@ -68,6 +76,7 @@
             v-if="addressToEdit"
             class="button button--transparent"
             type="button"
+            data-test="delete-button"
             @click="deleteAddress"
           >
             Удалить
@@ -89,7 +98,7 @@
         {{ address.street }}, д. {{ address.building
         }}{{ address.flat ? `, кв. ${address.flat}` : `` }}
       </p>
-      <small v-if="address.commen">{{ address.comment }}</small>
+      <small v-if="address.comment">{{ address.comment }}</small>
     </template>
   </div>
 </template>

@@ -10,6 +10,7 @@
       :name="name"
       :value="value"
       :placeholder="placeholder"
+      :disabled="disabled"
       @input="$emit('input', $event.target.value)"
     />
   </label>
@@ -48,6 +49,10 @@ export default {
       default: "",
     },
     required: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },

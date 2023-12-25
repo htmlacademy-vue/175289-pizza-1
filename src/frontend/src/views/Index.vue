@@ -1,14 +1,23 @@
 <template>
   <main class="content">
+    <router-view />
+
     <form action="#" method="post">
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
 
-        <BuilderDoughSelector @change-dough="changeDough" />
+        <BuilderDoughSelector
+          data-test="dough-selector"
+          @change-dough="changeDough"
+        />
 
-        <BuilderSizeSelector @change-size="changeSize" />
+        <BuilderSizeSelector
+          data-test="size-selector"
+          @change-size="changeSize"
+        />
 
         <BuilderIngredientsSelector
+          data-test="ingredients-selector"
           @change-sauce="changeSauce"
           @change-ingredient="changeIngredient"
         />
@@ -21,34 +30,33 @@
               name="pizza_name"
               :value="pizza.name"
               placeholder="Введите название пиццы"
+              data-test="name-input"
               @input="changeName($event.target.value)"
             />
           </label>
 
-          <div class="content__constructor">
-            <AppDrop @drop="moveIngredient">
-              <BuilderPizzaView />
-            </AppDrop>
-          </div>
+          <BuilderPizzaView data-test="view" @drop="moveIngredient" />
 
           <div class="content__result">
             <p>Итого: {{ price }} ₽</p>
 
-            <AppButton :disabled="buttonDisabled" @click="onButtonClick">
+            <AppButton
+              :disabled="buttonDisabled"
+              data-test="button"
+              @click="addPizzaToCart"
+            >
               Готовьте!
             </AppButton>
           </div>
         </div>
       </div>
     </form>
-    <router-view />
   </main>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 import { uniqueId } from "lodash";
-import AppDrop from "@/common/components/AppDrop";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
@@ -58,7 +66,6 @@ import { UPDATE_PIZZA } from "@/store/mutations-types";
 export default {
   name: "IndexPage",
   components: {
-    AppDrop,
     BuilderDoughSelector,
     BuilderSizeSelector,
     BuilderIngredientsSelector,
@@ -78,18 +85,6 @@ export default {
     ...mapMutations("Builder", {
       updatePizza: UPDATE_PIZZA,
     }),
-    onButtonClick() {
-      const value = {
-        ...this.pizza,
-        id: this.pizza.id ?? uniqueId(),
-        quantity: this.pizza.quantity ?? 1,
-        price: this.price,
-      };
-      this.updateCart({
-        entity: "pizzas",
-        value,
-      });
-    },
     changeDough(dough) {
       this.updatePizza({ dough });
     },
@@ -125,6 +120,18 @@ export default {
     },
     changeName(name) {
       this.updatePizza({ name });
+    },
+    addPizzaToCart() {
+      const value = {
+        ...this.pizza,
+        id: this.pizza.id ?? uniqueId(),
+        quantity: this.pizza.quantity ?? 1,
+        price: this.price,
+      };
+      this.updateCart({
+        entity: "pizzas",
+        value,
+      });
     },
   },
 };

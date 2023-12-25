@@ -3,7 +3,8 @@
     <div
       v-for="({ text, type }, i) in notifications"
       :key="i"
-      :class="`notification notification--${type}`"
+      class="notification"
+      :class="`notification--${type}`"
     >
       <span>{{ text }}</span>
     </div>
@@ -14,7 +15,7 @@
 import { mapState } from "vuex";
 
 export default {
-  name: "Notifications",
+  name: "AppNotifications",
   computed: {
     ...mapState(["notifications"]),
   },

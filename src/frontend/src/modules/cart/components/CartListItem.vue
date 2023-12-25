@@ -32,6 +32,7 @@
       class="cart-list__counter"
       :value="pizza.quantity"
       orange
+      data-test="item-counter"
       @change="
         updateCart({
           entity: 'pizzas',
@@ -44,9 +45,13 @@
       <b>{{ price }} ₽</b>
     </div>
 
-    <!-- ToDo -->
     <div class="cart-list__button">
-      <button class="cart-list__edit" type="button" @click="change">
+      <button
+        class="cart-list__edit"
+        type="button"
+        data-test="change-button"
+        @click="change"
+      >
         Изменить
       </button>
     </div>
@@ -60,7 +65,7 @@ import { AppRoute } from "@/common/constants";
 import { formatPrice } from "@/common/helpers";
 
 export default {
-  name: "CartList",
+  name: "CartListItem",
   props: {
     pizza: {
       type: Object,

@@ -1,7 +1,11 @@
 <template>
-  <form class="layout-form" @submit.prevent="onSubmit">
+  <form class="layout-form" data-test="layout-form" @submit.prevent="onSubmit">
     <PopupTransition>
-      <CartPopup v-if="showPopup" @close="onPopupClose" />
+      <CartPopup
+        v-if="isPopupDisplayed"
+        data-test="popup"
+        @close="onPopupClose"
+      />
     </PopupTransition>
 
     <main class="content cart">
@@ -13,10 +17,10 @@
         <template v-if="notEmpty">
           <CartList />
           <CartAdditional />
-          <CartForm ref="form" />
+          <CartForm ref="form" data-test="cart-form" />
         </template>
 
-        <div v-else class="sheet cart__empty">
+        <div v-else class="sheet cart__empty" data-test="empty-cart-text">
           <p>В корзине нет ни одного товара</p>
         </div>
       </div>
@@ -40,7 +44,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 import { AppRoute, LEAVE_ANIMATION_DURATION } from "@/common/constants";
 import { RESET_BUILDER, RESET_CART } from "@/store/mutations-types";
 import CartList from "@/modules/cart/components/CartList.vue";
@@ -60,7 +64,7 @@ export default {
   },
   data() {
     return {
-      showPopup: false,
+      isPopupDisplayed: false,
     };
   },
   computed: {
@@ -72,16 +76,29 @@ export default {
     },
   },
   methods: {
+    ...mapActions("Orders", ["post"]),
     ...mapMutations("Builder", {
       resetBuilder: RESET_BUILDER,
     }),
     ...mapMutations("Cart", {
       resetCart: RESET_CART,
     }),
+    onPopupClose() {
+      this.hidePopup();
+      setTimeout(() => {
+        this.$router.push(
+          this.isAuthenticated ? AppRoute.ORDERS : AppRoute.MAIN
+        );
+      }, LEAVE_ANIMATION_DURATION);
+    },
     onSubmit() {
+      if (this.isFormValid()) {
+        this.createNewOrder();
+      }
+    },
+    isFormValid() {
       const form = this.$refs.form;
 
-      // Валидируем форму корзины
       const fields = this.isNewAddress
         ? {
             phone: this.phone,
@@ -90,37 +107,42 @@ export default {
           }
         : { phone: this.phone };
 
-      if (!form.$validateFields(fields, form.validations)) {
-        return;
-      }
-
-      const address = this.isPickup
-        ? null
-        : this.isNewAddress
-        ? { ...this.address }
-        : { id: this.delivery };
-
-      this.$api.orders
-        .post({
-          userId: this.isAuthenticated ? this.user.id : null,
-          phone: this.phone,
-          address,
-          pizzas: this.pizzas,
-          misc: this.misc,
-        })
-        .then(() => {
-          this.resetBuilder();
-          this.resetCart();
-          this.showPopup = true;
-        });
+      return form.$validateFields(fields, form.validations);
     },
-    onPopupClose() {
-      this.showPopup = false;
-      setTimeout(() => {
-        this.$router.push(
-          this.isAuthenticated ? AppRoute.ORDERS : AppRoute.MAIN
-        );
-      }, LEAVE_ANIMATION_DURATION);
+    createNewOrder() {
+      this.post(this.getOrderData()).then(() => {
+        this.getAddresses();
+        this.showPopup();
+        this.reset();
+      });
+    },
+    getOrderData() {
+      return {
+        userId: this.isAuthenticated ? this.user.id : null,
+        phone: this.phone,
+        address: this.isPickup
+          ? null
+          : this.isNewAddress
+          ? { ...this.address }
+          : { id: this.delivery },
+        pizzas: this.pizzas,
+        misc: this.misc,
+      };
+    },
+    getAddresses() {
+      if (this.isAuthenticated && this.isNewAddress) {
+        this.$store.dispatch("Addresses/query");
+      }
+    },
+    showPopup() {
+      this.isPopupDisplayed = true;
+    },
+    hidePopup() {
+      this.isPopupDisplayed = false;
+    },
+    reset() {
+      this.resetBuilder();
+      this.resetCart();
     },
   },
 };

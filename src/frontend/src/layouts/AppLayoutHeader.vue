@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="header__logo">
-      <router-link to="/" class="logo">
+      <router-link :to="AppRoute.MAIN" class="logo">
         <img
           src="@/assets/img/logo.svg"
           alt="V!U!E! Pizza logo"
@@ -12,26 +12,33 @@
     </div>
 
     <div class="header__cart">
-      <router-link to="/cart">{{ totalPrice }} ₽</router-link>
+      <router-link :to="AppRoute.CART">{{ totalPrice }} ₽</router-link>
     </div>
 
-    <div class="header__user">
-      <template v-if="user">
-        <router-link to="/profile">
-          <img :src="user.avatar" :alt="user.name" width="32" height="32" />
-          <span>{{ user.name }}</span>
-        </router-link>
+    <div v-if="user" class="header__user" data-test="user-buttons">
+      <router-link :to="AppRoute.PROFILE">
+        <img :src="user.avatar" :alt="user.name" width="32" height="32" />
+        <span>{{ user.name }}</span>
+      </router-link>
 
-        <a href="#" class="header__logout" @click.prevent="logout">
-          <span>Выйти</span>
-        </a>
-      </template>
+      <a
+        class="header__logout"
+        href="#"
+        data-test="logout-button"
+        @click.prevent="logout"
+      >
+        <span>Выйти</span>
+      </a>
+    </div>
 
-      <template v-else>
-        <router-link to="/login" class="header__login">
-          <span>Войти</span>
-        </router-link>
-      </template>
+    <div v-else class="header__user">
+      <router-link
+        :to="AppRoute.LOGIN"
+        class="header__login"
+        data-test="login-button"
+      >
+        <span>Войти</span>
+      </router-link>
     </div>
   </header>
 </template>
@@ -42,6 +49,11 @@ import { AppRoute } from "@/common/constants";
 
 export default {
   name: "AppLayoutHeader",
+  data() {
+    return {
+      AppRoute,
+    };
+  },
   computed: {
     ...mapState("Auth", ["user"]),
     ...mapGetters("Cart", ["totalPrice"]),

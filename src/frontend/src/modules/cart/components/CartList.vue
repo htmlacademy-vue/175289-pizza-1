@@ -1,6 +1,11 @@
 <template>
   <ul class="cart-list sheet">
-    <CartListItem v-for="pizza in pizzas" :key="pizza.id" :pizza="pizza" />
+    <CartListItem
+      v-for="pizza in pizzas"
+      :key="pizza.id"
+      :pizza="pizza"
+      data-test="item"
+    />
   </ul>
 </template>
 

@@ -9,6 +9,7 @@
           name="delivery"
           :value="delivery"
           @change="updateDelivery($event.target.value)"
+          data-test="delivery"
         >
           <option value="pickup">Получу сам</option>
           <option value="new address">Новый адрес</option>
@@ -31,10 +32,11 @@
         placeholder="+7 999-999-99-99"
         big-label
         :error-text="validations.phone.error"
+        data-test="phone-component"
         @input="updatePhone"
       />
 
-      <div v-if="isNewAddress" class="cart-form__address">
+      <div v-if="!isPickup" class="cart-form__address" data-test="address">
         <span class="cart-form__label">Новый адрес:</span>
 
         <div class="cart-form__input">
@@ -44,6 +46,8 @@
             :value="address.street"
             :error-text="validations.street.error"
             required
+            :disabled="!isNewAddress"
+            data-test="street-component"
             @input="updateAddress({ street: $event })"
           />
         </div>
@@ -55,6 +59,8 @@
             :value="address.building"
             :error-text="validations.building.error"
             required
+            :disabled="!isNewAddress"
+            data-test="building-component"
             @input="updateAddress({ building: $event })"
           />
         </div>
@@ -64,6 +70,8 @@
             label="Квартира"
             name="apartment"
             :value="address.flat"
+            :disabled="!isNewAddress"
+            data-test="flat-component"
             @input="updateAddress({ flat: $event })"
           />
         </div>
@@ -73,12 +81,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
-import {
-  UPDATE_CART_PHONE,
-  UPDATE_CART_DELIVERY,
-  UPDATE_CART_ADDRESS,
-} from "@/store/mutations-types";
+import { mapState, mapGetters, mapActions } from "vuex";
 import validator from "@/common/mixins/validator";
 
 export default {
@@ -117,14 +120,10 @@ export default {
     ...mapState("Auth", ["isAuthenticated"]),
     ...mapState("Addresses", ["addresses"]),
     ...mapState("Cart", ["phone", "delivery", "address"]),
-    ...mapGetters("Cart", ["isNewAddress"]),
+    ...mapGetters("Cart", ["isNewAddress", "isPickup"]),
   },
   methods: {
-    ...mapMutations("Cart", {
-      updatePhone: UPDATE_CART_PHONE,
-      updateDelivery: UPDATE_CART_DELIVERY,
-      updateAddress: UPDATE_CART_ADDRESS,
-    }),
+    ...mapActions("Cart", ["updatePhone", "updateDelivery", "updateAddress"]),
   },
 };
 </script>

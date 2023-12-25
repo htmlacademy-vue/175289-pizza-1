@@ -13,20 +13,31 @@
         <button
           class="button button--border"
           type="button"
+          data-test="delete-button"
           @click="$emit('delete', order.id)"
         >
           Удалить
         </button>
       </div>
       <div class="order__button">
-        <button class="button" type="button" @click="$emit('repeat', order)">
+        <button
+          class="button"
+          type="button"
+          data-test="repeat-button"
+          @click="$emit('repeat', order)"
+        >
           Повторить
         </button>
       </div>
     </div>
 
     <ul class="order__list">
-      <li v-for="pizza in order.pizzas" :key="pizza.id" class="order__item">
+      <li
+        v-for="pizza in order.pizzas"
+        :key="pizza.id"
+        class="order__item"
+        data-test="item"
+      >
         <div class="product">
           <img
             class="product__img"
@@ -65,8 +76,8 @@
       </li>
     </ul>
 
-    <ul v-if="order.misc" class="order__additional">
-      <li v-for="misc in order.misc" :key="misc.id">
+    <ul v-if="order.misc" class="order__additional" data-test="additional">
+      <li v-for="misc in order.misc" :key="misc.id" data-test="additional-item">
         <img :src="misc.image" :alt="misc.name" width="20" height="30" />
         <p>
           <span>{{ misc.name }}</span>
@@ -77,7 +88,7 @@
       </li>
     </ul>
 
-    <p v-if="order.address" class="order__address">
+    <p v-if="order.address" class="order__address" data-test="address">
       Адрес доставки:
       {{
         order.addressId
@@ -89,7 +100,7 @@
 </template>
 
 <script>
-import { getOrderPrice } from "@/common/helpers";
+import { formatPrice, getOrderPrice } from "@/common/helpers";
 
 export default {
   name: "OrderItem",
@@ -101,7 +112,8 @@ export default {
   },
   computed: {
     orderPrice() {
-      return getOrderPrice(this.order);
+      const price = getOrderPrice(this.order);
+      return formatPrice(price);
     },
   },
 };

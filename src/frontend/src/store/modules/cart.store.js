@@ -1,14 +1,12 @@
 import {
+  SET_ENTITY,
   ADD_ENTITY,
   UPDATE_ENTITY,
   DELETE_ENTITY,
+  COPY_ORDER_TO_CART,
   RESET_CART,
-  UPDATE_CART,
-  UPDATE_CART_DELIVERY,
-  UPDATE_CART_PHONE,
-  UPDATE_CART_ADDRESS,
 } from "@/store/mutations-types";
-import { capitalize, getOrderPrice } from "@/common/helpers";
+import { capitalize, formatPrice, getOrderPrice } from "@/common/helpers";
 
 const entity = "cart";
 const module = capitalize(entity);
@@ -38,7 +36,11 @@ export default {
       return ~index ? state.misc[index].quantity : 0;
     },
     totalPrice: (state) => {
-      return getOrderPrice(state);
+      const price = getOrderPrice(state);
+      return formatPrice(price);
+    },
+    isUserAddress: (state) => {
+      return state.delivery !== NEW_ADDRESS && state.delivery !== PICKUP;
     },
     isNewAddress: (state) => {
       return state.delivery === NEW_ADDRESS;
@@ -86,31 +88,71 @@ export default {
         );
       }
     },
-  },
-  mutations: {
-    [RESET_CART](state) {
-      for (let key in state) {
-        state[key] = initialState[key];
+    updatePhone({ commit }, phone) {
+      commit(
+        SET_ENTITY,
+        {
+          module,
+          entity: "phone",
+          value: phone,
+        },
+        { root: true }
+      );
+    },
+    updateDelivery({ commit, getters, rootGetters, dispatch }, delivery) {
+      commit(
+        SET_ENTITY,
+        {
+          module,
+          entity: "delivery",
+          value: delivery,
+        },
+        { root: true }
+      );
+
+      if (getters.isUserAddress) {
+        const addressId = parseInt(delivery);
+        const address = rootGetters["Addresses/getAddress"](addressId);
+
+        dispatch("updateAddress", {
+          street: address.street,
+          building: address.building,
+          flat: address.flat,
+        });
       }
     },
-    [UPDATE_CART](state, { pizzas, misc, phone, address }) {
+    updateAddress({ state, commit }, address) {
+      commit(
+        SET_ENTITY,
+        {
+          module,
+          entity: "address",
+          value: { ...state.address, ...address },
+        },
+        { root: true }
+      );
+    },
+  },
+  mutations: {
+    [COPY_ORDER_TO_CART](state, { pizzas, misc, phone, addressId }) {
       state.pizzas = pizzas;
       state.misc = misc ?? [];
       state.phone = phone;
-      state.address = address ?? {
+      if (addressId) {
+        state.delivery = addressId;
+      } else {
+        state.delivery = PICKUP;
+      }
+      state.address = {
         street: "",
         building: "",
         flat: "",
       };
     },
-    [UPDATE_CART_DELIVERY](state, delivery) {
-      state.delivery = delivery;
-    },
-    [UPDATE_CART_PHONE](state, phone) {
-      state.phone = phone;
-    },
-    [UPDATE_CART_ADDRESS](state, address) {
-      state.address = { ...state.address, ...address };
+    [RESET_CART](state) {
+      for (let key in state) {
+        state[key] = initialState[key];
+      }
     },
   },
 };
