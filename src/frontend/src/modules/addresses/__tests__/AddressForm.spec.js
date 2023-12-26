@@ -4,7 +4,7 @@ import { generateMockStore } from "@/store/mocks";
 import { setUser } from "@/common/helpers";
 import addresses from "@/store/mocks/data/addresses";
 import validator from "@/common/mixins/validator";
-import AddressForm from "@/modules/address/components/AddressForm";
+import AddressForm from "@/modules/addresses/components/AddressForm";
 import AppInput from "@/common/components/AppInput";
 
 const address = addresses.at(0);

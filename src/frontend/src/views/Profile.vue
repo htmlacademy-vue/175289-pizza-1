@@ -51,7 +51,7 @@
 <script>
 import { mapState } from "vuex";
 import { auth } from "@/middlewares";
-import AddressForm from "@/modules/address/components/AddressForm.vue";
+import AddressForm from "@/modules/addresses/components/AddressForm.vue";
 
 export default {
   name: "ProfilePage",
