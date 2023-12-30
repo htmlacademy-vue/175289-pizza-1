@@ -38,9 +38,11 @@
 <script>
 import { AppRoute } from "@/common/constants";
 import validator from "@/common/mixins/validator";
+import { guest } from "@/middlewares";
 
 export default {
   name: "LoginPage",
+  middlewares: [guest],
   mixins: [validator],
   data() {
     return {

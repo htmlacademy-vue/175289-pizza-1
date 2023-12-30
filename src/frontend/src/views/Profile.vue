@@ -50,10 +50,13 @@
 
 <script>
 import { mapState } from "vuex";
-import AddressForm from "@/modules/address/components/AddressForm.vue";
+import { auth } from "@/middlewares";
+import AddressForm from "@/modules/addresses/components/AddressForm.vue";
 
 export default {
   name: "ProfilePage",
+  layout: "AppLayoutSidebar",
+  middlewares: [auth],
   components: { AddressForm },
   data() {
     return {

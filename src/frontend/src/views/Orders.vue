@@ -16,14 +16,16 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import { COPY_ORDER_TO_CART } from "@/store/mutations-types";
 import { AppRoute } from "@/common/constants";
+import { auth } from "@/middlewares";
 import OrderItem from "@/modules/orders/components/OrderItem.vue";
-import { mapState, mapActions } from "vuex";
 
 export default {
   name: "OrdersPage",
+  layout: "AppLayoutSidebar",
+  middlewares: [auth],
   components: {
     OrderItem,
   },
